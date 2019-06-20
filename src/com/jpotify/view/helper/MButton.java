@@ -45,12 +45,12 @@ public class MButton extends JButton {
         setHoverEffect(null, performedIcon);
     }
 
-
     private void firstSetup() {
         setBorder(BorderFactory.createEmptyBorder());
         setContentAreaFilled(false);
         setFont(new Font("Arial", Font.BOLD, 15));
         setForeground(defaultColor);
+        setFocusPainted(false);
     }
 
     public void setDefaultHoverEffect() {
