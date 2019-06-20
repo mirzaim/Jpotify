@@ -1,6 +1,7 @@
 package com.jpotify.view;
 
 import com.jpotify.view.assets.AssetManager;
+import com.jpotify.view.helper.ImagePanel;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.menu_panel.MiniMenu;
 
@@ -9,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 class MenuPanel extends JPanel {
+    private final int WIDTH = 200;
 
     MenuPanel() {
         setupPanel();
@@ -17,7 +19,7 @@ class MenuPanel extends JPanel {
 
     private void setupPanel() {
         setBackground(Color.BLACK);
-        setBorder(new EmptyBorder(20, 20, 20, 20));
+        setBorder(new EmptyBorder(20, 0, 0, 0));
         setLayout(new BorderLayout());
 
         JPanel top = new JPanel();
@@ -43,15 +45,16 @@ class MenuPanel extends JPanel {
         top.add(playList);
 
         JPanel bottom = new JPanel();
-        bottom.setOpaque(false);
-        bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
+        bottom.setBackground(this.getBackground());
+        bottom.setLayout(new BoxLayout(bottom, BoxLayout.PAGE_AXIS));
         add(bottom, BorderLayout.PAGE_END);
 
         MiniMenu newPlayList = new MiniMenu(null);
-        newPlayList.addButton(new MButton("New Playlist", AssetManager.getImageIconByName("add.png"),true));
+        newPlayList.addButton(new MButton("New Playlist", AssetManager.getImageIconByName("add.png"), true));
         bottom.add(newPlayList);
 
-        
+        ImagePanel imagePanel = new ImagePanel(AssetManager.getBufferedImageByName("abc.jpg"), WIDTH, -1);
+        bottom.add(imagePanel);
     }
 
 }

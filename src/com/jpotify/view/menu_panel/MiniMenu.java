@@ -11,7 +11,7 @@ public class MiniMenu extends JPanel {
     public MiniMenu(String title) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setOpaque(false);
-        setBorder(new EmptyBorder(5, 0, 5, 0));
+        setBorder(new EmptyBorder(5, 20, 5, 20));
 
         MButton titleText = new MButton(title);
         titleText.setFont(new Font("Arial", Font.PLAIN, 12));
