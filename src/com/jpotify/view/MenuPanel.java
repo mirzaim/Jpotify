@@ -77,16 +77,17 @@ class MenuPanel extends JPanel {
             if(result == JFileChooser.APPROVE_OPTION){
                 File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
 
-                try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))){
-                    javazoom.jl.player.Player player = new javazoom.jl.player.Player(bis);
-                    System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
-                    player.play();
-                }
-                catch (javazoom.jl.decoder.JavaLayerException e2){
-                    System.out.println("JavaLayerException");
-                } catch (IOException e1){
-                    System.out.println("Cant open file");
-                }
+
+//                try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))){
+//                    javazoom.jl.player.Player player = new javazoom.jl.player.Player(bis);
+//                    System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
+//                    player.play();
+//                }
+//                catch (javazoom.jl.decoder.JavaLayerException e2){
+//                    System.out.println("JavaLayerException");
+//                } catch (IOException e1){
+//                    System.out.println("Cant open file");
+//                }
             }
 
         }
