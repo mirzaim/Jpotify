@@ -1,5 +1,7 @@
 package com.jpotify.view;
 
+import com.jpotify.logic.DataBase;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,6 +15,7 @@ public final class GUI extends JFrame {
     private MainPanel mainPanel;
 
     private static GUI gui;
+    private DataBase dataBase;
 
     private GUIListener guiListener;
 
