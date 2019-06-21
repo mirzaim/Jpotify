@@ -59,7 +59,7 @@ public class Music implements Comparable<Music>{
             this.genre = id3v2Tag.getGenre();
             albumImageData = id3v2Tag.getAlbumImage();
         } else {
-            throw new NoTagFoundException("There is No ID3v1 Tag");
+            throw new NoTagFoundException("There is No ID3v2 Tag");
         }
     }
 
