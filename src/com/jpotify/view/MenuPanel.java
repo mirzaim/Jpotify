@@ -18,7 +18,7 @@ class MenuPanel extends JPanel {
     }
 
     private void setupPanel() {
-        setBackground(Color.BLACK);
+        setBackground(Color.DARK_GRAY);
         setBorder(new EmptyBorder(20, 0, 0, 0));
         setLayout(new BorderLayout());
 
