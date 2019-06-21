@@ -40,8 +40,12 @@ public class MButton extends JButton {
         this(text, null, Color.LIGHT_GRAY, enableDefaultHover);
     }
 
+    public MButton(Icon defaultIcon) {
+        this(null, defaultIcon, false);
+    }
+
     public MButton(Icon defaultIcon, Icon performedIcon) {
-        this.defaultIcon = defaultIcon;
+        this(null, defaultIcon, false);
         setHoverEffect(null, performedIcon);
     }
 
