@@ -1,6 +1,7 @@
 package com.jpotify.view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public final class GUI extends JFrame {
@@ -9,6 +10,7 @@ public final class GUI extends JFrame {
 
     private MenuPanel menuPanel;
     private PlayerPanel playerPanel;
+    private MainPanel mainPanel;
 
     private static GUI gui;
 
@@ -39,6 +41,10 @@ public final class GUI extends JFrame {
 
         add(menuPanel = new MenuPanel(), BorderLayout.LINE_START);
         add(playerPanel = new PlayerPanel(), BorderLayout.PAGE_END);
+
+        JScrollPane jScrollPaneCenter = new JScrollPane(mainPanel = new MainPanel());
+        jScrollPaneCenter.setBorder(new EmptyBorder(0,0,0,0));
+        add(jScrollPaneCenter,BorderLayout.CENTER);
 
         setVisible(true);
     }
