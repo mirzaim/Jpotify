@@ -3,6 +3,7 @@ package com.jpotify.logic;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import mpatric.mp3agic.*;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -70,5 +71,11 @@ public class Music implements Comparable<Music>{
             return -1;
         else
             return 0;
+    }
+
+    public JPanel panelize() {
+        JPanel jPanel = new JPanel();
+
+        return jPanel;
     }
 }
