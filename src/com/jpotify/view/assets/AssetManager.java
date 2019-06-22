@@ -14,6 +14,10 @@ public class AssetManager {
         return new ImageIcon(PATH + filename);
     }
 
+    public static File getFileByName(String filename) {
+        return new File(PATH + filename);
+    }
+
     public static BufferedImage getBufferedImageByName(String filename) {
         try {
             return ImageIO.read(new File(PATH + filename));

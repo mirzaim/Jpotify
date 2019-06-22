@@ -1,6 +1,7 @@
 package com.jpotify.logic;
 
 import com.jpotify.logic.exceptions.NoTagFoundException;
+import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.ImagePanel;
 import mpatric.mp3agic.ID3v2;
 import mpatric.mp3agic.InvalidDataException;
@@ -13,7 +14,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
-public class Music implements Comparable<Music> {
+public class Music implements Comparable<Music>, DrawableItem {
 
     private final int imageWidth = 200;
     private final int imageHeight = 200;
@@ -96,13 +97,28 @@ public class Music implements Comparable<Music> {
             return 0;
     }
 
-    public JPanel panelize() {
+//    public JPanel panelize() {
+//
+//        JPanel jPanel = new JPanel();
+//
+//        ImagePanel imagePanel = new ImagePanel(this.albumImage, imageWidth, imageHeight);
+//        jPanel.add(imagePanel);
+//
+//        return jPanel;
+//    }
 
+    @Override
+    public JPanel draw(int width, int height) {
         JPanel jPanel = new JPanel();
 
-        ImagePanel imagePanel = new ImagePanel(this.albumImage, imageWidth, imageHeight);
+        ImagePanel imagePanel = new ImagePanel(this.albumImage, width, height);
         jPanel.add(imagePanel);
 
         return jPanel;
+    }
+
+    @Override
+    public String getId() {
+        return title;
     }
 }

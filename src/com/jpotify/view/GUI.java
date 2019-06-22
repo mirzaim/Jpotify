@@ -1,6 +1,8 @@
 package com.jpotify.view;
 
-import com.jpotify.logic.DataBase;
+import com.jpotify.view.Listeners.GUIListenerBox;
+import com.jpotify.view.Listeners.ManagerListener;
+import com.jpotify.view.helper.DrawableItem;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,24 +17,38 @@ public final class GUI extends JFrame {
     private MainPanel mainPanel;
 
     private static GUI gui;
-    private DataBase dataBase;
 
-    private GUIListener guiListener;
+    private GUIListenerBox guiListenerBox;
 
-    private GUI(GUIListener guiListener) throws HeadlessException {
+    private GUI(GUIListenerBox guiListenerBox) throws HeadlessException {
         super();
-        this.guiListener = guiListener;
+        this.guiListenerBox = guiListenerBox;
 
         setupGUI();
     }
 
-    public static void initGUI(GUIListener guiListener) {
-        if (gui == null)
-            gui = new GUI(guiListener);
+    public static void initGUI(GUIListenerBox guiListenerBox) {
+        if (gui == null && guiListenerBox.isReady())
+            gui = new GUI(guiListenerBox);
+    }
+
+    public static void initGUI(ManagerListener managerListener) {
+        if (gui == null) {
+            gui = new GUI(new GUIListenerBox(managerListener));
+            managerListener.setGui(gui);
+        }
     }
 
     public static GUI getGUI() {
         return gui;
+    }
+
+    public void addPanel(DrawableItem item) {
+        mainPanel.addPanel(item);
+    }
+
+    public void addPanels(DrawableItem[] items) {
+        mainPanel.addPanels(items);
     }
 
     private void setupGUI() {
@@ -42,13 +58,15 @@ public final class GUI extends JFrame {
         setSize(new Dimension(WIDTH, HEIGHT));
         setLocationRelativeTo(null);
 
-        add(menuPanel = new MenuPanel(), BorderLayout.LINE_START);
-        add(playerPanel = new PlayerPanel(), BorderLayout.PAGE_END);
+        add(menuPanel = new MenuPanel(guiListenerBox.getMenuPanelListener()), BorderLayout.LINE_START);
 
-        JScrollPane jScrollPaneCenter = new JScrollPane(mainPanel = new MainPanel());
-        jScrollPaneCenter.setBorder(new EmptyBorder(0,0,0,0));
-        add(jScrollPaneCenter,BorderLayout.CENTER);
+        add(playerPanel = new PlayerPanel(guiListenerBox.getPlayerPanelListener()), BorderLayout.PAGE_END);
+
+        JScrollPane jScrollPaneCenter = new JScrollPane(mainPanel = new MainPanel(guiListenerBox.getMainPanelListener()));
+        jScrollPaneCenter.setBorder(new EmptyBorder(0, 0, 0, 0));
+        add(jScrollPaneCenter, BorderLayout.CENTER);
 
         setVisible(true);
     }
+
 }

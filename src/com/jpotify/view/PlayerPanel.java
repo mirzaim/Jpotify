@@ -1,16 +1,20 @@
 package com.jpotify.view;
 
+import com.jpotify.view.Listeners.PlayerPanelListener;
 import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.MButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class PlayerPanel extends JPanel {
+public class PlayerPanel extends JPanel implements ActionListener {
+    private PlayerPanelListener listener;
 
-    public PlayerPanel() {
-
+    public PlayerPanel(PlayerPanelListener listener) {
+        this.listener = listener;
         setup();
     }
 
@@ -39,11 +43,11 @@ public class PlayerPanel extends JPanel {
         controllers.setLayout(new BoxLayout(controllers, BoxLayout.X_AXIS));
         centerBox.add(controllers);
 
-        controllers.add(new MButton(AssetManager.getImageIconByName("shuffle.png")));
-        controllers.add(new MButton(AssetManager.getImageIconByName("previous.png")));
-        controllers.add(new MButton(AssetManager.getImageIconByName("play.png")));
-        controllers.add(new MButton(AssetManager.getImageIconByName("next.png")));
-        controllers.add(new MButton(AssetManager.getImageIconByName("replay.png")));
+        controllers.add(new MButton(AssetManager.getImageIconByName("shuffle.png"), "shuffle"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("previous.png"), "previous"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("play.png"), "play"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("next.png"), "next"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("replay.png"), "replay"));
 
         JSlider slider = new JSlider();
         slider.setOpaque(false);
@@ -75,10 +79,36 @@ public class PlayerPanel extends JPanel {
         rightBox.setBorder(new EmptyBorder(0, 20, 0, 0));
         add(rightBox, BorderLayout.LINE_END);
 
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png")));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png")));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png")));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png")));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png")));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() instanceof JSlider) {
+
+        } else {
+            switch (((MButton) e.getSource()).getId()) {
+                case "play":
+                    listener.play();
+                    break;
+                case "next":
+                    listener.next();
+                    break;
+                case "previous":
+                    listener.previous();
+                    break;
+                case "replay":
+                    listener.replay();
+                    break;
+                case "shuffle":
+                    listener.shuffle();
+                    break;
+                default:
+            }
+        }
     }
 }

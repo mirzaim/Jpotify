@@ -1,24 +1,32 @@
 package com.jpotify.view;
 
+import com.jpotify.view.Listeners.MainPanelListener;
+import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.WrapLayout;
 
 import javax.swing.*;
 import java.awt.*;
 
 
-public class MainPanel extends JPanel {
-    public MainPanel () {
+class MainPanel extends JPanel {
+    private final int ITEM_WIDTH = 200, ITEM_HEIGHT = 250;
 
-        setLayout(new WrapLayout(0,30,30));
+    private MainPanelListener listener;
 
-        for (int i = 0; i < 10; i++) {
-            JPanel b = new JPanel();
-            b.setPreferredSize(new Dimension(200,250));
-            b.setBackground(Color.DARK_GRAY);
-            this.add(b);
-        }
+    MainPanel(MainPanelListener listener) {
+        this.listener = listener;
+        setLayout(new WrapLayout(0, 30, 30));
 
+    }
 
+    void addPanel(DrawableItem item) {
+        JPanel panel = item.draw(ITEM_WIDTH, ITEM_HEIGHT);
+        panel.setBackground(Color.DARK_GRAY);
+        add(panel);
+    }
 
+    void addPanels(DrawableItem[] items) {
+        for (DrawableItem item : items)
+            addPanel(item);
     }
 }

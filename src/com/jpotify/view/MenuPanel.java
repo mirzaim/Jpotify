@@ -1,9 +1,10 @@
 package com.jpotify.view;
 
+import com.jpotify.view.Listeners.MenuPanelListener;
 import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.ImagePanel;
 import com.jpotify.view.helper.MButton;
-import com.jpotify.view.menu_panel.MiniMenu;
+import com.jpotify.view.helper.MiniMenu;
 
 
 import javax.swing.*;
@@ -11,15 +12,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
-class MenuPanel extends JPanel {
+class MenuPanel extends JPanel implements ActionListener {
     private final int WIDTH = 200;
 
-    MenuPanel() {
+    private MiniMenu playList;
+    private MenuPanelListener listener;
+
+    MenuPanel(MenuPanelListener listener) {
+        this.listener = listener;
         setupPanel();
 
     }
@@ -42,18 +44,17 @@ class MenuPanel extends JPanel {
 
         MiniMenu library = new MiniMenu("YOUR LIBRARY");
         library.addButton(new MButton("Songs", true));
-
-        MButton addSongButton = new MButton("Add Song", AssetManager.getImageIconByName("add.png"), true);
-        addSongButton.addActionListener(new playSong());
-        library.addButton(addSongButton);
+        library.addButton(new MButton("Add Song",
+                AssetManager.getImageIconByName("add.png"), true, this));
         library.addButton(new MButton("Albums", true));
         top.add(library);
 
-        MiniMenu playList = new MiniMenu("PLAYLISTS");
+        playList = new MiniMenu("PLAYLISTS");
         playList.addButton(new MButton("Test1", true));
         playList.addButton(new MButton("Test2", true));
         playList.addButton(new MButton("Test3", true));
         top.add(playList);
+
 
         JPanel bottom = new JPanel();
         bottom.setBackground(this.getBackground());
@@ -68,29 +69,41 @@ class MenuPanel extends JPanel {
         bottom.add(imagePanel);
     }
 
-    class playSong implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
-            int result = fileChooser.showOpenDialog(null);
-
-            if(result == JFileChooser.APPROVE_OPTION){
-                File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+    public void addPlayList(String name) {
+        playList.addButton(new MButton(name, true));
+    }
 
 
-//                try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))){
-//                    javazoom.jl.player.Player player = new javazoom.jl.player.Player(bis);
-//                    System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
-//                    player.play();
-//                }
-//                catch (javazoom.jl.decoder.JavaLayerException e2){
-//                    System.out.println("JavaLayerException");
-//                } catch (IOException e1){
-//                    System.out.println("Cant open file");
-//                }
-            }
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("PLAYLISTS")) {
+            listener.playListClicked(((MButton) e.getSource()).getText());
+            return;
+        }
+
+        switch (((MButton) e.getSource()).getId()) {
+            case "Home":
+                listener.home();
+                break;
+            case "Songs":
+                listener.songs();
+                break;
+            case "Add Song":
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(null);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                    listener.addSong(file);
+                }
+                break;
+            case "Albums":
+                listener.albums();
+                break;
+            default:
 
         }
+
+
     }
 
 }
