@@ -2,7 +2,7 @@ package com.jpotify.view.Listeners;
 
 import com.jpotify.view.GUI;
 
-public abstract class ManagerListener implements MainPanelListener, MenuPanelListener, NetworkPanelListener, PlayerPanelListener {
+public abstract class ListenerManager implements MainPanelListener, MenuPanelListener, NetworkPanelListener, PlayerPanelListener {
     private GUI gui;
 
     public GUI getGUI() {

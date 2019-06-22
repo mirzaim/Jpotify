@@ -6,7 +6,7 @@ import com.jpotify.view.Listeners.*;
 
 import java.io.File;
 
-public class PanelManager extends ManagerListener {
+public class PanelManager extends ListenerManager {
 
     private DataBase dataBase;
 
@@ -14,6 +14,8 @@ public class PanelManager extends ManagerListener {
         this.dataBase = dataBase;
     }
 
+
+    // MenuPanelListener implementation
     @Override
     public void home() {
 
@@ -46,6 +48,8 @@ public class PanelManager extends ManagerListener {
 
     }
 
+
+    // PlayerPanelListener implementation
     @Override
     public void play() {
 
@@ -76,6 +80,8 @@ public class PanelManager extends ManagerListener {
 
     }
 
+
+    // MainPanelListener implementation
     @Override
     public void panelClicked(String id) {
 
