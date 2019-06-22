@@ -10,18 +10,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private final int ITEM_WIDTH = 200, ITEM_HEIGHT = 250;
 
     private MainPanelListener listener;
 
-    MainPanel(MainPanelListener listener) {
+    public MainPanel(MainPanelListener listener) {
         this.listener = listener;
         setLayout(new WrapLayout(0, 30, 30));
 
     }
 
-    void addPanel(DrawableItem item) {
+    public void addPanel(DrawableItem item) {
         JPanel panel = item.draw(ITEM_WIDTH, ITEM_HEIGHT);
         panel.setBackground(Color.DARK_GRAY);
         add(panel);
@@ -38,7 +38,7 @@ class MainPanel extends JPanel {
         revalidate();
     }
 
-    void addPanels(DrawableItem[] items) {
+    public void addPanels(DrawableItem[] items) {
         for (DrawableItem item : items)
             addPanel(item);
     }

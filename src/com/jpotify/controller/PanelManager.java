@@ -10,7 +10,7 @@ import mpatric.mp3agic.UnsupportedTagException;
 import java.io.File;
 import java.io.IOException;
 
-public class PanelManager extends ManagerListener {
+public class PanelManager extends ListenerManager {
 
     private DataBase dataBase;
 
@@ -18,6 +18,8 @@ public class PanelManager extends ManagerListener {
         this.dataBase = dataBase;
     }
 
+
+    // MenuPanelListener implementation
     @Override
     public void home() {
 
@@ -32,7 +34,7 @@ public class PanelManager extends ManagerListener {
     public void addSong(File file) {
         try {
             Music music = new Music(file);
-            getGUI().addPanel(music);
+            getGUI().getMainPanel().addPanel(music);
             dataBase.addSong(music);
         } catch (IOException | UnsupportedTagException | InvalidDataException | NoTagFoundException e) {
             e.printStackTrace();
@@ -50,6 +52,7 @@ public class PanelManager extends ManagerListener {
 
     }
 
+    // PlayerPanelListener implementation
     @Override
     public void play() {
 
@@ -80,6 +83,7 @@ public class PanelManager extends ManagerListener {
 
     }
 
+    // MainPanelListener implementation
     @Override
     public void panelClicked(String id) {
 

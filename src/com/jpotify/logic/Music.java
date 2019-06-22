@@ -10,6 +10,7 @@ import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -119,10 +120,13 @@ public class Music implements Comparable<Music>, DrawableItem {
     @Override
     public JPanel draw(int width, int height) {
         JPanel jPanel = new JPanel();
+        jPanel.setBorder(new MatteBorder(1,1,1,1,Color.BLUE));
         jPanel.setPreferredSize(new Dimension(width, height));
+        jPanel.setLayout(new BorderLayout());
 
         ImagePanel imagePanel = new ImagePanel(this.albumImage, width, height - 50);
-        jPanel.add(imagePanel);
+        imagePanel.setBorder(new MatteBorder(1,1,1,1,Color.RED));
+        jPanel.add(imagePanel,BorderLayout.CENTER);
 
 
         return jPanel;
