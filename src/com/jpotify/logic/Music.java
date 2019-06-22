@@ -74,7 +74,10 @@ public class Music implements Comparable<Music>, DrawableItem {
                     this.album = id3v2Tag.getAlbum();
                     this.year = id3v2Tag.getYear();
                 }
+
             }
+            if (title != null)
+                title = title.trim();
 
 
             // resizing image (from ? size to 200*200 - MainPanel elements size -)
@@ -87,6 +90,7 @@ public class Music implements Comparable<Music>, DrawableItem {
         } else {
             throw new NoTagFoundException("There is No ID3v2 Tag");
         }
+
     }
 
     @Override

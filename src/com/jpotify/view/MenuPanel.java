@@ -91,7 +91,6 @@ class MenuPanel extends JPanel implements ActionListener {
                 listener.songs();
                 break;
             case "Add Song":
-                System.out.println("ADD");
                 JFileChooser fileChooser = new JFileChooser();
                 int result = fileChooser.showOpenDialog(null);
 
