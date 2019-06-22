@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class PlayerPanel extends JPanel implements ActionListener, ChangeListener {
+public class PlayerPanel extends JPanel implements ActionListener, ChangeListener {
     private PlayerPanelListener listener;
     private JSlider slider;
 
@@ -91,17 +91,17 @@ class PlayerPanel extends JPanel implements ActionListener, ChangeListener {
         rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
     }
 
-    void setMediaMaxFrame(int frame) {
+    public void setMediaMaxFrame(int frame) {
         slider.setMaximum(frame);
     }
 
-    void setSliderCurrentPosition(int frame) {
+    public void setSliderCurrentPosition(int frame) {
         slider.removeChangeListener(this);
         slider.setValue(frame);
         slider.addChangeListener(this);
     }
 
-    void updateSliderAFrame() {
+    public void updateSliderAFrame() {
         slider.setValue(slider.getValue() + 1);
     }
 

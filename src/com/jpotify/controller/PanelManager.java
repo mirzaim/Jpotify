@@ -28,7 +28,7 @@ public class PanelManager extends ManagerListener {
     public void addSong(File file) {
         try{
         Music music = new Music(file);
-        getGUI().addPanel(music);
+        getGUI().getMainPanel().addPanel(music);
 
         }catch (Exception e){
             // something do

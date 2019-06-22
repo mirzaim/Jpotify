@@ -37,27 +37,41 @@ public final class GUI extends JFrame {
         return gui;
     }
 
-    public void addPanel(DrawableItem item) {
-        mainPanel.addPanel(item);
+//    public void addPanel(DrawableItem item) {
+//        mainPanel.addPanel(item);
+//    }
+//
+//    public void addPanels(DrawableItem[] items) {
+//        mainPanel.addPanels(items);
+//    }
+//
+//    public void setMediaMaxFrame(int frame) {
+//        playerPanel.setMediaMaxFrame(frame);
+//    }
+//
+//    public void setSliderCurrentPosition(int frame) {
+//        playerPanel.setSliderCurrentPosition(frame);
+//    }
+//
+//    public void updateSliderAFrame() {
+//        playerPanel.updateSliderAFrame();
+//    }
+
+
+    public MenuPanel getMenuPanel() {
+        return menuPanel;
     }
 
-    public void addPanels(DrawableItem[] items) {
-        mainPanel.addPanels(items);
+    public PlayerPanel getPlayerPanel() {
+        return playerPanel;
     }
 
-    public void setMediaMaxFrame(int frame) {
-        playerPanel.setMediaMaxFrame(frame);
-    }
-
-    public void setSliderCurrentPosition(int frame) {
-        playerPanel.setSliderCurrentPosition(frame);
-    }
-
-    public void updateSliderAFrame() {
-        playerPanel.updateSliderAFrame();
+    public MainPanel getMainPanel() {
+        return mainPanel;
     }
 
     private void setupGUI() {
+
         setTitle(TITLE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -65,7 +79,6 @@ public final class GUI extends JFrame {
         setLocationRelativeTo(null);
 
         add(menuPanel = new MenuPanel(managerListener), BorderLayout.LINE_START);
-
         add(playerPanel = new PlayerPanel(managerListener), BorderLayout.PAGE_END);
 
         JScrollPane jScrollPaneCenter = new JScrollPane(mainPanel = new MainPanel(managerListener));

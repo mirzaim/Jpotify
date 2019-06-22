@@ -14,13 +14,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-class MenuPanel extends JPanel implements ActionListener {
+public class MenuPanel extends JPanel implements ActionListener {
     private final int WIDTH = 200;
 
     private MiniMenu playList;
     private MenuPanelListener listener;
 
-    MenuPanel(MenuPanelListener listener) {
+    public MenuPanel(MenuPanelListener listener) {
         this.listener = listener;
         setupPanel();
 
