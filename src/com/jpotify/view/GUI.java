@@ -51,6 +51,7 @@ public final class GUI extends JFrame {
         mainPanel.addPanels(items);
     }
 
+
     private void setupGUI() {
         setTitle(TITLE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
