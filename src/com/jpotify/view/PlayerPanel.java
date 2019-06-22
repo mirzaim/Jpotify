@@ -6,14 +6,17 @@ import com.jpotify.view.helper.MButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PlayerPanel extends JPanel implements ActionListener {
+class PlayerPanel extends JPanel implements ActionListener, ChangeListener {
     private PlayerPanelListener listener;
+    private JSlider slider;
 
-    public PlayerPanel(PlayerPanelListener listener) {
+    PlayerPanel(PlayerPanelListener listener) {
         this.listener = listener;
         setup();
     }
@@ -49,9 +52,11 @@ public class PlayerPanel extends JPanel implements ActionListener {
         controllers.add(new MButton(AssetManager.getImageIconByName("next.png"), this, "next"));
         controllers.add(new MButton(AssetManager.getImageIconByName("replay.png"), this, "replay"));
 
-        JSlider slider = new JSlider();
+        slider = new JSlider();
+        slider.addChangeListener(this);
         slider.setOpaque(false);
         slider.setBorder(new EmptyBorder(0, 100, 0, 100));
+        slider.setMinimum(0);
         centerBox.add(slider);
     }
 
@@ -86,29 +91,46 @@ public class PlayerPanel extends JPanel implements ActionListener {
         rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
     }
 
+    void setMediaMaxFrame(int frame) {
+        slider.setMaximum(frame);
+    }
+
+    void setSliderCurrentPosition(int frame) {
+        slider.removeChangeListener(this);
+        slider.setValue(frame);
+        slider.addChangeListener(this);
+    }
+
+    void updateSliderAFrame() {
+        slider.setValue(slider.getValue() + 1);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof JSlider) {
-
-        } else {
-            switch (((MButton) e.getSource()).getId()) {
-                case "play":
-                    listener.play();
-                    break;
-                case "next":
-                    listener.next();
-                    break;
-                case "previous":
-                    listener.previous();
-                    break;
-                case "replay":
-                    listener.replay();
-                    break;
-                case "shuffle":
-                    listener.shuffle();
-                    break;
-                default:
-            }
+        switch (((MButton) e.getSource()).getId()) {
+            case "play":
+                listener.play();
+                break;
+            case "next":
+                listener.next();
+                break;
+            case "previous":
+                listener.previous();
+                break;
+            case "replay":
+                listener.replay();
+                break;
+            case "shuffle":
+                listener.shuffle();
+                break;
+            default:
         }
+    }
+
+    //for jSlider
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (!slider.getValueIsAdjusting())
+            listener.sliderChanged(slider.getValue());
     }
 }

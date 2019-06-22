@@ -51,6 +51,18 @@ public final class GUI extends JFrame {
         mainPanel.addPanels(items);
     }
 
+    public void setMediaMaxFrame(int frame) {
+        playerPanel.setMediaMaxFrame(frame);
+    }
+
+    public void setSliderCurrentPosition(int frame) {
+        playerPanel.setSliderCurrentPosition(frame);
+    }
+
+    public void updateSliderAFrame() {
+        playerPanel.updateSliderAFrame();
+    }
+
     private void setupGUI() {
         setTitle(TITLE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
