@@ -23,6 +23,9 @@ class MainPanel extends JPanel {
         JPanel panel = item.draw(ITEM_WIDTH, ITEM_HEIGHT);
         panel.setBackground(Color.DARK_GRAY);
         add(panel);
+        
+        repaint();
+        revalidate();
     }
 
     void addPanels(DrawableItem[] items) {

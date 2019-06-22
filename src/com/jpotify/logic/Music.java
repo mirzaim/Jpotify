@@ -125,9 +125,11 @@ public class Music implements Comparable<Music>, DrawableItem {
     @Override
     public JPanel draw(int width, int height) {
         JPanel jPanel = new JPanel();
+        jPanel.setPreferredSize(new Dimension(width, height));
 
-        ImagePanel imagePanel = new ImagePanel(this.albumImage, width, height);
+        ImagePanel imagePanel = new ImagePanel(this.albumImage, width, height - 50);
         jPanel.add(imagePanel);
+
 
         return jPanel;
     }
