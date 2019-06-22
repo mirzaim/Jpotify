@@ -72,6 +72,11 @@ public class PanelManager extends ManagerListener {
     }
 
     @Override
+    public void sliderChanged(int newPosition) {
+
+    }
+
+    @Override
     public void panelClicked(String id) {
 
     }

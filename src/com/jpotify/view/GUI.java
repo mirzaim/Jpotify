@@ -1,6 +1,5 @@
 package com.jpotify.view;
 
-import com.jpotify.view.Listeners.GUIListenerBox;
 import com.jpotify.view.Listeners.ManagerListener;
 import com.jpotify.view.helper.DrawableItem;
 
@@ -18,23 +17,18 @@ public final class GUI extends JFrame {
 
     private static GUI gui;
 
-    private GUIListenerBox guiListenerBox;
+    private ManagerListener managerListener;
 
-    private GUI(GUIListenerBox guiListenerBox) throws HeadlessException {
+    private GUI(ManagerListener guiListenerBox) throws HeadlessException {
         super();
-        this.guiListenerBox = guiListenerBox;
+        this.managerListener = guiListenerBox;
 
         setupGUI();
     }
 
-    public static void initGUI(GUIListenerBox guiListenerBox) {
-        if (gui == null && guiListenerBox.isReady())
-            gui = new GUI(guiListenerBox);
-    }
-
     public static void initGUI(ManagerListener managerListener) {
         if (gui == null) {
-            gui = new GUI(new GUIListenerBox(managerListener));
+            gui = new GUI(managerListener);
             managerListener.setGui(gui);
         }
     }
@@ -51,6 +45,17 @@ public final class GUI extends JFrame {
         mainPanel.addPanels(items);
     }
 
+    public void setMediaMaxFrame(int frame) {
+        playerPanel.setMediaMaxFrame(frame);
+    }
+
+    public void setSliderCurrentPosition(int frame) {
+        playerPanel.setSliderCurrentPosition(frame);
+    }
+
+    public void updateSliderAFrame() {
+        playerPanel.updateSliderAFrame();
+    }
 
     private void setupGUI() {
         setTitle(TITLE);
@@ -59,11 +64,11 @@ public final class GUI extends JFrame {
         setSize(new Dimension(WIDTH, HEIGHT));
         setLocationRelativeTo(null);
 
-        add(menuPanel = new MenuPanel(guiListenerBox.getMenuPanelListener()), BorderLayout.LINE_START);
+        add(menuPanel = new MenuPanel(managerListener), BorderLayout.LINE_START);
 
-        add(playerPanel = new PlayerPanel(guiListenerBox.getPlayerPanelListener()), BorderLayout.PAGE_END);
+        add(playerPanel = new PlayerPanel(managerListener), BorderLayout.PAGE_END);
 
-        JScrollPane jScrollPaneCenter = new JScrollPane(mainPanel = new MainPanel(guiListenerBox.getMainPanelListener()));
+        JScrollPane jScrollPaneCenter = new JScrollPane(mainPanel = new MainPanel(managerListener));
         jScrollPaneCenter.setBorder(new EmptyBorder(0, 0, 0, 0));
         add(jScrollPaneCenter, BorderLayout.CENTER);
 
