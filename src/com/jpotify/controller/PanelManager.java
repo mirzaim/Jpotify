@@ -79,4 +79,9 @@ public class PanelManager extends ManagerListener {
     public void replay() {
 
     }
+
+    @Override
+    public void panelClicked(String id) {
+
+    }
 }

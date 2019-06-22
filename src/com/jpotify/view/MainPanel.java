@@ -6,6 +6,8 @@ import com.jpotify.view.helper.WrapLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 class MainPanel extends JPanel {
@@ -23,7 +25,15 @@ class MainPanel extends JPanel {
         JPanel panel = item.draw(ITEM_WIDTH, ITEM_HEIGHT);
         panel.setBackground(Color.DARK_GRAY);
         add(panel);
-        
+
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                listener.panelClicked(item.getId());
+            }
+        });
+
         repaint();
         revalidate();
     }
@@ -32,4 +42,6 @@ class MainPanel extends JPanel {
         for (DrawableItem item : items)
             addPanel(item);
     }
+
+
 }
