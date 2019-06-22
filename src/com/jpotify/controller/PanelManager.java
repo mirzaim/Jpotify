@@ -1,7 +1,6 @@
 package com.jpotify.controller;
 
 import com.jpotify.logic.DataBase;
-import com.jpotify.view.GUI;
 import com.jpotify.view.Listeners.*;
 
 import java.io.File;

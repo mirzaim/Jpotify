@@ -57,6 +57,11 @@ public class MButton extends JButton {
         this.id = id;
     }
 
+    public MButton(Icon defaultIcon,ActionListener listener, String id) {
+        this(null, defaultIcon, false, listener);
+        this.id = id;
+    }
+
     public MButton(Icon defaultIcon, Icon performedIcon, String id) {
         this(null, defaultIcon, false);
         setHoverEffect(null, performedIcon);

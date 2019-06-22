@@ -43,11 +43,11 @@ public class PlayerPanel extends JPanel implements ActionListener {
         controllers.setLayout(new BoxLayout(controllers, BoxLayout.X_AXIS));
         centerBox.add(controllers);
 
-        controllers.add(new MButton(AssetManager.getImageIconByName("shuffle.png"), "shuffle"));
-        controllers.add(new MButton(AssetManager.getImageIconByName("previous.png"), "previous"));
-        controllers.add(new MButton(AssetManager.getImageIconByName("play.png"), "play"));
-        controllers.add(new MButton(AssetManager.getImageIconByName("next.png"), "next"));
-        controllers.add(new MButton(AssetManager.getImageIconByName("replay.png"), "replay"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("shuffle.png"), this, "shuffle"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("previous.png"), this, "previous"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("play.png"), this, "play"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("next.png"), this, "next"));
+        controllers.add(new MButton(AssetManager.getImageIconByName("replay.png"), this, "replay"));
 
         JSlider slider = new JSlider();
         slider.setOpaque(false);
@@ -79,11 +79,11 @@ public class PlayerPanel extends JPanel implements ActionListener {
         rightBox.setBorder(new EmptyBorder(0, 20, 0, 0));
         add(rightBox, BorderLayout.LINE_END);
 
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
+        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
     }
 
     @Override

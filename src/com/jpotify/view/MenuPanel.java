@@ -37,16 +37,19 @@ class MenuPanel extends JPanel implements ActionListener {
         add(top, BorderLayout.PAGE_START);
 
         MiniMenu mainMenu = new MiniMenu(null);
-        mainMenu.addButton(new MButton("Home", AssetManager.getImageIconByName("home.png"), true));
-        mainMenu.addButton(new MButton("Browse", AssetManager.getImageIconByName("folder.png"), true));
-        mainMenu.addButton(new MButton("Radio", AssetManager.getImageIconByName("radio.png"), true));
+        mainMenu.addButton(new MButton("Home",
+                AssetManager.getImageIconByName("home.png"), true, this));
+        mainMenu.addButton(new MButton("Browse",
+                AssetManager.getImageIconByName("folder.png"), true, this));
+        mainMenu.addButton(new MButton("Radio",
+                AssetManager.getImageIconByName("radio.png"), true, this));
         top.add(mainMenu);
 
         MiniMenu library = new MiniMenu("YOUR LIBRARY");
-        library.addButton(new MButton("Songs", true));
+        library.addButton(new MButton("Songs", true, this));
         library.addButton(new MButton("Add Song",
                 AssetManager.getImageIconByName("add.png"), true, this));
-        library.addButton(new MButton("Albums", true));
+        library.addButton(new MButton("Albums", true, this));
         top.add(library);
 
         playList = new MiniMenu("PLAYLISTS");
@@ -62,7 +65,8 @@ class MenuPanel extends JPanel implements ActionListener {
         add(bottom, BorderLayout.PAGE_END);
 
         MiniMenu newPlayList = new MiniMenu(null);
-        newPlayList.addButton(new MButton("New Playlist", AssetManager.getImageIconByName("add.png"), true));
+        newPlayList.addButton(new MButton("New Playlist",
+                AssetManager.getImageIconByName("add.png"), true, this));
         bottom.add(newPlayList);
 
         ImagePanel imagePanel = new ImagePanel(AssetManager.getBufferedImageByName("abc.jpg"), WIDTH, -1);
@@ -77,7 +81,6 @@ class MenuPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("PLAYLISTS")) {
             listener.playListClicked(((MButton) e.getSource()).getText());
-            return;
         }
 
         switch (((MButton) e.getSource()).getId()) {
@@ -88,6 +91,7 @@ class MenuPanel extends JPanel implements ActionListener {
                 listener.songs();
                 break;
             case "Add Song":
+                System.out.println("ADD");
                 JFileChooser fileChooser = new JFileChooser();
                 int result = fileChooser.showOpenDialog(null);
 
@@ -98,6 +102,8 @@ class MenuPanel extends JPanel implements ActionListener {
                 break;
             case "Albums":
                 listener.albums();
+                break;
+            case "New Playlist":
                 break;
             default:
 
