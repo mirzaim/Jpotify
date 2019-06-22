@@ -16,7 +16,13 @@ public class DataBase {
 
     }
 
-    public void addSong(Music music){
+    public void addSong(Music music) {
         this.songs.add(music);
     }
+
+    public Music getMusicById(String id) {
+        return null;
+    }
+
+
 }

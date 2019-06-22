@@ -116,16 +116,6 @@ public class Music implements Comparable<Music>, DrawableItem {
             return 0;
     }
 
-//    public JPanel panelize() {
-//
-//        JPanel jPanel = new JPanel();
-//
-//        ImagePanel imagePanel = new ImagePanel(this.albumImage, imageWidth, imageHeight);
-//        jPanel.add(imagePanel);
-//
-//        return jPanel;
-//    }
-
     @Override
     public JPanel draw(int width, int height) {
         JPanel jPanel = new JPanel();
@@ -140,6 +130,6 @@ public class Music implements Comparable<Music>, DrawableItem {
 
     @Override
     public String getId() {
-        return title;
+        return filePath;
     }
 }

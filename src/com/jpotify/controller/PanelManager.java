@@ -33,13 +33,8 @@ public class PanelManager extends ManagerListener {
         try {
             Music music = new Music(file);
             getGUI().addPanel(music);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
-        } catch (NoTagFoundException e) {
+            dataBase.addSong(music);
+        } catch (IOException | UnsupportedTagException | InvalidDataException | NoTagFoundException e) {
             e.printStackTrace();
         }
 
