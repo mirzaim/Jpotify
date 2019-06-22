@@ -3,6 +3,7 @@ package com.jpotify.logic;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.ImagePanel;
+import com.jpotify.view.helper.MTextArea;
 import mpatric.mp3agic.ID3v2;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.Mp3File;
@@ -91,10 +92,24 @@ public class Music implements Comparable<Music>, DrawableItem {
 
     }
 
+    public String getAlbum() {
+        return album;
+    }
+
+    public BufferedImage getAlbumImage() {
+        return albumImage;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Music music = (Music) o;
         return Objects.equals(filePath, music.filePath);
     }
@@ -135,8 +150,8 @@ public class Music implements Comparable<Music>, DrawableItem {
         ImagePanel imagePanel = new ImagePanel(this.albumImage, width, height - 50);
         jPanel.add(imagePanel,BorderLayout.PAGE_START);
 
-        JLabel titleLabel = new JLabel("  " + this.title);
-        JLabel artistLabel = new JLabel("  " + this.artist);
+        MTextArea titleLabel = new MTextArea(this.title);
+        MTextArea artistLabel = new MTextArea(this.artist);
 
         titleLabel.setFont(new Font(Font.DIALOG,Font.BOLD,13));
         titleLabel.setForeground(Color.WHITE);

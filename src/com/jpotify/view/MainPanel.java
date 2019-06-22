@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 
 public class MainPanel extends JPanel {
     private final int ITEM_WIDTH = 250, ITEM_HEIGHT = 300;
+    private int currentDisplayingPanels; // 0 -> songs | 1 -> Albums | 2 -> playlist
 
     private MainPanelListener listener;
 
@@ -43,5 +44,11 @@ public class MainPanel extends JPanel {
             addPanel(item);
     }
 
+    public void setCurrentDisplayingPanels(int currentDisplayingPanels) {
+        this.currentDisplayingPanels = currentDisplayingPanels;
+    }
 
+    public int getCurrentDisplayingPanels() {
+        return currentDisplayingPanels;
+    }
 }
