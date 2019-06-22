@@ -8,6 +8,8 @@ import mpatric.mp3agic.ID3v2;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.Mp3File;
 import mpatric.mp3agic.UnsupportedTagException;
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -80,11 +82,13 @@ public class Music implements Comparable<Music>, DrawableItem {
 
 
             // resizing image (from ? size to 200*200 - MainPanel elements size -)
-            BufferedImage outputImage = new BufferedImage(imageWidth, imageHeight, this.albumImage.getType());
-            Graphics2D g2d = outputImage.createGraphics();
-            g2d.drawImage(this.albumImage, 0, 0, imageWidth, imageHeight, null);
-            g2d.dispose();
-            this.albumImage = outputImage;
+//            BufferedImage outputImage = new BufferedImage(imageWidth, imageHeight, this.albumImage.getType());
+//            Graphics2D g2d = outputImage.createGraphics();
+//            g2d.drawImage(this.albumImage, 0, 0, imageWidth, imageHeight, null);
+//            g2d.dispose();
+//            this.albumImage = outputImage;
+
+            this.albumImage = Thumbnails.of(this.albumImage).size(imageWidth,imageHeight).asBufferedImage();
 
         } else {
             throw new NoTagFoundException("There is No ID3v2 Tag");
