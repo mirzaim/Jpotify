@@ -108,8 +108,6 @@ public class MenuPanel extends JPanel implements ActionListener {
 //                    }
                 }
 
-
-
                 break;
             case "Albums":
                 listener.albums();

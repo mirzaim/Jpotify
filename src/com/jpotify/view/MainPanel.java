@@ -22,6 +22,14 @@ public class MainPanel extends JPanel {
 
     }
 
+    public void setCurrentDisplayingPanels(int currentDisplayingPanels) {
+        this.currentDisplayingPanels = currentDisplayingPanels;
+    }
+
+    public int getCurrentDisplayingPanels() {
+        return currentDisplayingPanels;
+    }
+
     public void addPanel(DrawableItem item) {
         JPanel panel = item.draw(ITEM_WIDTH, ITEM_HEIGHT);
         panel.setBackground(Color.DARK_GRAY);
@@ -33,6 +41,18 @@ public class MainPanel extends JPanel {
                 super.mouseClicked(e);
                 listener.panelClicked(item.getId());
             }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                listener.mouseEnter(e.getSource());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                listener.mouseExit(e.getSource());
+            }
         });
 
         repaint();
@@ -42,13 +62,5 @@ public class MainPanel extends JPanel {
     public void addPanels(DrawableItem[] items) {
         for (DrawableItem item : items)
             addPanel(item);
-    }
-
-    public void setCurrentDisplayingPanels(int currentDisplayingPanels) {
-        this.currentDisplayingPanels = currentDisplayingPanels;
-    }
-
-    public int getCurrentDisplayingPanels() {
-        return currentDisplayingPanels;
     }
 }

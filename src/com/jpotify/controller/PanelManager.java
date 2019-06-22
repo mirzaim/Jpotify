@@ -6,6 +6,10 @@ import com.jpotify.logic.Music;
 import com.jpotify.view.Listeners.ListenerManager;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+import java.awt.*;
 import java.io.File;
 import java.util.Iterator;
 
@@ -121,6 +125,17 @@ public class PanelManager extends ListenerManager {
     // MainPanelListener implementation
     @Override
     public void panelClicked(String id) {
+
+    }
+
+    @Override
+    public void mouseEnter(Object o) {
+        ((JPanel) o).setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2,2,2,2),new EmptyBorder(2,2,2,2)));
+    }
+
+    @Override
+    public void mouseExit(Object o) {
+        ((JPanel) o).setBorder(new EmptyBorder(0,0,0,0));
 
     }
 }
