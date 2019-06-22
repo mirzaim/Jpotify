@@ -18,8 +18,8 @@ import java.util.Objects;
 
 public class Music implements Comparable<Music>, DrawableItem {
 
-    private final int imageWidth = 200;
-    private final int imageHeight = 200;
+    private final int imageWidth = 250;
+    private final int imageHeight = 250;
     private Mp3File mp3File;
     private ID3v2 id3v2Tag;
     private String title;
@@ -37,45 +37,42 @@ public class Music implements Comparable<Music>, DrawableItem {
 
     public Music(File file) throws IOException, UnsupportedTagException, InvalidDataException, NoTagFoundException {
         this.filePath = file.getAbsolutePath();
-        // using mp3agic for getting metadata
         this.mp3File = new Mp3File(file.getAbsolutePath());
-        if (mp3File.hasId3v2Tag()) {
 
+        if (mp3File.hasId3v2Tag()) {
             this.id3v2Tag = mp3File.getId3v2Tag();
-            //this filed must be get from id3v1 way if there is no id3v1 then we use id3v2
-//            this.artist = id3v2Tag.getArtist();
-//            this.album = id3v2Tag.getAlbum();
-//            this.year = id3v2Tag.getYear();
+
             this.genre = id3v2Tag.getGenre();
             byte[] imageData = id3v2Tag.getAlbumImage();
+
             if (imageData != null) {
                 InputStream in = new ByteArrayInputStream(imageData);
                 this.albumImage = ImageIO.read(in);
             }
 
-            //
-            try (FileInputStream fis = new FileInputStream(file)) {
+            if (mp3File.hasId3v1Tag()) {
+                try (FileInputStream fis = new FileInputStream(file)) {
 
-                this.size = (int) file.length();
-                fis.skip(this.size - 128);
-                byte[] last128 = new byte[128];
-                fis.read(last128);
+                    this.size = (int) file.length();
+                    fis.skip(this.size - 128);
+                    byte[] last128 = new byte[128];
+                    fis.read(last128);
 
-                String id3v1 = new String(last128);
-                String tag = id3v1.substring(0, 3);
+                    String id3v1 = new String(last128);
+                    String tag = id3v1.substring(0, 3);
 
-                if (tag.equals("TAG")) {
-                    this.title = id3v1.substring(3, 32);
-                    this.artist = id3v1.substring(33, 62);
-                    this.album = id3v1.substring(63, 91);
-                    this.year = id3v1.substring(93, 97);
-                } else {
-//                    throw new NoTagFoundException("There is No id3v1v1 Tag");
-                    this.artist = id3v2Tag.getArtist();
-                    this.album = id3v2Tag.getAlbum();
-                    this.year = id3v2Tag.getYear();
+                    if (tag.equals("TAG")) {
+                        this.title = id3v1.substring(3, 32);
+                        this.artist = id3v1.substring(33, 62);
+                        this.album = id3v1.substring(63, 91);
+                        this.year = id3v1.substring(93, 97);
+                    }
                 }
-
+            } else {
+                this.title = id3v2Tag.getTitle();
+                this.artist = id3v2Tag.getArtist();
+                this.album = id3v2Tag.getAlbum();
+                this.year = id3v2Tag.getYear();
             }
             if (title != null)
                 title = title.trim();
@@ -129,14 +126,39 @@ public class Music implements Comparable<Music>, DrawableItem {
 
     @Override
     public JPanel draw(int width, int height) {
+
         JPanel jPanel = new JPanel();
-        jPanel.setBorder(new MatteBorder(1,1,1,1,Color.BLUE));
+
         jPanel.setPreferredSize(new Dimension(width, height));
         jPanel.setLayout(new BorderLayout());
 
         ImagePanel imagePanel = new ImagePanel(this.albumImage, width, height - 50);
-        imagePanel.setBorder(new MatteBorder(1,1,1,1,Color.RED));
-        jPanel.add(imagePanel,BorderLayout.CENTER);
+        jPanel.add(imagePanel,BorderLayout.PAGE_START);
+
+        JLabel titleLabel = new JLabel("  " + this.title);
+        JLabel artistLabel = new JLabel("  " + this.artist);
+
+        titleLabel.setFont(new Font(Font.DIALOG,Font.BOLD,13));
+        titleLabel.setForeground(Color.WHITE);
+
+        artistLabel.setFont(new Font(Font.DIALOG,Font.BOLD,12));
+        artistLabel.setForeground(Color.LIGHT_GRAY);
+
+
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
+        bottom.setOpaque(false);
+
+        jPanel.add(bottom,BorderLayout.PAGE_END);
+        bottom.add(titleLabel);
+        bottom.add(artistLabel);
+
+        // Only for debugging
+//        jPanel.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLUE));
+//        artistLabel.setBorder(new MatteBorder(1, 1, 1, 1, Color.green));
+//        titleLabel.setBorder(new MatteBorder(1, 1, 1, 1, Color.cyan));
+//        imagePanel.setBorder(new MatteBorder(1, 1, 1, 1, Color.RED));
+
 
 
         return jPanel;

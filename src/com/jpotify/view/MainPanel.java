@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 
 public class MainPanel extends JPanel {
-    private final int ITEM_WIDTH = 200, ITEM_HEIGHT = 250;
+    private final int ITEM_WIDTH = 250, ITEM_HEIGHT = 300;
 
     private MainPanelListener listener;
 
