@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Objects;
 
 public class Music implements Comparable<Music>, DrawableItem {
 
@@ -21,6 +22,7 @@ public class Music implements Comparable<Music>, DrawableItem {
     private Mp3File mp3File;
     private ID3v2 id3v2Tag;
     private String title;
+    private String filePath;
     private String artist;
     private String album;
     private String year;
@@ -33,7 +35,7 @@ public class Music implements Comparable<Music>, DrawableItem {
     private int addingToListTime;
 
     public Music(File file) throws IOException, UnsupportedTagException, InvalidDataException, NoTagFoundException {
-
+        this.filePath = file.getAbsolutePath();
         // using mp3agic for getting metadata
         this.mp3File = new Mp3File(file.getAbsolutePath());
         if (mp3File.hasId3v2Tag()) {
@@ -85,6 +87,19 @@ public class Music implements Comparable<Music>, DrawableItem {
         } else {
             throw new NoTagFoundException("There is No ID3v2 Tag");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Music music = (Music) o;
+        return Objects.equals(filePath, music.filePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(filePath);
     }
 
     @Override
