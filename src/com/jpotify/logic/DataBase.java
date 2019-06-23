@@ -1,6 +1,7 @@
 package com.jpotify.logic;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,7 +88,8 @@ public class DataBase implements Serializable {
     }
 
     public Music[] getMusicsArray() {
-        return (Music[]) musics.toArray(new Music[0]);
+        musics.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
+        return musics.toArray(new Music[0]);
     }
 
     public Music getMusicById(String id) {
@@ -98,6 +100,7 @@ public class DataBase implements Serializable {
     }
 
     public Music[] getMusicByAlbumTitle(String albumTitle) {
+        musics.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
         List<Music> album = new LinkedList<>();
         for (Music music : musics)
             if (music.getAlbum().equals(albumTitle))

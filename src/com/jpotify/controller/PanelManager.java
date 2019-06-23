@@ -130,8 +130,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         //#Test
         switch (getGUI().getMainPanel().getMainPanelState()) {
             case SONGS:
-                player.updateMusic(dataBase.getMusicById(id));
+                Music music = dataBase.getMusicById(id);
+                player.updateMusic(music);
+                music.updateLastPlayedTime();
                 player.playMusic();
+                songs();
                 break;
             case ALBUMS:
                 getGUI().getMainPanel().removeAll();
