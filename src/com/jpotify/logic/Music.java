@@ -100,6 +100,10 @@ public class Music implements Comparable<Music>, DrawableItem {
         return album;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
     public BufferedImage getAlbumImage() {
         return albumImage;
     }
