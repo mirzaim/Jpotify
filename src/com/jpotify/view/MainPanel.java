@@ -2,6 +2,7 @@ package com.jpotify.view;
 
 import com.jpotify.view.Listeners.MainPanelListener;
 import com.jpotify.view.helper.DrawableItem;
+import com.jpotify.view.helper.MainPanelState;
 import com.jpotify.view.helper.WrapLayout;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ import java.awt.event.MouseEvent;
 public class MainPanel extends JPanel {
     private final int ITEM_WIDTH = 250, ITEM_HEIGHT = 300;
     private int currentDisplayingPanels; // 0 -> songs | 1 -> Albums | 2 -> playlist
+    private MainPanelState mainPanelState;
 
     private MainPanelListener listener;
 
@@ -29,6 +31,14 @@ public class MainPanel extends JPanel {
 
     public int getCurrentDisplayingPanels() {
         return currentDisplayingPanels;
+    }
+
+    public void setMainPanelState(MainPanelState mainPanelState) {
+        this.mainPanelState = mainPanelState;
+    }
+
+    public MainPanelState getMainPanelState() {
+        return mainPanelState;
     }
 
     public void addPanel(DrawableItem item) {

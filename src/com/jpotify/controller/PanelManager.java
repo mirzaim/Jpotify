@@ -6,6 +6,7 @@ import com.jpotify.logic.Player;
 import com.jpotify.logic.PlayerListener;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.Listeners.ListenerManager;
+import com.jpotify.view.helper.MainPanelState;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
@@ -39,7 +40,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     public void songs() {
         getGUI().getMainPanel().removeAll();
         getGUI().getMainPanel().addPanels(dataBase.getMusicsArray());
-        getGUI().getMainPanel().setCurrentDisplayingPanels(0);
+        getGUI().getMainPanel().setMainPanelState(MainPanelState.SONGS);
     }
 
     @Override
@@ -52,10 +53,10 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                         "File is already exist in your library");
             else {
 
-                if (getGUI().getMainPanel().getCurrentDisplayingPanels() == 0)
+                if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.SONGS)
                     getGUI().getMainPanel().addPanel(music);
 
-                if (getGUI().getMainPanel().getCurrentDisplayingPanels() == 1)
+                if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.ALBUMS)
                     this.albums();
 
                 JOptionPane.showMessageDialog(getGUI().getMainPanel(),
@@ -84,7 +85,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     public void albums() {
         getGUI().getMainPanel().removeAll();
         getGUI().getMainPanel().addPanels(dataBase.getAlbumsArray());
-        getGUI().getMainPanel().setCurrentDisplayingPanels(1);
+        getGUI().getMainPanel().setMainPanelState(MainPanelState.ALBUMS);
     }
 
     @Override
@@ -127,8 +128,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     @Override
     public void panelClicked(String id) {
         //#Test
-        player.updateMusic(dataBase.getMusicById(id));
-        player.playMusic();
+        if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.SONGS) {
+            player.updateMusic(dataBase.getMusicById(id));
+            player.playMusic();
+        }
+
     }
 
     @Override
