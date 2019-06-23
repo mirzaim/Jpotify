@@ -60,10 +60,13 @@ public class DataBase implements Serializable {
         }
 
 
+        //some musics don't have album
         this.musics.add(music);
-        Album album = new Album(music.getAlbum(), music);
-        album.add(music);
-        albums.add(album);
+        if (music.getAlbum() != null){
+            Album album = new Album(music.getAlbum(), music);
+            album.add(music);
+            albums.add(album);
+        }
         return 1;
     }
 
