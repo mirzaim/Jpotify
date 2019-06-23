@@ -20,8 +20,10 @@ public class DataBase implements Serializable {
 
     public static DataBase loadDataBase() {
         DataBase dataBase = null;
+        File file = new File("database.m");
         try {
-            dataBase = (DataBase) (new ObjectInputStream(new FileInputStream("database.m"))).readObject();
+            if (file.exists())
+                dataBase = (DataBase) (new ObjectInputStream(new FileInputStream("database.m"))).readObject();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -32,9 +34,12 @@ public class DataBase implements Serializable {
 
     public void saveDataBase() {
         File file = new File("database.m");
+
         try {
-            if (file.isFile())
-                new ObjectOutputStream(new FileOutputStream(file)).writeObject(this);
+            if (file.exists())
+                file.delete();
+            file.createNewFile();
+            new ObjectOutputStream(new FileOutputStream(file)).writeObject(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
