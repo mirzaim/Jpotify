@@ -1,14 +1,14 @@
 package com.jpotify.controller;
 
+import com.jpotify.logic.Album;
 import com.jpotify.logic.DataBase;
 import com.jpotify.logic.Music;
-import com.jpotify.logic.exceptions.NoTagFoundException;
-import com.jpotify.view.Listeners.*;
-import mpatric.mp3agic.InvalidDataException;
-import mpatric.mp3agic.UnsupportedTagException;
+import com.jpotify.view.Listeners.ListenerManager;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.io.File;
-import java.io.IOException;
+import java.util.Iterator;
 
 public class PanelManager extends ListenerManager {
 
@@ -27,24 +27,57 @@ public class PanelManager extends ListenerManager {
 
     @Override
     public void songs() {
+        getGUI().getMainPanel().removeAll();
 
+        for (Iterator<Music> it = dataBase.getSongs().iterator(); it.hasNext(); ) {
+            Music music = it.next();
+            getGUI().getMainPanel().addPanel(music);
+        }
+
+        getGUI().getMainPanel().setCurrentDisplayingPanels(0);
+        getGUI().getMainPanel().revalidate();
+        getGUI().getMainPanel().repaint();
     }
 
     @Override
     public void addSong(File file) {
         try {
             Music music = new Music(file);
-            getGUI().getMainPanel().addPanel(music);
-            dataBase.addSong(music);
-        } catch (IOException | UnsupportedTagException | InvalidDataException | NoTagFoundException e) {
-            e.printStackTrace();
+
+            if(dataBase.addSong(music) == 0)
+                JOptionPane.showMessageDialog(getGUI().getMainPanel(),
+                        "File is already exist in your library");
+            else {
+
+                if (getGUI().getMainPanel().getCurrentDisplayingPanels() == 0)
+                    getGUI().getMainPanel().addPanel(music);
+
+                if (getGUI().getMainPanel().getCurrentDisplayingPanels() == 1)
+                    this.albums();
+
+                JOptionPane.showMessageDialog(getGUI().getMainPanel(),
+                        music.getTitle() + " added to your Library");
+            }
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(getGUI().getMainPanel(),
+                    "Can't Add file",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE);
         }
 
     }
 
     @Override
     public void albums() {
+        getGUI().getMainPanel().removeAll();
 
+        for (Album album : dataBase.getAlbums()) {
+            getGUI().getMainPanel().addPanel(album);
+        }
+
+        getGUI().getMainPanel().setCurrentDisplayingPanels(1);
     }
 
     @Override
@@ -86,6 +119,17 @@ public class PanelManager extends ListenerManager {
     // MainPanelListener implementation
     @Override
     public void panelClicked(String id) {
+
+    }
+
+    @Override
+    public void mouseEnter(Object o) {
+        ((JPanel) o).setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2,2,2,2),new EmptyBorder(2,2,2,2)));
+    }
+
+    @Override
+    public void mouseExit(Object o) {
+        ((JPanel) o).setBorder(new EmptyBorder(0,0,0,0));
 
     }
 }

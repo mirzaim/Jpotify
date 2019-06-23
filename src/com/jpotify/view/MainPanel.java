@@ -11,7 +11,8 @@ import java.awt.event.MouseEvent;
 
 
 public class MainPanel extends JPanel {
-    private final int ITEM_WIDTH = 200, ITEM_HEIGHT = 250;
+    private final int ITEM_WIDTH = 250, ITEM_HEIGHT = 300;
+    private int currentDisplayingPanels; // 0 -> songs | 1 -> Albums | 2 -> playlist
 
     private MainPanelListener listener;
 
@@ -19,6 +20,14 @@ public class MainPanel extends JPanel {
         this.listener = listener;
         setLayout(new WrapLayout(0, 30, 30));
 
+    }
+
+    public void setCurrentDisplayingPanels(int currentDisplayingPanels) {
+        this.currentDisplayingPanels = currentDisplayingPanels;
+    }
+
+    public int getCurrentDisplayingPanels() {
+        return currentDisplayingPanels;
     }
 
     public void addPanel(DrawableItem item) {
@@ -32,6 +41,18 @@ public class MainPanel extends JPanel {
                 super.mouseClicked(e);
                 listener.panelClicked(item.getId());
             }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                listener.mouseEnter(e.getSource());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                listener.mouseExit(e.getSource());
+            }
         });
 
         repaint();
@@ -42,6 +63,4 @@ public class MainPanel extends JPanel {
         for (DrawableItem item : items)
             addPanel(item);
     }
-
-
 }

@@ -12,7 +12,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.Arrays;
 
 public class MenuPanel extends JPanel implements ActionListener {
     private final int WIDTH = 200;
@@ -93,11 +96,18 @@ public class MenuPanel extends JPanel implements ActionListener {
             case "Add Song":
                 JFileChooser fileChooser = new JFileChooser();
                 int result = fileChooser.showOpenDialog(null);
+                fileChooser.setMultiSelectionEnabled(true);
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                     listener.addSong(file);
+//                    File[] files = fileChooser.getSelectedFiles();
+//                    for (File file: files) {
+//                        listener.addSong(file);
+//                    }
                 }
+
                 break;
             case "Albums":
                 listener.albums();
