@@ -62,7 +62,7 @@ public class DataBase implements Serializable {
 
         //some musics don't have album
         this.musics.add(music);
-        if (music.getAlbum() != null){
+        if (music.getAlbum() != null) {
             Album album = new Album(music.getAlbum(), music);
             album.add(music);
             albums.add(album);
@@ -94,6 +94,21 @@ public class DataBase implements Serializable {
         for (Music music : musics)
             if (music.getId().equals(id))
                 return music;
+        return null;
+    }
+
+    public Music[] getMusicByAlbumTitle(String albumTitle) {
+        List<Music> album = new LinkedList<>();
+        for (Music music : musics)
+            if (music.getAlbum().equals(albumTitle))
+                album.add(music);
+        return album.toArray(new Music[0]);
+    }
+
+    public Album getAlbumById(String id) {
+        for (Album album : albums)
+            if (album.getId().equals(id))
+                return album;
         return null;
     }
 

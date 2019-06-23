@@ -128,9 +128,19 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     @Override
     public void panelClicked(String id) {
         //#Test
-        if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.SONGS) {
-            player.updateMusic(dataBase.getMusicById(id));
-            player.playMusic();
+        switch (getGUI().getMainPanel().getMainPanelState()) {
+            case SONGS:
+                player.updateMusic(dataBase.getMusicById(id));
+                player.playMusic();
+                break;
+            case ALBUMS:
+                getGUI().getMainPanel().removeAll();
+                getGUI().getMainPanel().addPanels(dataBase.getMusicByAlbumTitle(id));
+                getGUI().getMainPanel().setMainPanelState(MainPanelState.SONGS);
+                break;
+            case PLAYLIST:
+                break;
+            default:
         }
 
     }
