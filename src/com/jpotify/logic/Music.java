@@ -17,6 +17,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Date;
 import java.util.Objects;
 
 public class Music implements Comparable<Music>, DrawableItem, Serializable {
@@ -31,7 +32,7 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
     private int genre;
     private transient BufferedImage albumImage = null;
     private int size;
-    private int lastPlayedTime;
+    private long lastPlayedTime;
 
     // for sorting music in playlist
     private int addingToListTime;
@@ -134,6 +135,14 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public void updateLastPlayedTime(){
+        lastPlayedTime = new Date().getTime();
+    }
+
+    public long getLastPlayedTime() {
+        return lastPlayedTime;
     }
 
     @Override
