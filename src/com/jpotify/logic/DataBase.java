@@ -1,7 +1,6 @@
 package com.jpotify.logic;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class DataBase {
 
@@ -19,11 +18,9 @@ public class DataBase {
 
     public int addSong(Music music) {
 
-        for (Iterator<Music> it = songs.iterator(); it.hasNext(); ) {
-            Music m = it.next();
-            if (music.equals(m))
-                return 0;
-        }
+        if (songs.contains(music))
+            return 0;
+
 
         for (Album album : this.albums) {
             if (album.getAlbumTitle().equals(music.getAlbum())) {

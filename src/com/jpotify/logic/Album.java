@@ -7,6 +7,7 @@ import com.jpotify.view.helper.MTextArea;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class Album extends MusicList implements DrawableItem {
 
@@ -23,6 +24,20 @@ public class Album extends MusicList implements DrawableItem {
 
     public void setAlbumImage(BufferedImage albumImage) {
         this.albumImage = albumImage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Album album = (Album) o;
+        return Objects.equals(albumTitle, album.albumTitle);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), albumTitle);
     }
 
     @Override
