@@ -6,32 +6,32 @@ public class DataBase {
 
     private ArrayList<Album> albums;
     private ArrayList<PlayList> playLists;
-    private MusicList songs;
+    private MusicList musics;
 
     public DataBase() {
 
         this.albums = new ArrayList<>();
         this.playLists = new ArrayList<>();
-        this.songs = new MusicList();
+        this.musics = new MusicList();
 
     }
 
     public int addSong(Music music) {
 
-        if (songs.contains(music))
+        if (musics.contains(music))
             return 0;
 
 
         for (Album album : this.albums) {
             if (album.getAlbumTitle().equals(music.getAlbum())) {
                 album.add(music);
-                this.songs.add(music);
+                this.musics.add(music);
                 return 1;
             }
         }
 
 
-        this.songs.add(music);
+        this.musics.add(music);
         Album album = new Album(music.getAlbum());
         album.add(music);
         album.setAlbumImage(music.getAlbumImage());
@@ -43,12 +43,20 @@ public class DataBase {
         return albums;
     }
 
+    public Album[] getAlbumsArray(){
+        return albums.toArray(new Album[0]);
+    }
+
     public ArrayList<PlayList> getPlayLists() {
         return playLists;
     }
 
-    public MusicList getSongs() {
-        return songs;
+    public MusicList getMusics() {
+        return musics;
+    }
+
+    public Music[] getMusicsArray() {
+        return (Music[]) musics.toArray(new Music[0]);
     }
 
     public Music getMusicById(String id) {

@@ -5,6 +5,7 @@ import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.WrapLayout;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -45,13 +46,14 @@ public class MainPanel extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
-                listener.mouseEnter(e.getSource());
+                panel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2,2,2,2),
+                        new EmptyBorder(2,2,2,2)));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                listener.mouseExit(e.getSource());
+                panel.setBorder(new EmptyBorder(0,0,0,0));
             }
         });
 

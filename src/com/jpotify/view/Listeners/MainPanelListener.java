@@ -4,7 +4,4 @@ public interface MainPanelListener {
 
     void panelClicked(String id);
 
-    void mouseEnter(Object o);
-
-    void mouseExit(Object o);
 }
