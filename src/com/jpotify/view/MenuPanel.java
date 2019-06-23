@@ -120,6 +120,11 @@ public class MenuPanel extends JPanel implements ActionListener {
                 listener.albums();
                 break;
             case "New Playlist":
+                String code = JOptionPane.showInputDialog(
+                        this,
+                        "Name that you want :)"
+                );
+                listener.newPlayList(code);
                 break;
             default:
 

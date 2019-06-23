@@ -94,6 +94,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     }
 
+    @Override
+    public void newPlayList(String name) {
+
+    }
+
     // PlayerPanelListener implementation
     @Override
     public void play() {
