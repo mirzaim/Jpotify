@@ -194,18 +194,18 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
         artistLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
         artistLabel.setForeground(Color.LIGHT_GRAY);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.X_AXIS));
-        MButton like = new MButton("Like",true);
-        MButton plus = new MButton("Add",true);
-        MButton share = new MButton("Share",true);
-        buttonPanel.add(plus);
-        buttonPanel.add(Box.createHorizontalGlue());
-        buttonPanel.add(like);
-        buttonPanel.add(Box.createHorizontalGlue());
-        buttonPanel.add(share);
-        buttonPanel.setBackground(Color.DARK_GRAY);
-        jPanel.add(buttonPanel,BorderLayout.NORTH);
+//        JPanel buttonPanel = new JPanel();
+//        buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.X_AXIS));
+//        MButton like = new MButton("Like",true);
+//        MButton plus = new MButton("Add",true);
+//        MButton share = new MButton("Share",true);
+//        buttonPanel.add(plus);
+//        buttonPanel.add(Box.createHorizontalGlue());
+//        buttonPanel.add(like);
+//        buttonPanel.add(Box.createHorizontalGlue());
+//        buttonPanel.add(share);
+//        buttonPanel.setBackground(Color.DARK_GRAY);
+//        jPanel.add(buttonPanel,BorderLayout.NORTH);
 
 
         JPanel bottom = new JPanel();
