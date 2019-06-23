@@ -50,22 +50,22 @@ public class DataBase implements Serializable {
         }
     }
 
-    public int addSong(Music music) {
+    public int addSong(Music music , List list) {
 
-        if (musics.contains(music))
+        if (list.contains(music))
             return 0;
 
 
         for (Album album : this.albums) {
             if (album.getTitle().equals(music.getAlbum())) {
                 album.add(music);
-                this.musics.add(music);
+                list.add(music);
                 return 1;
             }
         }
 
         //some musics don't have album
-        this.musics.add(music);
+        list.add(music);
         if (music.getAlbum() != null) {
             Album album = new Album(music.getAlbum(), music);
             // first music is separate filed (not in list)

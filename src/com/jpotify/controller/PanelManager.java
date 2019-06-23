@@ -46,7 +46,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         try {
             Music music = new Music(file);
 
-            if (dataBase.addSong(music) == 0)
+            if (dataBase.addSong(music,dataBase.getMusics()) == 0)
                 JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                         "File is already exist in your library");
             else {
