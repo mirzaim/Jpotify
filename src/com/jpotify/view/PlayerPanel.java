@@ -4,6 +4,7 @@ import com.jpotify.view.Listeners.PlayerPanelListener;
 import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MTextArea;
+import com.jpotify.view.helper.MToggleButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,6 +20,7 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
     private JSlider slider;
     private MTextArea musicName;
     private MTextArea singerName;
+    private MToggleButton playPauseButton;
 
     PlayerPanel(PlayerPanelListener listener) {
         this.listener = listener;
@@ -52,7 +54,10 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
 
         controllers.add(new MButton(AssetManager.getImageIconByName("shuffle.png"), this, "shuffle"));
         controllers.add(new MButton(AssetManager.getImageIconByName("previous.png"), this, "previous"));
-        controllers.add(new MButton(AssetManager.getImageIconByName("play.png"), this, "play"));
+
+        controllers.add(playPauseButton = new MToggleButton(AssetManager.getImageIconByName("play.png"),
+                AssetManager.getImageIconByName("pause.png"), this, "play"));
+
         controllers.add(new MButton(AssetManager.getImageIconByName("next.png"), this, "next"));
         controllers.add(new MButton(AssetManager.getImageIconByName("replay.png"), this, "replay"));
 
@@ -119,6 +124,10 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         singerName.setText(singer);
     }
 
+    public void setToPauseToggleButton() {
+        playPauseButton.changeToSecond();
+    }
+
 //    public void updateSliderAFrame() {
 //        slider.setValue(slider.getValue() + 1);
 //    }
@@ -127,7 +136,10 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
     public void actionPerformed(ActionEvent e) {
         switch (((MButton) e.getSource()).getId()) {
             case "play":
-                listener.play();
+                if (e.getActionCommand().equals("true"))
+                    listener.play();
+                else
+                    listener.pause();
                 break;
             case "next":
                 listener.next();

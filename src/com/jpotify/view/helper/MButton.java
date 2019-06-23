@@ -82,6 +82,10 @@ public class MButton extends JButton {
         setFocusPainted(false);
     }
 
+    protected Icon getDefaultIcon() {
+        return defaultIcon;
+    }
+
     public String getId() {
         return id;
     }

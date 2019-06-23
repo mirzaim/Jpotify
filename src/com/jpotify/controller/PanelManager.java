@@ -102,7 +102,12 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     // PlayerPanelListener implementation
     @Override
     public void play() {
+        player.playMusic();
+    }
 
+    @Override
+    public void pause() {
+        player.pauseMusic();
     }
 
     @Override
@@ -141,6 +146,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 music.updateLastPlayedTime();
                 player.playMusic();
                 getGUI().setMusicData(music.getTitle(), music.getArtist(), music.getAlbumImage());
+                getGUI().getPlayerPanel().setToPauseToggleButton();
                 songs();
                 break;
             case ALBUMS:
