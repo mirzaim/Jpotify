@@ -140,4 +140,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     public void updatePosition(int position) {
         getGUI().getPlayerPanel().setSliderCurrentPosition(position);
     }
+
+    @Override
+    public void musicFinished() {
+
+    }
 }

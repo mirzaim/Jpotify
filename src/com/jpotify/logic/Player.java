@@ -109,7 +109,7 @@ public class Player extends Thread {
     }
 
     public void changePositionRelative(int position) {
-        if (this.isAlive()){
+        if (this.isAlive()) {
             int frame = (int) ((double) position / POSITION_CONS * totalFrame);
             changeFramePosition(frame);
         }
@@ -180,8 +180,11 @@ public class Player extends Thread {
         currentFrame = 0;
         try {
             while (currState != PlayerState.STOPPED) {
-                if (!player.play(1))
+                if (!player.play(1)){
                     setCurrState(PlayerState.FINISHED);
+                    listener.musicFinished();
+                }
+
                 currentFrame++;
                 updatePosition();
 
