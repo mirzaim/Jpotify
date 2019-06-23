@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.metal.MetalSliderUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,6 +58,13 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         slider.setOpaque(false);
         slider.setBorder(new EmptyBorder(0, 100, 0, 100));
         slider.setMaximum(1000);
+        slider.setUI(new MetalSliderUI(){
+            @Override
+            protected void scrollDueToClickInTrack(int dir) {
+                int value = this.valueForXPosition(slider.getMousePosition().x);
+                slider.setValue(value);
+            }
+        });
         centerBox.add(slider);
     }
 
