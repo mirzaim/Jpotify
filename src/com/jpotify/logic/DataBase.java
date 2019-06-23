@@ -10,12 +10,16 @@ public class DataBase implements Serializable {
     private List<Album> albums;
     private List<PlayList> playLists;
     private List<Music> musics;
+    private MusicList sharedPlaylist;
+    private MusicList favouritePlaylist;
 
     public DataBase() {
 
         albums = new LinkedList<>();
         playLists = new LinkedList<>();
         musics = new LinkedList<>();
+        favouritePlaylist = new MusicList("Favourites");
+        sharedPlaylist = new MusicList("Shared PlayList");
 
     }
 
@@ -53,7 +57,7 @@ public class DataBase implements Serializable {
 
 
         for (Album album : this.albums) {
-            if (album.getAlbumTitle().equals(music.getAlbum())) {
+            if (album.getTitle().equals(music.getAlbum())) {
                 album.add(music);
                 this.musics.add(music);
                 return 1;
@@ -115,6 +119,11 @@ public class DataBase implements Serializable {
             if (album.getId().equals(id))
                 return album;
         return null;
+    }
+
+    public void createPlayList(String name){
+        PlayList playList = new PlayList(name);
+        playLists.add(playList);
     }
 
 

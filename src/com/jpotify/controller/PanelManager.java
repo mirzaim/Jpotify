@@ -1,11 +1,9 @@
 package com.jpotify.controller;
 
-import com.jpotify.logic.DataBase;
-import com.jpotify.logic.Music;
-import com.jpotify.logic.Player;
-import com.jpotify.logic.PlayerListener;
+import com.jpotify.logic.*;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.Listeners.ListenerManager;
+import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
@@ -97,6 +95,18 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     @Override
     public void newPlayList(String name) {
 
+        for (PlayList playList : dataBase.getPlayLists()) {
+            if (playList.getTitle().equals(name) || name.equals("Favourites") || name.equals("Shared PlayList")) {
+                // this name created in database constructor and used in MenuPanel
+                JOptionPane.showMessageDialog(null,
+                        "This Playlist is already exist");
+                return;
+            }
+        }
+        dataBase.createPlayList(name);
+        getGUI().getMenuPanel().getPlayList().addButton(new MButton(name, true));
+        getGUI().getMenuPanel().repaint();
+        getGUI().getMenuPanel().revalidate();
     }
 
     // PlayerPanelListener implementation

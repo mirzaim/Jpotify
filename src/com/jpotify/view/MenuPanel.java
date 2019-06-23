@@ -1,5 +1,6 @@
 package com.jpotify.view;
 
+import com.jpotify.logic.PlayList;
 import com.jpotify.view.Listeners.MenuPanelListener;
 import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.ImagePanel;
@@ -59,9 +60,12 @@ public class MenuPanel extends JPanel implements ActionListener {
         top.add(library);
 
         playList = new MiniMenu("PLAYLISTS");
-        playList.addButton(new MButton("Test1", true));
-        playList.addButton(new MButton("Test2", true));
-        playList.addButton(new MButton("Test3", true));
+        playList.addButton(new MButton("Favourites",true));
+        playList.addButton(new MButton("Shared PlayList",true));
+//        playList.addButton(new MButton("Test1", true));
+//        playList.addButton(new MButton("Test2", true));
+//        playList.addButton(new MButton("Test3", true));
+//        playList.addButton(new MButton("Test3", true));
         top.add(playList);
 
 
@@ -87,6 +91,9 @@ public class MenuPanel extends JPanel implements ActionListener {
         imagePanel.setImage(image, WIDTH, -1);
     }
 
+    public MiniMenu getPlayList() {
+        return playList;
+    }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("PLAYLISTS")) {
@@ -120,11 +127,11 @@ public class MenuPanel extends JPanel implements ActionListener {
                 listener.albums();
                 break;
             case "New Playlist":
-                String code = JOptionPane.showInputDialog(
+                String name = JOptionPane.showInputDialog(
                         this,
                         "Name that you want :)"
                 );
-                listener.newPlayList(code);
+                    listener.newPlayList(name);
                 break;
             default:
 
