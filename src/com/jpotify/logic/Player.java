@@ -17,6 +17,8 @@ public class Player extends Thread {
 //    private boolean repeat;
 //    private boolean shuffle;
 
+    private static final int POSITION_CONS = 1000;
+
     private int currentFrame = 0;
     private long totalFrame;
 
@@ -106,6 +108,13 @@ public class Player extends Thread {
         procBack();
     }
 
+    public void changePositionRelative(int position) {
+        if (this.isAlive()){
+            int frame = (int) ((double) position / POSITION_CONS * totalFrame);
+            changeFramePosition(frame);
+        }
+    }
+
     public void nextMusic() {
 
     }
@@ -116,9 +125,8 @@ public class Player extends Thread {
 
     private void updatePosition() {
         if (listener != null) {
-            int position = (int) ((double) currentFrame / totalFrame * 1000);
+            int position = (int) ((double) currentFrame / totalFrame * POSITION_CONS);
             listener.updatePosition(position);
-            System.out.println(currentFrame + " " + totalFrame + " " + position);
         }
     }
 

@@ -120,7 +120,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void sliderChanged(int newPosition) {
-
+        player.changePositionRelative(newPosition);
     }
 
     // MainPanelListener implementation

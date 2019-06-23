@@ -96,9 +96,11 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
 //    }
 
     public void setSliderCurrentPosition(int frame) {
-        slider.removeChangeListener(this);
-        slider.setValue(frame);
-        slider.addChangeListener(this);
+        if (!slider.getValueIsAdjusting()){
+            slider.removeChangeListener(this);
+            slider.setValue(frame);
+            slider.addChangeListener(this);
+        }
     }
 
 //    public void updateSliderAFrame() {
