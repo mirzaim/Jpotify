@@ -101,6 +101,7 @@ public class Player extends Thread {
 //        setCurrState(PlayerState.PLAYING);
 //    }
 
+    // for player
     public void changeFramePosition(int frame) {
         procPause();
         this.currentFrame = frame;
@@ -108,6 +109,7 @@ public class Player extends Thread {
         procBack();
     }
 
+    // for JSlider
     public void changePositionRelative(int position) {
         if (this.isAlive()) {
             int frame = (int) ((double) position / POSITION_CONS * totalFrame);

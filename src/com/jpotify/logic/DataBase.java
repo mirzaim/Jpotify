@@ -60,11 +60,11 @@ public class DataBase implements Serializable {
             }
         }
 
-
         //some musics don't have album
         this.musics.add(music);
         if (music.getAlbum() != null) {
             Album album = new Album(music.getAlbum(), music);
+            // first music is separate filed (not in list)
             album.add(music);
             albums.add(album);
         }
@@ -88,7 +88,9 @@ public class DataBase implements Serializable {
     }
 
     public Music[] getMusicsArray() {
-        musics.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
+        musics.sort((o1, o2) -> {
+            return (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime());
+        });
         return musics.toArray(new Music[0]);
     }
 

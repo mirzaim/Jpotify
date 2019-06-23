@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 
 
 public class MainPanel extends JPanel {
-    private final int ITEM_WIDTH = 250, ITEM_HEIGHT = 300;
+    private final int ITEM_WIDTH = 250, ITEM_HEIGHT = 310;
     private int currentDisplayingPanels; // 0 -> songs | 1 -> Albums | 2 -> playlist
     private MainPanelState mainPanelState;
 
@@ -56,14 +56,16 @@ public class MainPanel extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
-                panel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2,2,2,2),
-                        new EmptyBorder(2,2,2,2)));
+//                panel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2,2,2,2),
+//                        new EmptyBorder(2,2,2,2)));
+                panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                panel.setBorder(new EmptyBorder(0,0,0,0));
+//                panel.setBorder(new EmptyBorder(0,0,0,0));
+                panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
 

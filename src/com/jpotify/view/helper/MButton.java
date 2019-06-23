@@ -100,12 +100,14 @@ public class MButton extends JButton {
             public void mouseEntered(MouseEvent e) {
                 setForeground(PerformedColor);
                 setIcon(performedIcon);
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 setForeground(defaultColor);
                 setIcon(defaultIcon);
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
 
             @Override

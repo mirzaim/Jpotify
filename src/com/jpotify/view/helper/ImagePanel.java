@@ -10,7 +10,7 @@ public class ImagePanel extends JLabel {
     public ImagePanel(BufferedImage image, int width, int height) {
         this.image = image;
 
-        setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH)));
+        setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
     }
 
     public ImagePanel(BufferedImage image) {
