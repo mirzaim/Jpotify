@@ -134,7 +134,9 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
     }
 
     public String getArtist() {
-        return artist.trim();
+        if (artist != null)
+            artist = artist.trim();
+        return artist;
     }
 
     public String getTitle() {

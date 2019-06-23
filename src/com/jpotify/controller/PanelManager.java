@@ -72,6 +72,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         } catch (InvalidDataException e) {
             e.printStackTrace();
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                     "Can't Add file",
                     "Error",
