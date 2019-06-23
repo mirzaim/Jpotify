@@ -7,15 +7,18 @@ import com.jpotify.view.helper.MTextArea;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Album extends MusicList implements DrawableItem {
+public class Album extends MusicList implements DrawableItem, Serializable {
 
     private String albumTitle;
-    private BufferedImage albumImage;
+    private transient BufferedImage albumImage = null;
+    private Music albumFirstMusic;
 
-    public Album(String albumTitle) {
+    public Album(String albumTitle, Music albumFirstMusic) {
         this.albumTitle = albumTitle;
+        this.albumFirstMusic = albumFirstMusic;
     }
 
     public String getAlbumTitle() {
@@ -24,6 +27,12 @@ public class Album extends MusicList implements DrawableItem {
 
     public void setAlbumImage(BufferedImage albumImage) {
         this.albumImage = albumImage;
+    }
+
+    public BufferedImage getAlbumImage() {
+        if (albumImage == null)
+            this.albumImage = albumFirstMusic.getAlbumImage();
+        return albumImage;
     }
 
     @Override
@@ -47,16 +56,16 @@ public class Album extends MusicList implements DrawableItem {
         jPanel.setPreferredSize(new Dimension(width, height));
         jPanel.setLayout(new BorderLayout());
 
-        ImagePanel imagePanel = new ImagePanel(this.albumImage, width, height - 50);
-        jPanel.add(imagePanel,BorderLayout.PAGE_START);
+        ImagePanel imagePanel = new ImagePanel(getAlbumImage(), width, height - 50);
+        jPanel.add(imagePanel, BorderLayout.PAGE_START);
 
         MTextArea AlbumName = new MTextArea(this.albumTitle);
         MTextArea tracksNumber = new MTextArea("" + this.size());
 
-        AlbumName.setFont(new Font(Font.DIALOG,Font.BOLD,13));
+        AlbumName.setFont(new Font(Font.DIALOG, Font.BOLD, 13));
         AlbumName.setForeground(Color.WHITE);
 
-        tracksNumber.setFont(new Font(Font.DIALOG,Font.BOLD,12));
+        tracksNumber.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
         tracksNumber.setForeground(Color.LIGHT_GRAY);
 
 
@@ -64,7 +73,7 @@ public class Album extends MusicList implements DrawableItem {
         bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
         bottom.setOpaque(false);
 
-        jPanel.add(bottom,BorderLayout.PAGE_END);
+        jPanel.add(bottom, BorderLayout.PAGE_END);
         bottom.add(AlbumName);
         bottom.add(tracksNumber);
 

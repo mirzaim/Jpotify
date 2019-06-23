@@ -1,6 +1,8 @@
 package com.jpotify.logic;
 
-public class PlayList extends MusicList {
+import java.io.Serializable;
+
+public class PlayList extends MusicList implements Serializable {
 
 
 }

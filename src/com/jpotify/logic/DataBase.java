@@ -1,9 +1,10 @@
 package com.jpotify.logic;
 
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DataBase {
+public class DataBase implements Serializable {
 
     private List<Album> albums;
     private List<PlayList> playLists;
@@ -15,6 +16,26 @@ public class DataBase {
         playLists = new LinkedList<>();
         musics = new LinkedList<>();
 
+    }
+
+    public static DataBase loadDataBase() {
+        DataBase dataBase = null;
+        try {
+            dataBase = (DataBase) (new ObjectInputStream(new FileInputStream("database.m"))).readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return dataBase;
+    }
+
+    public void saveDataBase() {
+        try {
+            new ObjectOutputStream(new FileOutputStream("database.m")).writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int addSong(Music music) {
@@ -33,9 +54,8 @@ public class DataBase {
 
 
         this.musics.add(music);
-        Album album = new Album(music.getAlbum());
+        Album album = new Album(music.getAlbum(), music);
         album.add(music);
-        album.setAlbumImage(music.getAlbumImage());
         albums.add(album);
         return 1;
     }
