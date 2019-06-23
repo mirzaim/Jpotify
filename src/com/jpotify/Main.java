@@ -16,7 +16,7 @@ public class Main {
         GUI.initGUI(panelManager);
         GUI gui = GUI.getGUI();
 
-        //click songs button to load songs.
+        // for starting program - if doesnt exit nothing will not show
         panelManager.songs();
     }
 }

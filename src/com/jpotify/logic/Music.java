@@ -3,12 +3,12 @@ package com.jpotify.logic;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.ImagePanel;
+import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MTextArea;
 import mpatric.mp3agic.ID3v2;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.Mp3File;
 import mpatric.mp3agic.UnsupportedTagException;
-import net.coobird.thumbnailator.Thumbnailator;
 import net.coobird.thumbnailator.Thumbnails;
 
 import javax.imageio.ImageIO;
@@ -129,8 +129,6 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
             return albumImage;
         } else
             return this.albumImage;
-
-
     }
 
     public String getArtist() {
@@ -184,27 +182,41 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
         jPanel.setPreferredSize(new Dimension(width, height));
         jPanel.setLayout(new BorderLayout());
 
-        ImagePanel imagePanel = new ImagePanel(getAlbumImage(), width, height - 50);
-        jPanel.add(imagePanel, BorderLayout.PAGE_START);
+        ImagePanel imagePanel = new ImagePanel(getAlbumImage(), width, width);
+        jPanel.add(imagePanel, BorderLayout.CENTER);
 
         MTextArea titleLabel = new MTextArea(this.title);
         MTextArea artistLabel = new MTextArea(this.artist);
 
-        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 13));
+        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
         titleLabel.setForeground(Color.WHITE);
 
-        artistLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+        artistLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
         artistLabel.setForeground(Color.LIGHT_GRAY);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.X_AXIS));
+        MButton like = new MButton("Like",true);
+        MButton plus = new MButton("Add",true);
+        MButton share = new MButton("Share",true);
+        buttonPanel.add(plus);
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(like);
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(share);
+        buttonPanel.setBackground(Color.DARK_GRAY);
+        jPanel.add(buttonPanel,BorderLayout.NORTH);
 
 
         JPanel bottom = new JPanel();
         bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
         bottom.setOpaque(false);
 
-        jPanel.add(bottom, BorderLayout.PAGE_END);
         bottom.add(titleLabel);
         bottom.add(artistLabel);
 
+
+        jPanel.add(bottom, BorderLayout.SOUTH);
         // Only for debugging
 //        jPanel.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLUE));
 //        artistLabel.setBorder(new MatteBorder(1, 1, 1, 1, Color.green));
