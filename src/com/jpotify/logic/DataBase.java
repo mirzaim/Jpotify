@@ -1,18 +1,19 @@
 package com.jpotify.logic;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DataBase {
 
-    private ArrayList<Album> albums;
-    private ArrayList<PlayList> playLists;
-    private MusicList musics;
+    private List<Album> albums;
+    private List<PlayList> playLists;
+    private List<Music> musics;
 
     public DataBase() {
 
-        this.albums = new ArrayList<>();
-        this.playLists = new ArrayList<>();
-        this.musics = new MusicList();
+        albums = new LinkedList<>();
+        playLists = new LinkedList<>();
+        musics = new LinkedList<>();
 
     }
 
@@ -39,19 +40,19 @@ public class DataBase {
         return 1;
     }
 
-    public ArrayList<Album> getAlbums() {
+    public List<Album> getAlbums() {
         return albums;
     }
 
-    public Album[] getAlbumsArray(){
+    public Album[] getAlbumsArray() {
         return albums.toArray(new Album[0]);
     }
 
-    public ArrayList<PlayList> getPlayLists() {
+    public List<PlayList> getPlayLists() {
         return playLists;
     }
 
-    public MusicList getMusics() {
+    public List<Music> getMusics() {
         return musics;
     }
 
@@ -60,6 +61,9 @@ public class DataBase {
     }
 
     public Music getMusicById(String id) {
+        for (Music music : musics)
+            if (music.getId().equals(id))
+                return music;
         return null;
     }
 

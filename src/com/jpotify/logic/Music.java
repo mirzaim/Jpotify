@@ -40,7 +40,7 @@ public class Music implements Comparable<Music>, DrawableItem {
 
     public Music(File file) throws IOException, UnsupportedTagException, InvalidDataException, NoTagFoundException {
         this.filePath = file.getAbsolutePath();
-        this.mp3File = new Mp3File(file.getAbsolutePath());
+        this.mp3File = new Mp3File(filePath);
 
         if (mp3File.hasId3v2Tag()) {
             this.id3v2Tag = mp3File.getId3v2Tag();

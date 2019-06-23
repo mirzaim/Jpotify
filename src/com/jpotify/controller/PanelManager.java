@@ -2,6 +2,7 @@ package com.jpotify.controller;
 
 import com.jpotify.logic.DataBase;
 import com.jpotify.logic.Music;
+import com.jpotify.logic.Player;
 import com.jpotify.view.Listeners.ListenerManager;
 
 import javax.swing.*;
@@ -10,9 +11,11 @@ import java.io.File;
 public class PanelManager extends ListenerManager {
 
     private DataBase dataBase;
+    private Player player;
 
-    public PanelManager(DataBase dataBase) {
+    public PanelManager(DataBase dataBase, Player player) {
         this.dataBase = dataBase;
+        this.player = player;
     }
 
 
@@ -105,6 +108,8 @@ public class PanelManager extends ListenerManager {
     // MainPanelListener implementation
     @Override
     public void panelClicked(String id) {
-
+        //#Test
+        player.updateMusic(dataBase.getMusicById(id));
+        player.playMusic();
     }
 }
