@@ -56,7 +56,7 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         slider.addChangeListener(this);
         slider.setOpaque(false);
         slider.setBorder(new EmptyBorder(0, 100, 0, 100));
-        slider.setMinimum(0);
+        slider.setMaximum(1000);
         centerBox.add(slider);
     }
 
@@ -91,9 +91,9 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
     }
 
-    public void setMediaMaxFrame(int frame) {
-        slider.setMaximum(frame);
-    }
+//    public void setMediaMaxFrame(int frame) {
+//        slider.setMaximum(frame);
+//    }
 
     public void setSliderCurrentPosition(int frame) {
         slider.removeChangeListener(this);
@@ -101,9 +101,9 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         slider.addChangeListener(this);
     }
 
-    public void updateSliderAFrame() {
-        slider.setValue(slider.getValue() + 1);
-    }
+//    public void updateSliderAFrame() {
+//        slider.setValue(slider.getValue() + 1);
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

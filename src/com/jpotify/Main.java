@@ -12,7 +12,7 @@ public class Main {
         if ((dataBase = DataBase.loadDataBase()) == null)
             dataBase = new DataBase();
 
-        PanelManager panelManager = new PanelManager(dataBase, new Player());
+        PanelManager panelManager = new PanelManager(dataBase);
         GUI.initGUI(panelManager);
         GUI gui = GUI.getGUI();
 

@@ -1,18 +1,24 @@
 package com.jpotify.logic;
 
 import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.PlayerApplet;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.*;
 
 public class Player extends Thread {
     private AdvancedPlayer player;
     private Music music;
+    private PlayerListener listener;
 //    private boolean repeat;
 //    private boolean shuffle;
 
     private int currentFrame = 0;
+    private long totalFrame;
 
     private PlayerState currState;
     private PlayerState prevState;
@@ -39,6 +45,13 @@ public class Player extends Thread {
 //        this.shuffle = shuffle;
 //    }
 
+
+    public Player() {
+    }
+
+    public Player(PlayerListener listener) {
+        this.listener = listener;
+    }
 
     public void updateMusic(Music music) {
         procPause();
@@ -101,6 +114,15 @@ public class Player extends Thread {
 
     }
 
+    private void updatePosition() {
+        if (listener != null) {
+            int position = (int) ((double) currentFrame / totalFrame * 1000);
+            listener.updatePosition(position);
+            System.out.println(currentFrame + " " + totalFrame + " " + position);
+        }
+    }
+
+
     private void setCurrState(PlayerState state) {
         prevState = currState;
         currState = state;
@@ -119,6 +141,13 @@ public class Player extends Thread {
         setCurrState(prevState);
     }
 
+    //not efficient but good.
+    private void setTotalFrame() throws IOException, JavaLayerException {
+        totalFrame = 0;
+        AdvancedPlayer player = new AdvancedPlayer(new FileInputStream(music.getFilePath()));
+        while (player.skipFrame())
+            totalFrame++;
+    }
 
     private void resetPlayer(int startFrame) {
         if (player != null)
@@ -127,9 +156,12 @@ public class Player extends Thread {
         try {
             player = new AdvancedPlayer(new FileInputStream(music.getFilePath()));
             player.play(startFrame, 0);
+            setTotalFrame();
         } catch (JavaLayerException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -143,6 +175,7 @@ public class Player extends Thread {
                 if (!player.play(1))
                     setCurrState(PlayerState.FINISHED);
                 currentFrame++;
+                updatePosition();
 
                 synchronized (this) {
                     if (currState != PlayerState.PLAYING)

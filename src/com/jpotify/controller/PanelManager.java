@@ -3,12 +3,17 @@ package com.jpotify.controller;
 import com.jpotify.logic.DataBase;
 import com.jpotify.logic.Music;
 import com.jpotify.logic.Player;
+import com.jpotify.logic.PlayerListener;
+import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.Listeners.ListenerManager;
+import mpatric.mp3agic.InvalidDataException;
+import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 
-public class PanelManager extends ListenerManager {
+public class PanelManager extends ListenerManager implements PlayerListener {
 
     private DataBase dataBase;
     private Player player;
@@ -16,6 +21,11 @@ public class PanelManager extends ListenerManager {
     public PanelManager(DataBase dataBase, Player player) {
         this.dataBase = dataBase;
         this.player = player;
+    }
+
+    public PanelManager(DataBase dataBase) {
+        this.dataBase = dataBase;
+        this.player = new Player(this);
     }
 
 
@@ -51,13 +61,21 @@ public class PanelManager extends ListenerManager {
                 JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                         music.getTitle() + " added to your Library");
             }
-
-
+        } //for Testing #Test
+        catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedTagException e) {
+            e.printStackTrace();
+        } catch (NoTagFoundException e) {
+            e.printStackTrace();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                     "Can't Add file",
                     "Error",
                     JOptionPane.WARNING_MESSAGE);
+            System.out.println(e.getCause() + e.getMessage());
         }
 
     }
@@ -116,5 +134,10 @@ public class PanelManager extends ListenerManager {
     @Override
     public void closingProgram() {
         dataBase.saveDataBase();
+    }
+
+    @Override
+    public void updatePosition(int position) {
+        getGUI().getPlayerPanel().setSliderCurrentPosition(position);
     }
 }
