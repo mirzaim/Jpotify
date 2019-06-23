@@ -8,9 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class Album extends MusicList implements DrawableItem, Serializable {
+public class Album extends ArrayList<Music> implements DrawableItem, Serializable {
 
     private String albumTitle;
     private transient BufferedImage albumImage = null;
