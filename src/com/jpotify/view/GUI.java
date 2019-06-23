@@ -5,6 +5,8 @@ import com.jpotify.view.Listeners.ListenerManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public final class GUI extends JFrame {
     private final String TITLE = "Jpotify";
@@ -76,6 +78,13 @@ public final class GUI extends JFrame {
         setLayout(new BorderLayout());
         setSize(new Dimension(WIDTH, HEIGHT));
         setLocationRelativeTo(null);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                listenerManager.closingProgram();
+            }
+        });
 
         add(menuPanel = new MenuPanel(listenerManager), BorderLayout.LINE_START);
         add(playerPanel = new PlayerPanel(listenerManager), BorderLayout.PAGE_END);

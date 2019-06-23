@@ -112,4 +112,9 @@ public class PanelManager extends ListenerManager {
         player.updateMusic(dataBase.getMusicById(id));
         player.playMusic();
     }
+
+    @Override
+    public void closingProgram() {
+        dataBase.saveDataBase();
+    }
 }

@@ -31,8 +31,10 @@ public class DataBase implements Serializable {
     }
 
     public void saveDataBase() {
+        File file = new File("database.m");
         try {
-            new ObjectOutputStream(new FileOutputStream("database.m")).writeObject(this);
+            if (file.isFile())
+                new ObjectOutputStream(new FileOutputStream(file)).writeObject(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

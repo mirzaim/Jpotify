@@ -8,9 +8,15 @@ import com.jpotify.view.GUI;
 public class Main {
     public static void main(String[] args) {
 
-        DataBase dataBase = new DataBase();
+        DataBase dataBase;
+        if ((dataBase = DataBase.loadDataBase()) == null)
+            dataBase = new DataBase();
 
-        GUI.initGUI(new PanelManager(dataBase, new Player()));
+        PanelManager panelManager = new PanelManager(dataBase, new Player());
+        GUI.initGUI(panelManager);
         GUI gui = GUI.getGUI();
+
+        //click songs button to load songs.
+        panelManager.songs();
     }
 }

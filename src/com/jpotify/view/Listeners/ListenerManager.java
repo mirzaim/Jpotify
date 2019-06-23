@@ -13,4 +13,6 @@ public abstract class ListenerManager implements MainPanelListener, MenuPanelLis
         if (this.gui == null)
             this.gui = gui;
     }
+
+    public abstract void closingProgram();
 }
