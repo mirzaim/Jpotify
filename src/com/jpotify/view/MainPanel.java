@@ -2,6 +2,7 @@ package com.jpotify.view;
 
 import com.jpotify.view.Listeners.MainPanelListener;
 import com.jpotify.view.helper.DrawableItem;
+import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
 import com.jpotify.view.helper.WrapLayout;
 
@@ -43,6 +44,7 @@ public class MainPanel extends JPanel {
 
     public void addPanel(DrawableItem item) {
         JPanel panel = item.draw(ITEM_WIDTH, ITEM_HEIGHT);
+        panel.add(getButtonPanel(), BorderLayout.NORTH);
         panel.setBackground(Color.DARK_GRAY);
         add(panel);
 
@@ -76,5 +78,20 @@ public class MainPanel extends JPanel {
     public void addPanels(DrawableItem[] items) {
         for (DrawableItem item : items)
             addPanel(item);
+    }
+
+    public JPanel getButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        MButton like = new MButton("Like", true);
+        MButton plus = new MButton("Add", true);
+        MButton share = new MButton("Share", true);
+        buttonPanel.add(plus);
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(like);
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(share);
+        buttonPanel.setBackground(Color.DARK_GRAY);
+        return buttonPanel;
     }
 }
