@@ -18,7 +18,7 @@ public class ImagePanel extends JLabel {
     }
 
     public void setImage(BufferedImage image, int width, int height) {
-        setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH)));
+        setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
     }
 
     private static BufferedImage resize(BufferedImage img, int height, int width) {
