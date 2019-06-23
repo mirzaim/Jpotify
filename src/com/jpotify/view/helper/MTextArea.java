@@ -33,7 +33,10 @@ public class MTextArea extends JTextArea {
 
     @Override
     public void setText(String t) {
-        super.setText(brief(t));
+        if (brief)
+            super.setText(brief(t));
+        else
+            super.setText(t);
     }
 
     private String brief(String s) {
