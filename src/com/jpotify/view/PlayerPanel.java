@@ -3,6 +3,7 @@ package com.jpotify.view;
 import com.jpotify.view.Listeners.PlayerPanelListener;
 import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.MButton;
+import com.jpotify.view.helper.MTextArea;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,6 +17,8 @@ import java.awt.event.ActionListener;
 public class PlayerPanel extends JPanel implements ActionListener, ChangeListener {
     private PlayerPanelListener listener;
     private JSlider slider;
+    private MTextArea musicName;
+    private MTextArea singerName;
 
     PlayerPanel(PlayerPanelListener listener) {
         this.listener = listener;
@@ -58,7 +61,7 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         slider.setOpaque(false);
         slider.setBorder(new EmptyBorder(0, 100, 0, 100));
         slider.setMaximum(1000);
-        slider.setUI(new MetalSliderUI(){
+        slider.setUI(new MetalSliderUI() {
             @Override
             protected void scrollDueToClickInTrack(int dir) {
                 int value = this.valueForXPosition(slider.getMousePosition().x);
@@ -76,13 +79,13 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         add(leftBox, BorderLayout.LINE_START);
 
 
-        MButton music = new MButton("Music Name", null, Color.WHITE);
-        music.setFont(new Font("Arial", Font.BOLD, 13));
-        leftBox.add(music);
+        musicName = new MTextArea("Music Name", Color.WHITE, true);
+        musicName.setFont(new Font("Arial", Font.BOLD, 13));
+        leftBox.add(musicName);
 
-        MButton singer = new MButton("Singer");
-        singer.setFont(new Font("Arial", Font.PLAIN, 11));
-        leftBox.add(singer);
+        singerName = new MTextArea("Singer", null, true);
+        singerName.setFont(new Font("Arial", Font.PLAIN, 11));
+        leftBox.add(singerName);
     }
 
     private void setupRightSection() {
@@ -104,11 +107,16 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
 //    }
 
     public void setSliderCurrentPosition(int frame) {
-        if (!slider.getValueIsAdjusting()){
+        if (!slider.getValueIsAdjusting()) {
             slider.removeChangeListener(this);
             slider.setValue(frame);
             slider.addChangeListener(this);
         }
+    }
+
+    public void setDataMusicData(String title, String singer) {
+        musicName.setText(title);
+        singerName.setText(singer);
     }
 
 //    public void updateSliderAFrame() {

@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -22,6 +23,8 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     private MiniMenu playList;
     private MenuPanelListener listener;
+
+    private ImagePanel imagePanel;
 
     public MenuPanel(MenuPanelListener listener) {
         this.listener = listener;
@@ -72,12 +75,16 @@ public class MenuPanel extends JPanel implements ActionListener {
                 AssetManager.getImageIconByName("add.png"), true, this));
         bottom.add(newPlayList);
 
-        ImagePanel imagePanel = new ImagePanel(AssetManager.getBufferedImageByName("abc.jpg"), WIDTH, -1);
+        imagePanel = new ImagePanel(AssetManager.getBufferedImageByName("abc.jpg"), WIDTH, -1);
         bottom.add(imagePanel);
     }
 
     public void addPlayList(String name) {
         playList.addButton(new MButton(name, true));
+    }
+
+    public void setArtwork(BufferedImage image) {
+        imagePanel.setImage(image, WIDTH, -1);
     }
 
 

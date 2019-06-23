@@ -10,13 +10,16 @@ public class ImagePanel extends JLabel {
     public ImagePanel(BufferedImage image, int width, int height) {
         this.image = image;
 
-        setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
+        setImage(image, width, height);
     }
 
     public ImagePanel(BufferedImage image) {
         this(image, -1, -1);
     }
 
+    public void setImage(BufferedImage image, int width, int height) {
+        setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH)));
+    }
 
     private static BufferedImage resize(BufferedImage img, int height, int width) {
         Image tmp = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);

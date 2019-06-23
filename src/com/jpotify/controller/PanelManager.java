@@ -72,6 +72,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         } catch (InvalidDataException e) {
             e.printStackTrace();
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                     "Can't Add file",
                     "Error",
@@ -134,6 +135,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 player.updateMusic(music);
                 music.updateLastPlayedTime();
                 player.playMusic();
+                getGUI().setMusicData(music.getTitle(), music.getArtist(), music.getAlbumImage());
                 songs();
                 break;
             case ALBUMS:

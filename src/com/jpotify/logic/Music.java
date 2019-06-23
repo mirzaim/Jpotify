@@ -131,11 +131,17 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
             return this.albumImage;
     }
 
+    public String getArtist() {
+        if (artist != null)
+            artist = artist.trim();
+        return artist;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    public void updateLastPlayedTime(){
+    public void updateLastPlayedTime() {
         lastPlayedTime = new Date().getTime();
     }
 
