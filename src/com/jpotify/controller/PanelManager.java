@@ -175,8 +175,18 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 getGUI().getMainPanel().setMainPanelState(MainPanelState.SONGS);
                 break;
             case Favorites:
+                Music music1 = dataBase.getMusicById(id);
+                player.updateMusic(music1);
+                music1.updateLastPlayedTime();
+                player.playMusic();
+                getGUI().setMusicData(music1.getTitle(), music1.getArtist(), music1.getAlbumImage());
                 break;
             case Shared:
+                Music music2 = dataBase.getMusicById(id);
+                player.updateMusic(music2);
+                music2.updateLastPlayedTime();
+                player.playMusic();
+                getGUI().setMusicData(music2.getTitle(), music2.getArtist(), music2.getAlbumImage());
                 break;
             default:
         }

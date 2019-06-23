@@ -1,5 +1,6 @@
 package com.jpotify.view;
 
+import com.jpotify.logic.Music;
 import com.jpotify.view.Listeners.MainPanelListener;
 import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.MButton;

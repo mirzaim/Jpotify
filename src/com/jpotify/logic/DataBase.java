@@ -77,6 +77,11 @@ public class DataBase implements Serializable {
             return 0;
 
         playList.add(music);
+        if(playList.getTitle().equals("Favourites"))
+            music.setLiked(true);
+
+        if(playList.getTitle().equals("Shared PlayList"))
+            music.setShared(true);
         return 1;
     }
 
