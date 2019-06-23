@@ -8,5 +8,4 @@ public class Album extends MusicList implements Serializable {
         super(albumTitle,albumFirstMusic);
     }
 
-
 }

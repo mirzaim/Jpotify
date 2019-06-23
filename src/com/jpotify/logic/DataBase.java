@@ -1,7 +1,6 @@
 package com.jpotify.logic;
 
 import java.io.*;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,17 +9,14 @@ public class DataBase implements Serializable {
     private List<Album> albums;
     private List<PlayList> playLists;
     private List<Music> musics;
-    private MusicList sharedPlaylist;
-    private MusicList favouritePlaylist;
 
     public DataBase() {
 
         albums = new LinkedList<>();
         playLists = new LinkedList<>();
         musics = new LinkedList<>();
-        favouritePlaylist = new MusicList("Favourites");
-        sharedPlaylist = new MusicList("Shared PlayList");
-
+        playLists.add(new PlayList("Favourites"));
+        playLists.add(new PlayList("Shared PlayList"));
     }
 
     public static DataBase loadDataBase() {
@@ -50,28 +46,37 @@ public class DataBase implements Serializable {
         }
     }
 
-    public int addSong(Music music , List list) {
+    public int addSong(Music music) {
 
-        if (list.contains(music))
+        if (musics.contains(music))
             return 0;
 
 
         for (Album album : this.albums) {
             if (album.getTitle().equals(music.getAlbum())) {
                 album.add(music);
-                list.add(music);
+                musics.add(music);
+                    music.setShared(true);
                 return 1;
             }
         }
 
         //some musics don't have album
-        list.add(music);
+        musics.add(music);
         if (music.getAlbum() != null) {
             Album album = new Album(music.getAlbum(), music);
             // first music is separate filed (not in list)
             album.add(music);
             albums.add(album);
         }
+        return 1;
+    }
+
+    public int addSongToPlayList(Music music, PlayList playList){
+        if(playList.contains(music))
+            return 0;
+
+        playList.add(music);
         return 1;
     }
 
@@ -98,6 +103,7 @@ public class DataBase implements Serializable {
         return musics.toArray(new Music[0]);
     }
 
+
     public Music getMusicById(String id) {
         for (Music music : musics)
             if (music.getId().equals(id))
@@ -106,12 +112,18 @@ public class DataBase implements Serializable {
     }
 
     public Music[] getMusicByAlbumTitle(String albumTitle) {
-        musics.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
-        List<Music> album = new LinkedList<>();
-        for (Music music : musics)
-            if (music.getAlbum().equals(albumTitle))
-                album.add(music);
-        return album.toArray(new Music[0]);
+        for (Album album : albums)
+            if (album.getTitle().equals(albumTitle))
+                return album.toArray(new Music[0]);
+
+        return null;
+    }
+
+    public Music[] getMusicByPlayListTitle(String playListTitle) {
+        for (PlayList playList : playLists)
+            if (playList.getTitle().equals(playListTitle))
+                return playList.toArray(new Music[0]);
+        return null;
     }
 
     public Album getAlbumById(String id) {
@@ -121,7 +133,7 @@ public class DataBase implements Serializable {
         return null;
     }
 
-    public void createPlayList(String name){
+    public void createPlayList(String name) {
         PlayList playList = new PlayList(name);
         playLists.add(playList);
     }

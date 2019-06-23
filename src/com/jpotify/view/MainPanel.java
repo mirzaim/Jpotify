@@ -9,6 +9,8 @@ import com.jpotify.view.helper.WrapLayout;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -44,7 +46,7 @@ public class MainPanel extends JPanel {
 
     public void addPanel(DrawableItem item) {
         JPanel panel = item.draw(ITEM_WIDTH, ITEM_HEIGHT);
-        panel.add(getButtonPanel(), BorderLayout.NORTH);
+        panel.add(getButtonPanel(item), BorderLayout.NORTH);
         panel.setBackground(Color.DARK_GRAY);
         add(panel);
 
@@ -80,12 +82,32 @@ public class MainPanel extends JPanel {
             addPanel(item);
     }
 
-    public JPanel getButtonPanel() {
+    public JPanel getButtonPanel(DrawableItem item) {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-        MButton like = new MButton("Like", true);
-        MButton plus = new MButton("Add", true);
-        MButton share = new MButton("Share", true);
+
+
+
+        MButton like = new MButton("Like", true, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listener.buttonLike(item.getId());
+            }
+        });
+
+        MButton plus = new MButton("Add", true, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listener.buttonAdd(item.getId());
+            }
+        });
+
+        MButton share = new MButton("Share", true, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listener.buttonShare(item.getId());
+            }
+        });
         buttonPanel.add(plus);
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(like);

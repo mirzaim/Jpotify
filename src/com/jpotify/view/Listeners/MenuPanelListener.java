@@ -8,7 +8,7 @@ public interface MenuPanelListener {
 
     void songs();
 
-    void addSong(File file);
+    void addSongButton(File file);
 
     void albums();
 

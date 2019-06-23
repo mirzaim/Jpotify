@@ -34,6 +34,9 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
     private int size;
     private long lastPlayedTime;
 
+    private boolean isShared = false;
+    private boolean isLiked = false;
+
     // for sorting music in playlist
     private int addingToListTime;
 
@@ -139,6 +142,22 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setShared(boolean shared) {
+        isShared = shared;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 
     public void updateLastPlayedTime() {

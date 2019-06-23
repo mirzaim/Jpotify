@@ -42,11 +42,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     }
 
     @Override
-    public void addSong(File file) {
+    public void addSongButton(File file) {
         try {
             Music music = new Music(file);
 
-            if (dataBase.addSong(music,dataBase.getMusics()) == 0)
+            if (dataBase.addSong(music) == 0)
                 JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                         "File is already exist in your library");
             else {
@@ -89,15 +89,21 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void playListClicked(String name) {
-
+        getGUI().getMainPanel().removeAll();
+        getGUI().getMainPanel().addPanels(dataBase.getMusicByPlayListTitle(name));
+        if(name.equals("Favourites"))
+            getGUI().getMainPanel().setMainPanelState(MainPanelState.Favorites);
+        else if(name.equals("Shared PlayList"))
+            getGUI().getMainPanel().setMainPanelState(MainPanelState.Shared);
+        else
+            getGUI().getMainPanel().setMainPanelState(MainPanelState.OtherPlayList);
     }
 
     @Override
     public void newPlayList(String name) {
 
         for (PlayList playList : dataBase.getPlayLists()) {
-            if (playList.getTitle().equals(name) || name.equals("Favourites") || name.equals("Shared PlayList")) {
-                // this name created in database constructor and used in MenuPanel
+            if (playList.getTitle().equals(name)) {
                 JOptionPane.showMessageDialog(null,
                         "This Playlist is already exist");
                 return;
@@ -140,6 +146,16 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         player.changePositionRelative(newPosition);
     }
 
+    @Override
+    public void updatePosition(int position) {
+        getGUI().getPlayerPanel().setSliderCurrentPosition(position);
+    }
+
+    @Override
+    public void musicFinished() {
+
+    }
+
     // MainPanelListener implementation
     @Override
     public void panelClicked(String id) {
@@ -158,7 +174,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 getGUI().getMainPanel().addPanels(dataBase.getMusicByAlbumTitle(id));
                 getGUI().getMainPanel().setMainPanelState(MainPanelState.SONGS);
                 break;
-            case PLAYLIST:
+            case Favorites:
+                break;
+            case Shared:
                 break;
             default:
         }
@@ -166,17 +184,47 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     }
 
     @Override
+    public void buttonAdd(String id) {
+
+    }
+
+    @Override
+    public void buttonLike(String id) {
+        if (dataBase.addSongToPlayList(dataBase.getMusicById(id) ,dataBase.getPlayLists().get(0)) == 0) // 0 is Favourites
+            JOptionPane.showMessageDialog(getGUI().getMainPanel(),
+                    "File is already exist in your Favourites");
+        else {
+
+            if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.Favorites)
+                getGUI().getMainPanel().addPanel(dataBase.getMusicById(id));
+
+
+            JOptionPane.showMessageDialog(getGUI().getMainPanel(),
+                    dataBase.getMusicById(id).getTitle() + " added to your Favourites");
+        }
+    }
+
+    @Override
+    public void buttonShare(String id) {
+        if (dataBase.addSongToPlayList(dataBase.getMusicById(id) ,dataBase.getPlayLists().get(1)) == 0) // 1 is Shared PlayList
+            JOptionPane.showMessageDialog(getGUI().getMainPanel(),
+                    "File is already exist in your Shared PlayList");
+        else {
+
+            if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.Shared)
+                getGUI().getMainPanel().addPanel(dataBase.getMusicById(id));
+
+
+            JOptionPane.showMessageDialog(getGUI().getMainPanel(),
+                    dataBase.getMusicById(id).getTitle() + " added to your Shared PlayList");
+        }
+    }
+
+    // GUI
+    @Override
     public void closingProgram() {
         dataBase.saveDataBase();
     }
 
-    @Override
-    public void updatePosition(int position) {
-        getGUI().getPlayerPanel().setSliderCurrentPosition(position);
-    }
 
-    @Override
-    public void musicFinished() {
-
-    }
 }
