@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 public final class GUI extends JFrame {
     private final String TITLE = "Jpotify";
@@ -69,6 +70,11 @@ public final class GUI extends JFrame {
 
     public MainPanel getMainPanel() {
         return mainPanel;
+    }
+
+    public void setMusicData(String title, String singer, BufferedImage image) {
+        playerPanel.setDataMusicData(title, singer);
+        menuPanel.setArtwork(image);
     }
 
     private void setupGUI() {

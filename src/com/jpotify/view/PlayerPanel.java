@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 public class PlayerPanel extends JPanel implements ActionListener, ChangeListener {
     private PlayerPanelListener listener;
     private JSlider slider;
+    private MButton musicName;
+    private MButton singerName;
 
     PlayerPanel(PlayerPanelListener listener) {
         this.listener = listener;
@@ -76,13 +78,13 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         add(leftBox, BorderLayout.LINE_START);
 
 
-        MButton music = new MButton("Music Name", null, Color.WHITE);
-        music.setFont(new Font("Arial", Font.BOLD, 13));
-        leftBox.add(music);
+        musicName = new MButton("Music Name", null, Color.WHITE);
+        musicName.setFont(new Font("Arial", Font.BOLD, 13));
+        leftBox.add(musicName);
 
-        MButton singer = new MButton("Singer");
-        singer.setFont(new Font("Arial", Font.PLAIN, 11));
-        leftBox.add(singer);
+        singerName = new MButton("Singer");
+        singerName.setFont(new Font("Arial", Font.PLAIN, 11));
+        leftBox.add(singerName);
     }
 
     private void setupRightSection() {
@@ -109,6 +111,11 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
             slider.setValue(frame);
             slider.addChangeListener(this);
         }
+    }
+
+    public void setDataMusicData(String title, String singer){
+        musicName.setText(title);
+        singerName.setText(singer);
     }
 
 //    public void updateSliderAFrame() {

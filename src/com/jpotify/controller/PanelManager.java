@@ -134,6 +134,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 player.updateMusic(music);
                 music.updateLastPlayedTime();
                 player.playMusic();
+                getGUI().setMusicData(music.getTitle(), music.getArtist(), music.getAlbumImage());
                 songs();
                 break;
             case ALBUMS:

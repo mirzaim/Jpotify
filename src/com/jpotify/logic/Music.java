@@ -133,11 +133,15 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
 
     }
 
+    public String getArtist() {
+        return artist.trim();
+    }
+
     public String getTitle() {
         return title;
     }
 
-    public void updateLastPlayedTime(){
+    public void updateLastPlayedTime() {
         lastPlayedTime = new Date().getTime();
     }
 
