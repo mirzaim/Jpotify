@@ -95,6 +95,7 @@ public class DataBase implements Serializable {
     }
 
     public Album[] getAlbumsArray() {
+        albums.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
         return albums.toArray(new Album[0]);
     }
 
@@ -122,14 +123,22 @@ public class DataBase implements Serializable {
         return null;
     }
 
-    public Music[] getMusicByAlbumTitle(String albumTitle) {
-        for (Album album : albums)
-            if (album.getTitle().equals(albumTitle))
-                return album.toArray(new Music[0]);
+
+    public Music[] getMusicsByAlbumTitle(String albumTitle) {
+        musics.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
+        List<Music> album = new LinkedList<>();
+        for (Music music : musics)
+            if (music.getAlbumTitle().equals(albumTitle))
+                album.add(music);
+
+        if (album.size() > 0)
+            return album.toArray(new Music[0]);
 
         return null;
     }
 
+
+    //what????????????????????? #Test
     public Music[] getMusicByPlayListTitle(String playListTitle) {
         for (PlayList playList : playLists)
             if (playList.getTitle().equals(playListTitle))

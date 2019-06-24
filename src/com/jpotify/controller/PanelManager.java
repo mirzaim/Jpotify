@@ -323,7 +323,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 break;
             case ALBUMS:
                 getGUI().getMainPanel().removeAll();
-                getGUI().getMainPanel().addPanels(dataBase.getMusicByAlbumTitle(id));
+                getGUI().getMainPanel().addPanels(dataBase.getMusicsByAlbumTitle(id));
                 getGUI().getMainPanel().setMainPanelState(MainPanelState.SONGS);
                 break;
             case Favorites:
