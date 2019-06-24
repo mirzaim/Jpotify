@@ -9,7 +9,7 @@ import com.jpotify.logic.network.ServerListener;
 import com.jpotify.view.Listeners.ListenerManager;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
-import com.sun.deploy.jcp.controller.Network;
+//import com.sun.deploy.jcp.controller.Network;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
@@ -20,6 +20,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
 
@@ -162,6 +163,32 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                         if (playList.getTitle().equals("Favourites") || playList.getTitle().equals("Shared PlayList")) {
                             String[] buttons = {"Play", "Change Order"};
                             int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
+                            if(returnValue == 1){
+                                String selectedFirstSong = (String) JOptionPane.showInputDialog(
+                                        getGUI().getMainPanel(),
+                                        "select song : ",
+                                        "First Song",
+                                        JOptionPane.PLAIN_MESSAGE,
+                                        null,
+                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
+                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
+
+                                String selectedSecondSong = (String) JOptionPane.showInputDialog(
+                                        getGUI().getMainPanel(),
+                                        "select song : ",
+                                        "First Song",
+                                        JOptionPane.PLAIN_MESSAGE,
+                                        null,
+                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
+                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
+
+                                Collections.swap(playList,playList.indexOf(selectedFirstSong),playList.indexOf(selectedSecondSong));
+                                loadPlaylists();
+                            }
+
+
+
+
 
                         } else {
                             String[] buttons = {"Play", "Edit Name", "Change Order", "Delete"};
