@@ -9,17 +9,14 @@ import com.jpotify.logic.network.ServerListener;
 import com.jpotify.view.Listeners.ListenerManager;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
-import com.sun.deploy.jcp.controller.Network;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalBorders;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
 
@@ -283,7 +280,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 break;
             case ALBUMS:
                 getGUI().getMainPanel().removeAll();
-                getGUI().getMainPanel().addPanels(dataBase.getMusicByAlbumTitle(id));
+                getGUI().getMainPanel().addPanels(dataBase.getMusicsByAlbumTitle(id));
                 getGUI().getMainPanel().setMainPanelState(MainPanelState.SONGS);
                 break;
             case Favorites:

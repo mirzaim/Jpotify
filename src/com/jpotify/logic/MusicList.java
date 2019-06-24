@@ -12,22 +12,21 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MusicList extends ArrayList<Music> implements DrawableItem, Serializable {
-    private String Title;
+    private String title;
     private transient BufferedImage Image = null;
     private Music FirstMusic;
 
-    public MusicList(String title){
-        this.Title = title;
-        this.FirstMusic = null;
+    public MusicList(String title) {
+        this(title, null);
     }
 
-    public MusicList(String Title, Music FirstMusic) {
-        this.Title = Title;
+    public MusicList(String title, Music FirstMusic) {
+        this.title = title;
         this.FirstMusic = FirstMusic;
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public BufferedImage getImage() {
@@ -46,12 +45,12 @@ public class MusicList extends ArrayList<Music> implements DrawableItem, Seriali
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         MusicList musicList = (MusicList) o;
-        return Objects.equals(Title, musicList.Title);
+        return Objects.equals(title, musicList.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), Title);
+        return Objects.hash(super.hashCode(), title);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class MusicList extends ArrayList<Music> implements DrawableItem, Seriali
         ImagePanel imagePanel = new ImagePanel(getImage(), width, height - 50);
         jPanel.add(imagePanel, BorderLayout.PAGE_START);
 
-        MTextArea Name = new MTextArea(this.Title);
+        MTextArea Name = new MTextArea(this.title);
         MTextArea tracksNumber = new MTextArea("" + this.size());
 
         Name.setFont(new Font(Font.DIALOG, Font.BOLD, 13));
@@ -93,7 +92,7 @@ public class MusicList extends ArrayList<Music> implements DrawableItem, Seriali
 
     @Override
     public String getId() {
-        return Title;
+        return title;
     }
 }
 
