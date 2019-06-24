@@ -17,6 +17,7 @@ public class Main {
         GUI gui = GUI.getGUI();
 
         // for starting program - if doesnt exist nothing will not show
+        panelManager.loadPlaylists();
         panelManager.songs();
     }
 }
