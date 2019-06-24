@@ -3,7 +3,6 @@ package com.jpotify.logic;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.ImagePanel;
-import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MTextArea;
 import mpatric.mp3agic.ID3v2;
 import mpatric.mp3agic.InvalidDataException;
@@ -13,7 +12,6 @@ import net.coobird.thumbnailator.Thumbnails;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -27,7 +25,8 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
     private String title;
     private String filePath;
     private String artist;
-    private String album;
+    private String albumTitle;
+    private Album album = null;
     private String year;
     private int genre;
     private transient BufferedImage albumImage = null;
@@ -69,14 +68,14 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
                     if (tag.equals("TAG")) {
                         this.title = id3v1.substring(3, 32);
                         this.artist = id3v1.substring(33, 62);
-                        this.album = id3v1.substring(63, 91);
+                        this.albumTitle = id3v1.substring(63, 91);
                         this.year = id3v1.substring(93, 97);
                     }
                 }
             } else {
                 this.title = id3v2Tag.getTitle();
                 this.artist = id3v2Tag.getArtist();
-                this.album = id3v2Tag.getAlbum();
+                this.albumTitle = id3v2Tag.getAlbum();
                 this.year = id3v2Tag.getYear();
             }
             if (title != null)
@@ -98,8 +97,16 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
 
     }
 
-    public String getAlbum() {
-        return album;
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
+    public Music(Album album) {
+        this.album = album;
+    }
+
+    public String getAlbumTitle() {
+        return albumTitle;
     }
 
     public String getFilePath() {
@@ -162,6 +169,8 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
 
     public void updateLastPlayedTime() {
         lastPlayedTime = new Date().getTime();
+        if (album != null)
+            album.updateLastPlayedTime(lastPlayedTime);
     }
 
     public long getLastPlayedTime() {

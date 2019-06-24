@@ -4,6 +4,8 @@ public interface PlayerPanelListener {
 
     void play();
 
+    void pause();
+
     void next();
 
     void previous();
@@ -13,5 +15,7 @@ public interface PlayerPanelListener {
     void replay();
 
     void sliderChanged(int newPosition);
+
+    void soundVolumeChanged(int newPosition);
 
 }

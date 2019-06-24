@@ -3,13 +3,14 @@ package com.jpotify.view;
 import com.jpotify.view.Listeners.PlayerPanelListener;
 import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.MButton;
+import com.jpotify.view.helper.MSlider;
 import com.jpotify.view.helper.MTextArea;
+import com.jpotify.view.helper.MToggleButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.metal.MetalSliderUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +18,10 @@ import java.awt.event.ActionListener;
 public class PlayerPanel extends JPanel implements ActionListener, ChangeListener {
     private PlayerPanelListener listener;
     private JSlider slider;
+    private JSlider soundVolume;
     private MTextArea musicName;
     private MTextArea singerName;
+    private MToggleButton playPauseButton;
 
     PlayerPanel(PlayerPanelListener listener) {
         this.listener = listener;
@@ -26,7 +29,7 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
     }
 
     private void setup() {
-        setBackground(Color.DARK_GRAY);
+        setBackground(Color.BLACK);
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 20, 5, 20));
 
@@ -52,22 +55,16 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
 
         controllers.add(new MButton(AssetManager.getImageIconByName("shuffle.png"), this, "shuffle"));
         controllers.add(new MButton(AssetManager.getImageIconByName("previous.png"), this, "previous"));
-        controllers.add(new MButton(AssetManager.getImageIconByName("play.png"), this, "play"));
+
+        controllers.add(playPauseButton = new MToggleButton(AssetManager.getImageIconByName("play.png"),
+                AssetManager.getImageIconByName("pause.png"), this, "play"));
+
         controllers.add(new MButton(AssetManager.getImageIconByName("next.png"), this, "next"));
         controllers.add(new MButton(AssetManager.getImageIconByName("replay.png"), this, "replay"));
 
-        slider = new JSlider();
-        slider.addChangeListener(this);
-        slider.setOpaque(false);
+
+        slider = new MSlider(1000, this);
         slider.setBorder(new EmptyBorder(0, 100, 0, 100));
-        slider.setMaximum(1000);
-        slider.setUI(new MetalSliderUI() {
-            @Override
-            protected void scrollDueToClickInTrack(int dir) {
-                int value = this.valueForXPosition(slider.getMousePosition().x);
-                slider.setValue(value);
-            }
-        });
         centerBox.add(slider);
     }
 
@@ -95,16 +92,17 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         rightBox.setBorder(new EmptyBorder(0, 20, 0, 0));
         add(rightBox, BorderLayout.LINE_END);
 
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
-        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
-    }
+//        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
+//        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
+//        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
+//        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
+//        rightBox.add(new MButton(AssetManager.getImageIconByName("test.png"), this, "test"));
 
-//    public void setMediaMaxFrame(int frame) {
-//        slider.setMaximum(frame);
-//    }
+        soundVolume = new MSlider();
+        soundVolume.setBorder(new EmptyBorder(0, 50, 0, 50));
+        soundVolume.addChangeListener(this);
+        rightBox.add(soundVolume);
+    }
 
     public void setSliderCurrentPosition(int frame) {
         if (!slider.getValueIsAdjusting()) {
@@ -119,6 +117,10 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         singerName.setText(singer);
     }
 
+    public void setToPauseToggleButton() {
+        playPauseButton.changeToSecond();
+    }
+
 //    public void updateSliderAFrame() {
 //        slider.setValue(slider.getValue() + 1);
 //    }
@@ -127,7 +129,10 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
     public void actionPerformed(ActionEvent e) {
         switch (((MButton) e.getSource()).getId()) {
             case "play":
-                listener.play();
+                if (e.getActionCommand().equals("true"))
+                    listener.play();
+                else
+                    listener.pause();
                 break;
             case "next":
                 listener.next();
@@ -148,7 +153,10 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
     //for jSlider
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (!slider.getValueIsAdjusting())
+        if (slider.equals(e.getSource()) && !slider.getValueIsAdjusting()) {
             listener.sliderChanged(slider.getValue());
+        } else if (soundVolume.equals(e.getSource()) && !soundVolume.getValueIsAdjusting()) {
+            listener.soundVolumeChanged(soundVolume.getValue());
+        }
     }
 }
