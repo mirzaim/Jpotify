@@ -1,6 +1,7 @@
 package com.jpotify.view;
 
 import com.jpotify.view.Listeners.ListenerManager;
+import org.jsoup.Jsoup;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -98,7 +99,10 @@ public final class GUI extends JFrame {
             }
         });
 
-        add(new JScrollPane(menuPanel = new MenuPanel(listenerManager)), BorderLayout.LINE_START);
+        JScrollPane menuPanelScroll = new JScrollPane(menuPanel = new MenuPanel(listenerManager));
+        menuPanelScroll.setBorder(new EmptyBorder(0,0,0,0));
+
+        add(menuPanelScroll, BorderLayout.LINE_START);
         add(playerPanel = new PlayerPanel(listenerManager), BorderLayout.PAGE_END);
         add(networkPanel = new NetworkPanel(listenerManager), BorderLayout.LINE_END);
 
