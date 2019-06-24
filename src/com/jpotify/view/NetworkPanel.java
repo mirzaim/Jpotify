@@ -1,5 +1,6 @@
 package com.jpotify.view;
 
+import com.jpotify.logic.Music;
 import com.jpotify.view.Listeners.NetworkPanelListener;
 import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.MButton;
@@ -7,8 +8,6 @@ import com.jpotify.view.helper.MButton;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class NetworkPanel extends JPanel {
 
@@ -37,16 +36,19 @@ public class NetworkPanel extends JPanel {
         add(activityPanel, BorderLayout.CENTER);
     }
 
-    public void addActivity(DrawableItem item) {
-        activityPanel.add(item.draw(ITEM_WIDTH, ITEM_HEIGHT), 0);
+    public void addActivity(String username, Music music) {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        activityPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                listener.friendPanelClicked(item.getId());
-            }
-        });
+        MButton usernameButton = new MButton(username, null, Color.WHITE);
+        usernameButton.addActionListener(e -> listener.friendPanelClicked(username));
+
+        panel.add(usernameButton);
+        panel.add(new MButton(music.getTitle()));
+        panel.setOpaque(false);
+
+        activityPanel.add(panel, 0);
 
         repaint();
         revalidate();

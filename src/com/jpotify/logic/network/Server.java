@@ -1,21 +1,22 @@
 package com.jpotify.logic.network;
 
+import com.jpotify.logic.Music;
+import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.logic.network.message.AbstractMessage;
 import com.jpotify.logic.network.message.CommandMessage;
 import com.jpotify.logic.network.message.CommandType;
+import mpatric.mp3agic.InvalidDataException;
+import mpatric.mp3agic.UnsupportedTagException;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 public class Server implements Runnable {
     private static final int PORT = 7878;
+    private static final int FILE_PORT = 8787;
 
     private String username;
     private ServerListener listener;
@@ -66,14 +67,32 @@ public class Server implements Runnable {
         }
     }
 
+    public void sendSharedPlayListRequest(String username) {
+        for (FriendHandler friendHandler : friendHandlers)
+            if (friendHandler.getUsername().equals(username)) {
+                friendHandler.sendMessage(new CommandMessage(this.username, CommandType.SHARED_PLAYLIST_REQUEST));
+                System.out.println("Request sent.");
+                break;
+            }
+    }
+
+    public void sendMusicRequest(Music music) {
+        for (FriendHandler friendHandler : friendHandlers)
+            if (friendHandler.getUsername().equals(username)) {
+                friendHandler.sendMessage(new CommandMessage(this.username, CommandType.MUSIC_REQUEST, music));
+                break;
+            }
+    }
+
 
     private class FriendHandler implements Runnable {
-//        private String username;
+        private String username;
 
         private ObjectInputStream in;
         private ObjectOutputStream out;
         private Socket socket;
         private boolean listen = true;
+        private boolean waitingForMusic = false;
 
         private FriendHandler(Socket clientSocket) throws IOException {
             socket = clientSocket;
@@ -87,6 +106,10 @@ public class Server implements Runnable {
                 try {
                     CommandMessage command = (CommandMessage) in.readObject();
                     handleCommand(command);
+//                    synchronized (this) {
+//                        if (waitingForMusic)
+//                            wait();
+//                    }
                 } catch (IOException e) {
                     if (!socket.isClosed())
                         e.printStackTrace();
@@ -107,6 +130,11 @@ public class Server implements Runnable {
             }
         }
 
+        private void sendFileRequest(Music music) {
+            sendMessage(new CommandMessage(username, CommandType.MUSIC_REQUEST, music));
+            waitingForMusic = true;
+        }
+
         private void closeConnection() throws IOException {
             listen = false;
             in.close();
@@ -117,6 +145,7 @@ public class Server implements Runnable {
         private void handleCommand(CommandMessage message) throws IOException {
             switch (message.getCommandType()) {
                 case INTRODUCTION:
+                    username = message.getSenderUsername();
                     listener.friendBecomeOnline(message.getSenderUsername());
                     break;
                 case START_ACTIVITY:
@@ -126,13 +155,12 @@ public class Server implements Runnable {
                     listener.friendMusicEnded(message.getSenderUsername(), message.getMusic());
                     break;
                 case SHARED_PLAYLIST_DATA:
+                    System.out.println("SHARED_PLAYLIST_DATA");
                     listener.sharedPlayListData(message.getSenderUsername(), message.getSharedPlayList());
                     break;
                 case MUSIC_COME:
-                    //TO DO
-                    //Not implemented yet
                     System.out.println("Downloading Music...");
-                    System.out.println("Come soon!");
+                    receiveMusic(message.getMusic());
                     break;
                 case CLOSE_CONNECTION:
                     closeConnection();
@@ -147,7 +175,48 @@ public class Server implements Runnable {
             sendMessage(new CommandMessage(username, CommandType.CLOSE_CONNECTION));
         }
 
-//        @Override
+        public void receiveMusic(Music music) {
+            File file = new File(System.getProperty("user.dir") + "/downloaded_musics/", music.getTitle() + ".mp3");
+            byte[] bytes = new byte[16 * 1024];
+            int count;
+            try {
+                if (!file.getParentFile().exists())
+                    file.getParentFile().mkdir();
+                file.createNewFile();
+                Socket socket = new Socket(this.socket.getInetAddress(), FILE_PORT);
+                InputStream inputStream = socket.getInputStream();
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                while ((count = inputStream.read(bytes)) > 0)
+                    fileOutputStream.write(bytes, 0, count);
+
+                Music receivedMusic = new Music(file);
+                System.out.println(receivedMusic.getTitle());
+                fileOutputStream.close();
+                inputStream.close();
+                socket.close();
+                System.out.println("Download Finished");
+
+                listener.musicDownloaded(music);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (UnsupportedTagException e) {
+                e.printStackTrace();
+            } catch (NoTagFoundException e) {
+                e.printStackTrace();
+            } catch (InvalidDataException e) {
+                e.printStackTrace();
+            }
+
+            waitingForMusic = false;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+
+        //        @Override
 //        public boolean equals(Object o) {
 //            if (this == o) return true;
 //            if (o == null || getClass() != o.getClass()) return false;

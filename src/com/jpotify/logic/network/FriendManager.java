@@ -1,12 +1,14 @@
 package com.jpotify.logic.network;
 
 import com.jpotify.logic.Music;
+import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.logic.network.message.CommandMessage;
 import com.jpotify.logic.network.message.CommandType;
+import mpatric.mp3agic.InvalidDataException;
+import mpatric.mp3agic.UnsupportedTagException;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class FriendManager implements Runnable {
     private static final int PORT = 7878;
+    private static final int FILE_PORT = 8787;
 
     private String username;
     private List<String> ips;
@@ -72,7 +75,7 @@ public class FriendManager implements Runnable {
         private Socket socket;
         private ObjectInputStream in;
         private ObjectOutputStream out;
-        private boolean listen = false;
+        private boolean listen = true;
 
         public Friend(Socket socket) throws IOException {
             this.socket = socket;
@@ -103,9 +106,10 @@ public class FriendManager implements Runnable {
                             CommandType.SHARED_PLAYLIST_DATA, listener.getSharePlayList()));
                     break;
                 case MUSIC_REQUEST:
-                    //TO DO
-                    //Not implemented yet
-                    System.out.println("Come soon!");
+                    System.out.println("Sending...");
+                    sendMessage(new CommandMessage(username,
+                            CommandType.MUSIC_COME, message.getMusic()));
+                    sendMusic(message.getMusic());
                     break;
                 case CLOSE_CONNECTION:
                     closeConnection();
@@ -125,6 +129,28 @@ public class FriendManager implements Runnable {
                     e.printStackTrace();
                 else
                     System.out.println("Connection Closed");
+            }
+        }
+
+        public void sendMusic(Music music) {
+            try {
+                ServerSocket serverSocket = new ServerSocket(FILE_PORT);
+                Socket socket = serverSocket.accept();
+                FileInputStream fileInputStream = new FileInputStream(music.getFilePath());
+                OutputStream outputStream = socket.getOutputStream();
+                byte[] bytes = new byte[16 * 1024];
+                int count;
+                while ((count = fileInputStream.read(bytes)) > 0) {
+                    outputStream.write(bytes, 0, count);
+                }
+                fileInputStream.close();
+                socket.close();
+                serverSocket.close();
+                System.out.println("Finished sending.");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 

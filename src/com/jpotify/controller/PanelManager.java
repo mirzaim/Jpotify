@@ -7,6 +7,7 @@ import com.jpotify.logic.network.FriendManagerListener;
 import com.jpotify.logic.network.Server;
 import com.jpotify.logic.network.ServerListener;
 import com.jpotify.view.Listeners.ListenerManager;
+import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
 //import com.sun.deploy.jcp.controller.Network;
@@ -163,7 +164,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                         if (playList.getTitle().equals("Favourites") || playList.getTitle().equals("Shared PlayList")) {
                             String[] buttons = {"Play", "Change Order"};
                             int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
-                            if(returnValue == 1){
+                            if (returnValue == 1) {
                                 String selectedFirstSong = (String) JOptionPane.showInputDialog(
                                         getGUI().getMainPanel(),
                                         "select song : ",
@@ -182,12 +183,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                         dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
                                         dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
 
-                                Collections.swap(playList,playList.indexOf(selectedFirstSong),playList.indexOf(selectedSecondSong));
+                                Collections.swap(playList, playList.indexOf(selectedFirstSong), playList.indexOf(selectedSecondSong));
                                 loadPlaylists();
                             }
-
-
-
 
 
                         } else {
@@ -200,7 +198,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                         "Do you want to delete " + playList.getTitle() + " playlist?",
                                         "Delete PlayList",
                                         JOptionPane.YES_NO_OPTION);
-                                if(n == 0) {
+                                if (n == 0) {
                                     dataBase.getPlayLists().remove(playList);
                                     loadPlaylists();
                                 }
@@ -338,8 +336,12 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 player.updateMusic(music2);
                 music2.updateLastPlayedTime();
                 player.playMusic();
+                networkManager.friendManager.broadCastActivity(music2, true);
                 getGUI().setMusicData(music2.getTitle(), music2.getArtist(), music2.getAlbumImage());
                 break;
+            case NETWORK_PLAYLIST:
+                Music music3 = networkManager.getLastPlayListReceived().getMusicById(id);
+                networkManager.server.sendMusicRequest(music3);
             default:
         }
 
@@ -412,12 +414,13 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void friendPanelClicked(String id) {
-
+        networkManager.server.sendSharedPlayListRequest(id);
     }
 
     private class NetworkManager implements ServerListener, FriendManagerListener {
         private Server server;
         private FriendManager friendManager;
+        private PlayList lastPlayListReceived;
 
         //for Testing #Test
         private String[] friendIps = {"172.24.26.139"};
@@ -442,7 +445,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         //FriendManagerListener methods
         @Override
         public PlayList getSharePlayList() {
-            return null;
+            return dataBase.getSharedPlayList();
         }
 
         //ServerListener methods
@@ -453,7 +456,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
         @Override
         public void friendMusicStarted(String username, Music music) {
-
+            getGUI().getNetworkPanel().addActivity(username, music);
         }
 
         @Override
@@ -463,7 +466,24 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
         @Override
         public void sharedPlayListData(String username, PlayList playList) {
+            getGUI().getMainPanel().removeAll();
+            getGUI().getMainPanel().addPanels(playList.toArray(new DrawableItem[0]));
+            lastPlayListReceived = playList;
+            getGUI().getMainPanel().setMainPanelState(MainPanelState.NETWORK_PLAYLIST);
+        }
 
+        @Override
+        public void musicDownloaded(Music music) {
+            player.updateMusic(music);
+            music.updateLastPlayedTime();
+            player.playMusic();
+            getGUI().setMusicData(music.getTitle(), music.getArtist(), music.getAlbumImage());
+            getGUI().getPlayerPanel().setToPauseToggleButton();
+
+        }
+
+        public PlayList getLastPlayListReceived() {
+            return lastPlayListReceived;
         }
     }
 }

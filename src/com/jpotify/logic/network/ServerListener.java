@@ -12,4 +12,6 @@ public interface ServerListener {
     void friendMusicEnded(String username, Music music);
 
     void sharedPlayListData(String username, PlayList playList);
+
+    void musicDownloaded(Music music);
 }

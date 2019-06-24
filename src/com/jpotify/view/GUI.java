@@ -74,6 +74,10 @@ public final class GUI extends JFrame {
         return mainPanel;
     }
 
+    public NetworkPanel getNetworkPanel() {
+        return networkPanel;
+    }
+
     public TopPanel getTopPanel() {
         return topPanel;
     }

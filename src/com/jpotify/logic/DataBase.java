@@ -176,5 +176,7 @@ public class DataBase implements Serializable {
         return null;
     }
 
-
+    public PlayList getSharedPlayList() {
+        return playLists.get(1);
+    }
 }
