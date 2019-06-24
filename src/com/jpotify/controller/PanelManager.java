@@ -15,6 +15,9 @@ import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalBorders;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -396,6 +399,31 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
             JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                     dataBase.getMusicById(id).getTitle() + " added to your Shared PlayList");
+        }
+    }
+
+    @Override
+    public void buttonLyric(String id) {
+
+        JFrame jFrame = new JFrame();
+        String text = "";
+        try {
+            for (String string : LyricsGatherer.getSongLyrics(dataBase.getMusicById(id).getArtist(), dataBase.getMusicById(id).getTitle()))
+                text += string;
+
+            JTextPane jTextPane = new JTextPane();
+            jTextPane.setText(text);
+            StyledDocument doc = jTextPane.getStyledDocument();
+            SimpleAttributeSet center = new SimpleAttributeSet();
+            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+            jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            jFrame.add(jTextPane);
+            jFrame.setVisible(true);
+
+        }catch (IOException io){
+            JOptionPane.showMessageDialog(null,
+                    "Cant Get Lyric...");
         }
     }
 

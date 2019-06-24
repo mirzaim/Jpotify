@@ -117,11 +117,21 @@ public class MainPanel extends JPanel {
                 listener.buttonShare(item.getId());
             }
         });
+
+        MButton lyric = new MButton("Lyric", true, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listener.buttonLyric(item.getId());
+            }
+        });
+
         buttonPanel.add(plus);
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(like);
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(share);
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(lyric);
         buttonPanel.setBackground(Color.DARK_GRAY);
         return buttonPanel;
     }
