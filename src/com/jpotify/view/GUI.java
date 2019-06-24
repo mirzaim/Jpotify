@@ -16,6 +16,7 @@ public final class GUI extends JFrame {
     private MenuPanel menuPanel;
     private PlayerPanel playerPanel;
     private MainPanel mainPanel;
+    private TopPanel topPanel;
 
     private static GUI gui;
 
@@ -72,6 +73,10 @@ public final class GUI extends JFrame {
         return mainPanel;
     }
 
+    public TopPanel getTopPanel() {
+        return topPanel;
+    }
+
     public void setMusicData(String title, String singer, BufferedImage image) {
         playerPanel.setDataMusicData(title, singer);
         menuPanel.setArtwork(image);
@@ -95,9 +100,15 @@ public final class GUI extends JFrame {
         add(menuPanel = new MenuPanel(listenerManager), BorderLayout.LINE_START);
         add(playerPanel = new PlayerPanel(listenerManager), BorderLayout.PAGE_END);
 
+
+        JPanel temp = new JPanel(new BorderLayout());
+        add(temp, BorderLayout.CENTER);
+
+        temp.add(topPanel = new TopPanel(), BorderLayout.PAGE_START);
+
         JScrollPane jScrollPaneCenter = new JScrollPane(mainPanel = new MainPanel(listenerManager));
         jScrollPaneCenter.setBorder(new EmptyBorder(0, 0, 0, 0));
-        add(jScrollPaneCenter, BorderLayout.CENTER);
+        temp.add(jScrollPaneCenter, BorderLayout.CENTER);
 
         setVisible(true);
     }
