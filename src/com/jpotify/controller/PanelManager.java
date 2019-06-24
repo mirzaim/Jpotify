@@ -3,7 +3,6 @@ package com.jpotify.controller;
 import com.jpotify.logic.*;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.Listeners.ListenerManager;
-import com.jpotify.view.helper.ListDialog;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
 import mpatric.mp3agic.InvalidDataException;
