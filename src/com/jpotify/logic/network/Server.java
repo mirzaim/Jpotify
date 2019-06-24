@@ -9,7 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Server implements Runnable {
@@ -19,7 +21,7 @@ public class Server implements Runnable {
     private ServerListener listener;
 
     private ServerSocket serverSocket;
-    private LinkedList<FriendHandler> friendHandlers;
+    private List<FriendHandler> friendHandlers;
     private boolean flag = true;
 
     private Server(String username, int port) throws IOException {

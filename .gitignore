@@ -72,3 +72,4 @@ fabric.properties
 .idea/**/misc.xml
 .idea/**/encodings.xml
 database.m
+src/meta-inf

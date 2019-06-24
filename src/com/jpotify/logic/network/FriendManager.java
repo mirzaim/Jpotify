@@ -78,6 +78,7 @@ public class FriendManager implements Runnable {
             this.socket = socket;
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
+            sendIntroductionMessage();
         }
 
         @Override
@@ -125,6 +126,10 @@ public class FriendManager implements Runnable {
                 else
                     System.out.println("Connection Closed");
             }
+        }
+
+        void sendIntroductionMessage() {
+            sendMessage(new CommandMessage(username, CommandType.INTRODUCTION));
         }
 
         void reportClosingConnection() {

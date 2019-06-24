@@ -8,11 +8,14 @@ import java.util.List;
 
 public class DataBase implements Serializable {
 
+    private String username;
     private List<Album> albums;
     private List<PlayList> playLists;
     private List<Music> musics;
 
     public DataBase() {
+        //Testing #Test
+        username = String.valueOf(System.currentTimeMillis());
 
         albums = new LinkedList<>();
         playLists = new LinkedList<>();
@@ -74,15 +77,15 @@ public class DataBase implements Serializable {
         return 1;
     }
 
-    public int addSongToPlayList(Music music, PlayList playList){
-        if(playList.contains(music))
+    public int addSongToPlayList(Music music, PlayList playList) {
+        if (playList.contains(music))
             return 0;
 
         playList.add(music);
-        if(playList.getTitle().equals("Favourites"))
+        if (playList.getTitle().equals("Favourites"))
             music.setLiked(true);
 
-        if(playList.getTitle().equals("Shared PlayList"))
+        if (playList.getTitle().equals("Shared PlayList"))
             music.setShared(true);
         return 1;
     }
@@ -101,6 +104,10 @@ public class DataBase implements Serializable {
 
     public List<Music> getMusics() {
         return musics;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public Music[] getMusicsArray() {
@@ -126,7 +133,7 @@ public class DataBase implements Serializable {
     public Music[] getMusicByPlayListTitle(String playListTitle) {
         for (PlayList playList : playLists)
             if (playList.getTitle().equals(playListTitle))
-                if(playList.size() == 0)
+                if (playList.size() == 0)
                     return null;
                 else
                     return playList.toArray(new Music[0]);
@@ -145,21 +152,20 @@ public class DataBase implements Serializable {
         playLists.add(playList);
     }
 
-    public String[] getPlaylistsNames (){
+    public String[] getPlaylistsNames() {
         ArrayList<String> names = new ArrayList<>();
-        for(PlayList playList : playLists)
+        for (PlayList playList : playLists)
             names.add(playList.getTitle());
         return names.toArray(new String[0]);
     }
 
-    public PlayList getPlayListByTitle(String name){
-        for (PlayList playlist: playLists) {
-            if(playlist.getTitle().equals(name))
+    public PlayList getPlayListByTitle(String name) {
+        for (PlayList playlist : playLists) {
+            if (playlist.getTitle().equals(name))
                 return playlist;
         }
         return null;
     }
-
 
 
 }
