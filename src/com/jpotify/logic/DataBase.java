@@ -152,6 +152,14 @@ public class DataBase implements Serializable {
         return names.toArray(new String[0]);
     }
 
+    public PlayList getPlayListByTitle(String name){
+        for (PlayList playlist: playLists) {
+            if(playlist.getTitle().equals(name))
+                return playlist;
+        }
+        return null;
+    }
+
 
 
 }

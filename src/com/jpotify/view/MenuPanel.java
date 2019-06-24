@@ -74,7 +74,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 //            }
 //        }));
 
-        listener.loadPlaylists();
+//        listener.loadPlaylists();
         top.add(playList);
 
 

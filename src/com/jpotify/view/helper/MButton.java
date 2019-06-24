@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class MButton extends JButton {
     private Color defaultColor;
@@ -50,6 +51,11 @@ public class MButton extends JButton {
 
     public MButton(String text, boolean enableDefaultHover, ActionListener listener) {
         this(text, null, Color.LIGHT_GRAY, enableDefaultHover, listener);
+    }
+
+    public MButton(String text, ActionListener actionListener , MouseListener mouseListener){
+        this(text, null, Color.LIGHT_GRAY, false, actionListener);
+        addMouseListener(mouseListener);
     }
 
     public MButton(Icon defaultIcon, String id) {

@@ -3,7 +3,6 @@ package com.jpotify.controller;
 import com.jpotify.logic.*;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.Listeners.ListenerManager;
-import com.jpotify.view.helper.ListDialog;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
 import mpatric.mp3agic.InvalidDataException;
@@ -11,8 +10,8 @@ import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalBorders;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -125,14 +124,95 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void loadPlaylists() {
-        for(PlayList playList : dataBase.getPlayLists()){
-            getGUI().getMenuPanel().addPlayList((new MButton(playList.getTitle(), true, new ActionListener() {
+
+        getGUI().getMenuPanel().getPlayList().removeAll();
+
+        for(PlayList playList : dataBase.getPlayLists()) {
+            MButton mButton = new MButton(playList.getTitle());
+            Color PerformedColor = Color.white;
+            Color defaultColor = Color.LIGHT_GRAY;
+
+            ActionListener playListActionListener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     getGUI().getMenuPanel().getListener().playListClicked(playList.getTitle());
                 }
-            })));
+            };
+
+            MouseListener playListMouseListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if(e.getButton() == MouseEvent.BUTTON1) {
+//                        label.setText("Left Click!");
+                    }
+                    if(e.getButton() == MouseEvent.BUTTON2) {
+//                        label.setText("Middle Click!");
+                    }
+                    if(e.getButton() == MouseEvent.BUTTON3) {
+                        if(playList.getTitle().equals("Favourites") || playList.getTitle().equals("Shared PlayList")){
+                            String[] buttons = {"Play", "Change Order"};
+                            int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
+
+                        } else {
+                            String[] buttons = {"Play", "Edit Name", "Change Order", "Delete"};
+                            int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
+
+                            if (returnValue == 3) {
+                                dataBase.getPlayLists().remove(playList);
+                                loadPlaylists();
+                            }
+
+                            if(returnValue == 1){
+                                String name = JOptionPane.showInputDialog(
+                                        this,
+                                        "Name that you want :)"
+                                );
+                                mButton.setText(name);
+//                                loadPlaylists();
+                            }
+
+
+                            System.out.println(returnValue);
+//                        label.setText("Right Click!");
+                        }
+                    }
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    mButton.setForeground(defaultColor);
+                    mButton.setIcon(null);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    mButton.setForeground(PerformedColor);
+                    mButton.setIcon(null);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    mButton.setForeground(PerformedColor);
+                    mButton.setIcon(null);
+                    mButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    mButton.setForeground(defaultColor);
+                    mButton.setIcon(null);
+                    mButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                }
+            };
+
+            mButton.addActionListener(playListActionListener);
+            mButton.addMouseListener(playListMouseListener);
+
+            getGUI().getMenuPanel().addPlayList(mButton);
         }
+        getGUI().getMenuPanel().getPlayList().repaint();
+        getGUI().getMenuPanel().getPlayList().revalidate();
+
     }
 
     // PlayerPanelListener implementation
@@ -216,7 +296,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void buttonAdd(String id) {
-        String s = (String)JOptionPane.showInputDialog(
+        String selectedPlayList = (String)JOptionPane.showInputDialog(
                 getGUI().getMainPanel(),
                 "select playlist : ",
                 "Add to PlayList",
@@ -224,6 +304,10 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 null,
                 dataBase.getPlaylistsNames(),
                 dataBase.getPlaylistsNames()[0]);
+
+        if(selectedPlayList != null){
+            dataBase.getPlayListByTitle(selectedPlayList).add(dataBase.getMusicById(id));
+        }
     }
 
     @Override

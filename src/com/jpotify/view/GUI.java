@@ -98,7 +98,7 @@ public final class GUI extends JFrame {
             }
         });
 
-        add(menuPanel = new MenuPanel(listenerManager), BorderLayout.LINE_START);
+        add(new JScrollPane(menuPanel = new MenuPanel(listenerManager)), BorderLayout.LINE_START);
         add(playerPanel = new PlayerPanel(listenerManager), BorderLayout.PAGE_END);
         add(networkPanel = new NetworkPanel(listenerManager), BorderLayout.LINE_END);
 
