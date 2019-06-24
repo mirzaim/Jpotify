@@ -1,6 +1,7 @@
 package com.jpotify.logic;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class DataBase implements Serializable {
 
 
         for (Album album : this.albums) {
-            if (album.getAlbumTitle().equals(music.getAlbumTitle())) {
+            if (album.getTitle().equals(music.getAlbumTitle())) {
                 album.add(music);
                 this.musics.add(music);
                 return 1;
@@ -125,7 +126,10 @@ public class DataBase implements Serializable {
     public Music[] getMusicByPlayListTitle(String playListTitle) {
         for (PlayList playList : playLists)
             if (playList.getTitle().equals(playListTitle))
-                return playList.toArray(new Music[0]);
+                if(playList.size() == 0)
+                    return null;
+                else
+                    return playList.toArray(new Music[0]);
         return null;
     }
 
@@ -140,6 +144,14 @@ public class DataBase implements Serializable {
         PlayList playList = new PlayList(name);
         playLists.add(playList);
     }
+
+    public String[] getPlaylistsNames (){
+        ArrayList<String> names = new ArrayList<>();
+        for(PlayList playList : playLists)
+            names.add(playList.getTitle());
+        return names.toArray(new String[0]);
+    }
+
 
 
 }
