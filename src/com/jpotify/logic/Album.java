@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 public class Album extends ArrayList<Music> implements DrawableItem, Serializable {
@@ -17,23 +18,34 @@ public class Album extends ArrayList<Music> implements DrawableItem, Serializabl
     private transient BufferedImage albumImage = null;
     private Music albumFirstMusic;
 
+    private long lastPlayedTime;
+
     public Album(String albumTitle, Music albumFirstMusic) {
         this.albumTitle = albumTitle;
         this.albumFirstMusic = albumFirstMusic;
-    }
-
-    public String getAlbumTitle() {
-        return albumTitle;
     }
 
     public void setAlbumImage(BufferedImage albumImage) {
         this.albumImage = albumImage;
     }
 
+    public void updateLastPlayedTime(long time) {
+        lastPlayedTime = time;
+    }
+
+    public String getAlbumTitle() {
+        return albumTitle;
+    }
+
+
     public BufferedImage getAlbumImage() {
         if (albumImage == null)
             this.albumImage = albumFirstMusic.getAlbumImage();
         return albumImage;
+    }
+
+    public long getLastPlayedTime() {
+        return lastPlayedTime;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.jpotify.logic;
 
 import java.io.*;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class DataBase implements Serializable {
 
 
         for (Album album : this.albums) {
-            if (album.getAlbumTitle().equals(music.getAlbum())) {
+            if (album.getAlbumTitle().equals(music.getAlbumTitle())) {
                 album.add(music);
                 this.musics.add(music);
                 return 1;
@@ -62,8 +61,9 @@ public class DataBase implements Serializable {
 
         //some musics don't have album
         this.musics.add(music);
-        if (music.getAlbum() != null) {
-            Album album = new Album(music.getAlbum(), music);
+        if (music.getAlbumTitle() != null) {
+            Album album = new Album(music.getAlbumTitle(), music);
+            music.setAlbum(album);
             // first music is separate filed (not in list)
             album.add(music);
             albums.add(album);
@@ -76,6 +76,7 @@ public class DataBase implements Serializable {
     }
 
     public Album[] getAlbumsArray() {
+        albums.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
         return albums.toArray(new Album[0]);
     }
 
@@ -88,9 +89,7 @@ public class DataBase implements Serializable {
     }
 
     public Music[] getMusicsArray() {
-        musics.sort((o1, o2) -> {
-            return (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime());
-        });
+        musics.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
         return musics.toArray(new Music[0]);
     }
 
@@ -105,7 +104,7 @@ public class DataBase implements Serializable {
         musics.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
         List<Music> album = new LinkedList<>();
         for (Music music : musics)
-            if (music.getAlbum().equals(albumTitle))
+            if (music.getAlbumTitle().equals(albumTitle))
                 album.add(music);
         return album.toArray(new Music[0]);
     }
