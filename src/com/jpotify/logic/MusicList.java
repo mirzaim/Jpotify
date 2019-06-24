@@ -43,6 +43,13 @@ public class MusicList extends ArrayList<Music> implements DrawableItem, Seriali
         return Image;
     }
 
+    public Music getMusicById(String id) {
+        for (Music music : this)
+            if (music.getId().equals(id))
+                return music;
+        return null;
+    }
+
     public void setImage(BufferedImage Image) {
         this.Image = Image;
     }

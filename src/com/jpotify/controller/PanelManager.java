@@ -176,13 +176,19 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 String selectedSecondSong = (String) JOptionPane.showInputDialog(
                                         getGUI().getMainPanel(),
                                         "select song : ",
-                                        "First Song",
+                                        "Second Song",
                                         JOptionPane.PLAIN_MESSAGE,
                                         null,
                                         dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
                                         dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
 
-                                Collections.swap(playList,playList.indexOf(selectedFirstSong),playList.indexOf(selectedSecondSong));
+                                // i cant swap two music
+//                                int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).indexOf(playList.getMusicById(selectedFirstSong));
+//                                int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).indexOf(playList.getMusicById(selectedSecondSong));
+                                int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedFirstSong);
+                                int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedSecondSong);
+
+                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()),firstSongIndex,secondSongIndex);
                                 loadPlaylists();
                             }
 
