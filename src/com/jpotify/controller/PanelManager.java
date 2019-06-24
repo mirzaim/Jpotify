@@ -417,6 +417,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         networkManager.server.sendSharedPlayListRequest(id);
     }
 
+    @Override
+    public String getUsername() {
+        return dataBase.getUsername();
+    }
+
     private class NetworkManager implements ServerListener, FriendManagerListener {
         private Server server;
         private FriendManager friendManager;

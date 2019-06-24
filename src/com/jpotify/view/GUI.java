@@ -37,6 +37,13 @@ public final class GUI extends JFrame {
         }
     }
 
+    public static String askUserName() {
+        String name = "";
+        while (name.isEmpty())
+            name = JOptionPane.showInputDialog(new JFrame(), "Enter username: ");
+        return name;
+    }
+
     public static GUI getGUI() {
         return gui;
     }
@@ -110,7 +117,7 @@ public final class GUI extends JFrame {
         JPanel temp = new JPanel(new BorderLayout());
         add(temp, BorderLayout.CENTER);
 
-        temp.add(topPanel = new TopPanel(), BorderLayout.PAGE_START);
+        temp.add(topPanel = new TopPanel(listenerManager), BorderLayout.PAGE_START);
 
         JScrollPane jScrollPaneCenter = new JScrollPane(mainPanel = new MainPanel(listenerManager));
         jScrollPaneCenter.setBorder(new EmptyBorder(0, 0, 0, 0));

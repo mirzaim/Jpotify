@@ -13,9 +13,9 @@ public class DataBase implements Serializable {
     private List<PlayList> playLists;
     private List<Music> musics;
 
-    public DataBase() {
+    public DataBase(String username) {
         //Testing #Test
-        username = String.valueOf(System.currentTimeMillis());
+        this.username = username;
 
         albums = new LinkedList<>();
         playLists = new LinkedList<>();
@@ -128,8 +128,9 @@ public class DataBase implements Serializable {
         musics.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
         List<Music> album = new LinkedList<>();
         for (Music music : musics)
-            if (music.getAlbumTitle().equals(albumTitle))
-                album.add(music);
+            if (music.getAlbumTitle() != null)
+                if (music.getAlbumTitle().equals(albumTitle))
+                    album.add(music);
 
         if (album.size() > 0)
             return album.toArray(new Music[0]);
