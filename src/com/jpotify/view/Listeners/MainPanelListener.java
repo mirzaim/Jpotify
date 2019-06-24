@@ -10,4 +10,6 @@ public interface MainPanelListener {
 
     void buttonShare(String id);
 
+    void buttonLyric(String id);
+
 }

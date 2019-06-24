@@ -16,6 +16,9 @@ import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalBorders;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -177,13 +180,19 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 String selectedSecondSong = (String) JOptionPane.showInputDialog(
                                         getGUI().getMainPanel(),
                                         "select song : ",
-                                        "First Song",
+                                        "Second Song",
                                         JOptionPane.PLAIN_MESSAGE,
                                         null,
                                         dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
                                         dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
 
-                                Collections.swap(playList, playList.indexOf(selectedFirstSong), playList.indexOf(selectedSecondSong));
+                                // i cant swap two music
+//                                int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).indexOf(playList.getMusicById(selectedFirstSong));
+//                                int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).indexOf(playList.getMusicById(selectedSecondSong));
+                                int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedFirstSong);
+                                int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedSecondSong);
+
+                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()),firstSongIndex,secondSongIndex);
                                 loadPlaylists();
                             }
 
@@ -392,6 +401,31 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
             JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                     dataBase.getMusicById(id).getTitle() + " added to your Shared PlayList");
+        }
+    }
+
+    @Override
+    public void buttonLyric(String id) {
+
+        JFrame jFrame = new JFrame();
+        String text = "";
+        try {
+            for (String string : LyricsGatherer.getSongLyrics(dataBase.getMusicById(id).getArtist(), dataBase.getMusicById(id).getTitle()))
+                text += string;
+
+            JTextPane jTextPane = new JTextPane();
+            jTextPane.setText(text);
+            StyledDocument doc = jTextPane.getStyledDocument();
+            SimpleAttributeSet center = new SimpleAttributeSet();
+            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+            jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            jFrame.add(jTextPane);
+            jFrame.setVisible(true);
+
+        }catch (IOException io){
+            JOptionPane.showMessageDialog(null,
+                    "Cant Get Lyric...");
         }
     }
 
