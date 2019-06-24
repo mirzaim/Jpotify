@@ -1,5 +1,5 @@
 package com.jpotify.view.helper;
 
 public enum MainPanelState {
-    SONGS, ALBUMS, Favorites, Shared, OtherPlayList
+    SONGS, ALBUMS, Favorites, Shared, OtherPlayList, NETWORK_PLAYLIST
 }

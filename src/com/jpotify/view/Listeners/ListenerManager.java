@@ -1,8 +1,10 @@
 package com.jpotify.view.Listeners;
 
 import com.jpotify.view.GUI;
+import com.jpotify.view.TopPanel;
 
-public abstract class ListenerManager implements MainPanelListener, MenuPanelListener, NetworkPanelListener, PlayerPanelListener {
+public abstract class ListenerManager implements MainPanelListener, MenuPanelListener,
+        NetworkPanelListener, PlayerPanelListener, TopPanelListener {
     private GUI gui;
 
     public GUI getGUI() {

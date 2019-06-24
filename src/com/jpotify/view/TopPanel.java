@@ -1,5 +1,6 @@
 package com.jpotify.view;
 
+import com.jpotify.view.Listeners.TopPanelListener;
 import com.jpotify.view.helper.MButton;
 
 import javax.swing.*;
@@ -8,8 +9,10 @@ import java.awt.*;
 
 public class TopPanel extends JPanel {
     private MButton username;
+    private TopPanelListener listener;
 
-    public TopPanel() {
+    public TopPanel(TopPanelListener listener) {
+        this.listener = listener;
         setup();
     }
 
@@ -18,7 +21,7 @@ public class TopPanel extends JPanel {
         setBackground(Color.black);
         setBorder(new EmptyBorder(15, 20, 15, 20));
 
-        add(username = new MButton("userName", true), BorderLayout.LINE_END);
+        add(username = new MButton(listener.getUsername(), true), BorderLayout.LINE_END);
     }
 
     public void setUsername(String username) {

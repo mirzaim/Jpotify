@@ -9,7 +9,8 @@ public class Main {
 
         DataBase dataBase;
         if ((dataBase = DataBase.loadDataBase()) == null)
-            dataBase = new DataBase();
+            dataBase = new DataBase(GUI.askUserName());
+
 
         PanelManager panelManager = new PanelManager(dataBase);
         GUI.initGUI(panelManager);

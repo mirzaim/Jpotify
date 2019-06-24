@@ -29,12 +29,12 @@ public class MusicList extends ArrayList<Music> implements DrawableItem, Seriali
         return title;
     }
 
-    public String[] getSongsName(){
+    public String[] getSongsName() {
         ArrayList<String> names = new ArrayList<>();
-        for(Music music : this)
+        for (Music music : this)
             names.add(music.getTitle());
 
-        return names.toArray(new String [0]);
+        return names.toArray(new String[0]);
     }
 
     public BufferedImage getImage() {
