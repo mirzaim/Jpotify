@@ -1,6 +1,7 @@
 package com.jpotify.logic;
 
 import com.jpotify.logic.exceptions.NoTagFoundException;
+import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.ImagePanel;
 import com.jpotify.view.helper.MTextArea;
@@ -47,12 +48,8 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
             ID3v2 id3v2Tag = mp3File.getId3v2Tag();
 
             this.genre = id3v2Tag.getGenre();
-            byte[] imageData = id3v2Tag.getAlbumImage();
 
-            if (imageData != null) {
-                InputStream in = new ByteArrayInputStream(imageData);
-                this.albumImage = ImageIO.read(in);
-            }
+            this.albumImage = getAlbumImage();
 
             if (mp3File.hasId3v1Tag()) {
                 try (FileInputStream fis = new FileInputStream(file)) {
@@ -78,8 +75,11 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
                 this.albumTitle = id3v2Tag.getAlbum();
                 this.year = id3v2Tag.getYear();
             }
-            if (title != null)
-                title = title.trim();
+
+            if (title == null)
+                throw new NullPointerException("Bad File");
+
+            title = title.trim();
 
 
             // resizing image (from ? size to 200*200 - MainPanel elements size -)
@@ -89,7 +89,6 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
 //            g2d.dispose();
 //            this.albumImage = outputImage;
 
-            this.albumImage = Thumbnails.of(this.albumImage).size(imageWidth, imageHeight).asBufferedImage();
 
         } else {
             throw new NoTagFoundException("There is No ID3v2 Tag");
@@ -126,8 +125,11 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
                     if (imageData != null) {
                         InputStream in = new ByteArrayInputStream(imageData);
                         albumImage = ImageIO.read(in);
-                    }
+                    } else
+                        albumImage = AssetManager.getBufferedImageByName("abc.jpg");
+
                     Thumbnails.of(albumImage).size(imageWidth, imageHeight).asBufferedImage();
+                    this.albumImage = albumImage;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
