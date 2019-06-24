@@ -118,8 +118,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         }
         dataBase.createPlayList(name);
         getGUI().getMenuPanel().getPlayList().addButton(new MButton(name, true));
-        getGUI().getMenuPanel().repaint();
-        getGUI().getMenuPanel().revalidate();
+        loadPlaylists();
     }
 
     @Override
@@ -158,15 +157,29 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                             int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
 
                             if (returnValue == 3) {
-                                dataBase.getPlayLists().remove(playList);
-                                loadPlaylists();
+                                int n = JOptionPane.showConfirmDialog(
+                                        getGUI().getMainPanel(),
+                                        "Do you want to delete " + playList.getTitle() + " playlist?",
+                                        "Delete PlayList",
+                                        JOptionPane.YES_NO_OPTION);
+                                if(n == 0) {
+                                    dataBase.getPlayLists().remove(playList);
+                                    loadPlaylists();
+                                }
                             }
 
                             if(returnValue == 1){
                                 String name = JOptionPane.showInputDialog(
-                                        this,
+                                        getGUI().getMainPanel(),
                                         "Name that you want :)"
                                 );
+                                for (PlayList playList : dataBase.getPlayLists()) {
+                                    if (playList.getTitle().equals(name)) {
+                                        JOptionPane.showMessageDialog(null,
+                                                "This Playlist is already exist");
+                                        return;
+                                    }
+                                }
                                 mButton.setText(name);
 //                                loadPlaylists();
                             }
