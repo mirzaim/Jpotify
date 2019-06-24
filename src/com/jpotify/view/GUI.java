@@ -17,6 +17,7 @@ public final class GUI extends JFrame {
     private PlayerPanel playerPanel;
     private MainPanel mainPanel;
     private TopPanel topPanel;
+    private NetworkPanel networkPanel;
 
     private static GUI gui;
 
@@ -99,6 +100,7 @@ public final class GUI extends JFrame {
 
         add(menuPanel = new MenuPanel(listenerManager), BorderLayout.LINE_START);
         add(playerPanel = new PlayerPanel(listenerManager), BorderLayout.PAGE_END);
+        add(networkPanel = new NetworkPanel(listenerManager), BorderLayout.LINE_END);
 
 
         JPanel temp = new JPanel(new BorderLayout());

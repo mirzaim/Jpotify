@@ -28,7 +28,7 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
     }
 
     private void setup() {
-        setBackground(Color.DARK_GRAY);
+        setBackground(Color.BLACK);
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(20, 20, 5, 20));
 

@@ -175,4 +175,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     public void musicFinished() {
 
     }
+
+    @Override
+    public void friendPanelClicked(String id) {
+
+    }
 }
