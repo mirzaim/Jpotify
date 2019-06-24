@@ -135,6 +135,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         player.changePositionRelative(newPosition);
     }
 
+    @Override
+    public void soundVolumeChanged(int newPosition) {
+        player.updateSoundVolume(newPosition);
+    }
+
     // MainPanelListener implementation
     @Override
     public void panelClicked(String id) {

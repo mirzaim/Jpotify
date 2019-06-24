@@ -16,4 +16,6 @@ public interface PlayerPanelListener {
 
     void sliderChanged(int newPosition);
 
+    void soundVolumeChanged(int newPosition);
+
 }
