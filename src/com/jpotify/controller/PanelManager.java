@@ -2,9 +2,14 @@ package com.jpotify.controller;
 
 import com.jpotify.logic.*;
 import com.jpotify.logic.exceptions.NoTagFoundException;
+import com.jpotify.logic.network.FriendManager;
+import com.jpotify.logic.network.FriendManagerListener;
+import com.jpotify.logic.network.Server;
+import com.jpotify.logic.network.ServerListener;
 import com.jpotify.view.Listeners.ListenerManager;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
+import com.sun.deploy.jcp.controller.Network;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
@@ -20,6 +25,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     private DataBase dataBase;
     private Player player;
+    private NetworkManager networkManager;
 
     public PanelManager(DataBase dataBase, Player player) {
         this.dataBase = dataBase;
@@ -29,6 +35,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     public PanelManager(DataBase dataBase) {
         this.dataBase = dataBase;
         this.player = new Player(this);
+        try {
+            networkManager = new NetworkManager();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -95,9 +106,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     public void playListClicked(String name) {
         getGUI().getMainPanel().removeAll();
         getGUI().getMainPanel().addPanels(dataBase.getMusicByPlayListTitle(name));
-        if(name.equals("Favourites"))
+        if (name.equals("Favourites"))
             getGUI().getMainPanel().setMainPanelState(MainPanelState.Favorites);
-        else if(name.equals("Shared PlayList"))
+        else if (name.equals("Shared PlayList"))
             getGUI().getMainPanel().setMainPanelState(MainPanelState.Shared);
         else
             getGUI().getMainPanel().setMainPanelState(MainPanelState.OtherPlayList);
@@ -126,7 +137,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
         getGUI().getMenuPanel().getPlayList().removeAll();
 
-        for(PlayList playList : dataBase.getPlayLists()) {
+        for (PlayList playList : dataBase.getPlayLists()) {
             MButton mButton = new MButton(playList.getTitle());
             Color PerformedColor = Color.white;
             Color defaultColor = Color.LIGHT_GRAY;
@@ -141,14 +152,14 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             MouseListener playListMouseListener = new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if(e.getButton() == MouseEvent.BUTTON1) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
 //                        label.setText("Left Click!");
                     }
-                    if(e.getButton() == MouseEvent.BUTTON2) {
+                    if (e.getButton() == MouseEvent.BUTTON2) {
 //                        label.setText("Middle Click!");
                     }
-                    if(e.getButton() == MouseEvent.BUTTON3) {
-                        if(playList.getTitle().equals("Favourites") || playList.getTitle().equals("Shared PlayList")){
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        if (playList.getTitle().equals("Favourites") || playList.getTitle().equals("Shared PlayList")) {
                             String[] buttons = {"Play", "Change Order"};
                             int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
 
@@ -168,7 +179,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 }
                             }
 
-                            if(returnValue == 1){
+                            if (returnValue == 1) {
                                 String name = JOptionPane.showInputDialog(
                                         getGUI().getMainPanel(),
                                         "Name that you want :)"
@@ -309,7 +320,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void buttonAdd(String id) {
-        String selectedPlayList = (String)JOptionPane.showInputDialog(
+        String selectedPlayList = (String) JOptionPane.showInputDialog(
                 getGUI().getMainPanel(),
                 "select playlist : ",
                 "Add to PlayList",
@@ -318,14 +329,14 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 dataBase.getPlaylistsNames(),
                 dataBase.getPlaylistsNames()[0]);
 
-        if(selectedPlayList != null){
+        if (selectedPlayList != null) {
             dataBase.getPlayListByTitle(selectedPlayList).add(dataBase.getMusicById(id));
         }
     }
 
     @Override
     public void buttonLike(String id) {
-        if (dataBase.addSongToPlayList(dataBase.getMusicById(id) ,dataBase.getPlayLists().get(0)) == 0) // 0 is Favourites
+        if (dataBase.addSongToPlayList(dataBase.getMusicById(id), dataBase.getPlayLists().get(0)) == 0) // 0 is Favourites
             JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                     "File is already exist in your Favourites");
         else {
@@ -341,7 +352,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void buttonShare(String id) {
-        if (dataBase.addSongToPlayList(dataBase.getMusicById(id) ,dataBase.getPlayLists().get(1)) == 0) // 1 is Shared PlayList
+        if (dataBase.addSongToPlayList(dataBase.getMusicById(id), dataBase.getPlayLists().get(1)) == 0) // 1 is Shared PlayList
             JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                     "File is already exist in your Shared PlayList");
         else {
@@ -359,6 +370,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     @Override
     public void closingProgram() {
         dataBase.saveDataBase();
+        networkManager.stopNetwork();
     }
 
     @Override
@@ -374,5 +386,57 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     @Override
     public void friendPanelClicked(String id) {
 
+    }
+
+    private class NetworkManager implements ServerListener, FriendManagerListener {
+        private Server server;
+        private FriendManager friendManager;
+
+        //for Testing #Test
+        private String[] friendIps = {"172.24.26.139"};
+
+        public NetworkManager() throws IOException {
+            server = new Server(dataBase.getUsername(), this);
+            friendManager = new FriendManager(dataBase.getUsername(), friendIps, this);
+
+            new Thread(server).start();
+            new Thread(friendManager).start();
+        }
+
+        public void stopNetwork() {
+            friendManager.stop();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ignored) {
+            }
+            server.closeServer();
+        }
+
+        //FriendManagerListener methods
+        @Override
+        public PlayList getSharePlayList() {
+            return null;
+        }
+
+        //ServerListener methods
+        @Override
+        public void friendBecomeOnline(String username) {
+            System.out.println(username + " Become Online");
+        }
+
+        @Override
+        public void friendMusicStarted(String username, Music music) {
+
+        }
+
+        @Override
+        public void friendMusicEnded(String username, Music music) {
+
+        }
+
+        @Override
+        public void sharedPlayListData(String username, PlayList playList) {
+
+        }
     }
 }

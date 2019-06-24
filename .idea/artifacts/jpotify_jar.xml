@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jpotify:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jpotify_jar</output-path>
+    <root id="archive" name="jpotify.jar">
+      <element id="module-output" name="jpotify" />
+    </root>
+  </artifact>
+</component>
