@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileOutputStream;
 
 
 public class MainPanel extends JPanel {
@@ -79,6 +80,13 @@ public class MainPanel extends JPanel {
     }
 
     public void addPanels(DrawableItem[] items) {
+        if(items == null) {
+            MButton empty = new MButton("Empty");
+            empty.setFont((new Font("Arial", Font.BOLD,30)));
+            this.add(empty,BorderLayout.CENTER);
+            return;
+        }
+
         for (DrawableItem item : items)
             addPanel(item);
     }

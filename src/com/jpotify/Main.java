@@ -16,7 +16,7 @@ public class Main {
         GUI.initGUI(panelManager);
         GUI gui = GUI.getGUI();
 
-        // for starting program - if doesnt exit nothing will not show
+        // for starting program - if doesnt exist nothing will not show
         panelManager.songs();
     }
 }

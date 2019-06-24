@@ -60,19 +60,21 @@ public class MenuPanel extends JPanel implements ActionListener {
         top.add(library);
 
         playList = new MiniMenu("PLAYLISTS");
-        playList.addButton(new MButton("Favourites", true, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                listener.playListClicked("Favourites");
-            }
-        }));
+//        playList.addButton(new MButton("Favourites", true, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                listener.playListClicked("Favourites");
+//            }
+//        }));
+//
+//        playList.addButton(new MButton("Shared PlayList", true, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                listener.playListClicked("Shared PlayList");
+//            }
+//        }));
 
-        playList.addButton(new MButton("Shared PlayList", true, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                listener.playListClicked("Shared PlayList");
-            }
-        }));
+        listener.loadPlaylists();
         top.add(playList);
 
 
@@ -90,8 +92,8 @@ public class MenuPanel extends JPanel implements ActionListener {
         bottom.add(imagePanel);
     }
 
-    public void addPlayList(String name) {
-        playList.addButton(new MButton(name, true));
+    public void addPlayList(MButton mButton) {
+        playList.addButton(mButton);
     }
 
     public void setArtwork(BufferedImage image) {
@@ -147,4 +149,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     }
 
+    public MenuPanelListener getListener() {
+        return listener;
+    }
 }

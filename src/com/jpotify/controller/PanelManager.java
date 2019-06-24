@@ -3,14 +3,19 @@ package com.jpotify.controller;
 import com.jpotify.logic.*;
 import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.view.Listeners.ListenerManager;
+import com.jpotify.view.helper.ListDialog;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalBorders;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
 
@@ -97,6 +102,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             getGUI().getMainPanel().setMainPanelState(MainPanelState.Shared);
         else
             getGUI().getMainPanel().setMainPanelState(MainPanelState.OtherPlayList);
+
+        getGUI().getMainPanel().repaint();
+        getGUI().getMainPanel().revalidate();
     }
 
     @Override
@@ -113,6 +121,18 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         getGUI().getMenuPanel().getPlayList().addButton(new MButton(name, true));
         getGUI().getMenuPanel().repaint();
         getGUI().getMenuPanel().revalidate();
+    }
+
+    @Override
+    public void loadPlaylists() {
+        for(PlayList playList : dataBase.getPlayLists()){
+            getGUI().getMenuPanel().addPlayList((new MButton(playList.getTitle(), true, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    getGUI().getMenuPanel().getListener().playListClicked(playList.getTitle());
+                }
+            })));
+        }
     }
 
     // PlayerPanelListener implementation
@@ -196,7 +216,14 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void buttonAdd(String id) {
-
+        String s = (String)JOptionPane.showInputDialog(
+                getGUI().getMainPanel(),
+                "select playlist : ",
+                "Add to PlayList",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                dataBase.getPlaylistsNames(),
+                dataBase.getPlaylistsNames()[0]);
     }
 
     @Override

@@ -16,4 +16,6 @@ public interface MenuPanelListener {
 
     void newPlayList(String name);
 
+    void loadPlaylists();
+
 }
