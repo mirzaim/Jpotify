@@ -1,0 +1,6 @@
+package com.jpotify.logic.network.message;
+
+public enum CommandType {
+    START_ACTIVITY, END_ACTIVITY, SHARED_PLAYLIST_DATA, MUSIC_COME, INTRODUCTION, SHARED_PLAYLIST_REQUEST,
+    MUSIC_REQUEST, CLOSE_CONNECTION
+}
