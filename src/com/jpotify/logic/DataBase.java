@@ -14,9 +14,7 @@ public class DataBase implements Serializable {
     private List<Music> musics;
 
     public DataBase(String username) {
-        //Testing #Test
         this.username = username;
-
         albums = new LinkedList<>();
         playLists = new LinkedList<>();
         musics = new LinkedList<>();
@@ -40,10 +38,7 @@ public class DataBase implements Serializable {
 
     public void saveDataBase() {
         File file = new File("database.m");
-
         try {
-            if (file.exists())
-                file.delete();
             file.createNewFile();
             new ObjectOutputStream(new FileOutputStream(file)).writeObject(this);
         } catch (IOException e) {
@@ -139,8 +134,7 @@ public class DataBase implements Serializable {
     }
 
 
-    //what????????????????????? #Test
-    public Music[] getMusicByPlayListTitle(String playListTitle) {
+    public Music[] getMusicsInPlayListTitle(String playListTitle) {
         for (PlayList playList : playLists)
             if (playList.getTitle().equals(playListTitle))
                 if (playList.size() == 0)
@@ -158,8 +152,7 @@ public class DataBase implements Serializable {
     }
 
     public void createPlayList(String name) {
-        PlayList playList = new PlayList(name);
-        playLists.add(playList);
+        playLists.add(new PlayList(name));
     }
 
     public String[] getPlaylistsNames() {

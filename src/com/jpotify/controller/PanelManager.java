@@ -15,7 +15,6 @@ import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalBorders;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -23,7 +22,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
@@ -110,16 +108,13 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     @Override
     public void playListClicked(String name) {
         getGUI().getMainPanel().removeAll();
-        getGUI().getMainPanel().addPanels(dataBase.getMusicByPlayListTitle(name));
+        getGUI().getMainPanel().addPanels(dataBase.getMusicsInPlayListTitle(name));
         if (name.equals("Favourites"))
             getGUI().getMainPanel().setMainPanelState(MainPanelState.Favorites);
         else if (name.equals("Shared PlayList"))
             getGUI().getMainPanel().setMainPanelState(MainPanelState.Shared);
         else
             getGUI().getMainPanel().setMainPanelState(MainPanelState.OtherPlayList);
-
-        getGUI().getMainPanel().repaint();
-        getGUI().getMainPanel().revalidate();
     }
 
     @Override
