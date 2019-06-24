@@ -13,7 +13,7 @@ public class TopPanel extends JPanel {
         setup();
     }
 
-    public void setup() {
+    private void setup() {
         setLayout(new BorderLayout());
         setBackground(Color.black);
         setBorder(new EmptyBorder(15, 20, 15, 20));
