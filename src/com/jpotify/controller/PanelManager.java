@@ -419,7 +419,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             SimpleAttributeSet center = new SimpleAttributeSet();
             StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
             doc.setParagraphAttributes(0, doc.getLength(), center, false);
-            jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//            jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             jFrame.add(jTextPane);
             jFrame.setVisible(true);
 
