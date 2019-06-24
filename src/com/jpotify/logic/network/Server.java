@@ -22,17 +22,14 @@ public class Server implements Runnable {
     private LinkedList<FriendHandler> friendHandlers;
     private boolean flag = true;
 
-    private Server(String username, int port) {
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private Server(String username, int port) throws IOException {
+        serverSocket = new ServerSocket(port);
+        this.username = username;
 
         friendHandlers = new LinkedList<>();
     }
 
-    public Server(String username, ServerListener listener) {
+    public Server(String username, ServerListener listener) throws IOException {
         this(username, PORT);
         if (listener == null)
             throw new NullPointerException();
@@ -96,9 +93,9 @@ public class Server implements Runnable {
                 }
         }
 
-        private CommandMessage readMessage() throws IOException, ClassNotFoundException {
-            return (CommandMessage) in.readObject();
-        }
+//        private CommandMessage readMessage() throws IOException, ClassNotFoundException {
+//            return (CommandMessage) in.readObject();
+//        }
 
         private void sendMessage(AbstractMessage message) {
             try {
