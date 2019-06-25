@@ -43,6 +43,7 @@ public class Server implements Runnable {
     public void run() {
         while (flag)
             try {
+                System.out.println("Waiting for friends...");
                 Socket socket = serverSocket.accept();
                 FriendHandler friend = new FriendHandler(socket);
                 friendHandlers.add(friend);
@@ -92,7 +93,6 @@ public class Server implements Runnable {
         private ObjectOutputStream out;
         private Socket socket;
         private boolean listen = true;
-        private boolean waitingForMusic = false;
 
         private FriendHandler(Socket clientSocket) throws IOException {
             socket = clientSocket;
@@ -106,10 +106,6 @@ public class Server implements Runnable {
                 try {
                     CommandMessage command = (CommandMessage) in.readObject();
                     handleCommand(command);
-//                    synchronized (this) {
-//                        if (waitingForMusic)
-//                            wait();
-//                    }
                 } catch (IOException e) {
                     if (!socket.isClosed())
                         e.printStackTrace();
@@ -118,10 +114,6 @@ public class Server implements Runnable {
                 }
         }
 
-//        private CommandMessage readMessage() throws IOException, ClassNotFoundException {
-//            return (CommandMessage) in.readObject();
-//        }
-
         private void sendMessage(AbstractMessage message) {
             try {
                 out.writeObject(message);
@@ -129,11 +121,6 @@ public class Server implements Runnable {
                 e.printStackTrace();
             }
         }
-
-//        private void sendFileRequest(Music music) {
-//            sendMessage(new CommandMessage(username, CommandType.MUSIC_REQUEST, music));
-//            waitingForMusic = true;
-//        }
 
         private void closeConnection() throws IOException {
             listen = false;
@@ -207,8 +194,6 @@ public class Server implements Runnable {
             } catch (InvalidDataException e) {
                 e.printStackTrace();
             }
-
-            waitingForMusic = false;
         }
 
         public String getUsername() {

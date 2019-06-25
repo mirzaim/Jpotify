@@ -40,7 +40,7 @@ public class FriendManager implements Runnable {
                 try {
                     System.out.println("Try to connect to " + ip);
                     Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress(ip, PORT), 2 * 1000);
+                    socket.connect(new InetSocketAddress(ip, PORT), 60 * 1000);
                     Friend friend = new Friend(socket);
                     new Thread(friend).start();
                     onlineFriends.add(friend);
