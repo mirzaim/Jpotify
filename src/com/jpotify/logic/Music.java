@@ -80,7 +80,7 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
                 throw new NullPointerException("Bad File");
 
             title = title.trim();
-
+            lastPlayedTime = new Date().getTime();
 
             // resizing image (from ? size to 200*200 - MainPanel elements size -)
 //            BufferedImage outputImage = new BufferedImage(imageWidth, imageHeight, this.albumImage.getType());

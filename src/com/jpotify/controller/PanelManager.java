@@ -61,35 +61,18 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             Music music = new Music(file);
 
             if (dataBase.addSong(music)) {
-                if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.SONGS)
-                    getGUI().getMainPanel().addPanel(music);
+                if (getMainPanelState() == MainPanelState.SONGS)
+                    songs();
 
-                if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.ALBUMS)
-                    this.albums();
+                if (getMainPanelState() == MainPanelState.ALBUMS)
+                    albums();
 
-                JOptionPane.showMessageDialog(getGUI().getMainPanel(),
-                        music.getTitle() + " added to your Library");
+                getGUI().showMessage(music.getTitle() + " added to your Library");
             } else {
-
-                JOptionPane.showMessageDialog(getGUI().getMainPanel(),
-                        "File is already exist in your library");
+                getGUI().showMessage("File is already exist in your library");
             }
-        } //for Testing #Test
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
-            e.printStackTrace();
-        } catch (NoTagFoundException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(getGUI().getMainPanel(),
-                    "Can't Add file",
-                    "Error",
-                    JOptionPane.WARNING_MESSAGE);
-            System.out.println(e.getCause() + e.getMessage());
+            getGUI().showMessage("Can't Add file");
         }
 
     }
