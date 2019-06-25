@@ -110,7 +110,7 @@ public class Server implements Runnable {
                     if (!socket.isClosed())
                         e.printStackTrace();
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    System.out.println("Invalid input!");
                 }
         }
 
