@@ -10,12 +10,10 @@ import com.jpotify.view.Listeners.ListenerManager;
 import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
-//import com.sun.deploy.jcp.controller.Network;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalBorders;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -23,7 +21,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
@@ -462,7 +459,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         private PlayList lastPlayListReceived;
 
         //for Testing #Test
-        private String[] friendIps = {"172.24.26.139"};
+        private String[] friendIps = {"192.168.1.3"};
 
         public NetworkManager() throws IOException {
             server = new Server(dataBase.getUsername(), this);
