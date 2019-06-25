@@ -27,6 +27,7 @@ public class MainPanel extends JPanel {
     public MainPanel(MainPanelListener listener) {
         this.listener = listener;
         setLayout(new WrapLayout(0, 30, 30));
+        setBackground(Color.DARK_GRAY);
 
     }
 
