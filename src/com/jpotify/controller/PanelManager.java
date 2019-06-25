@@ -29,10 +29,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     private Player player;
     private NetworkManager networkManager;
 
-    public PanelManager(DataBase dataBase, Player player) {
-        this.dataBase = dataBase;
-        this.player = player;
-    }
+    public String networkUsername = null;
 
     public PanelManager(DataBase dataBase) {
         this.dataBase = dataBase;
@@ -379,7 +376,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 break;
             case NETWORK_PLAYLIST:
                 Music music3 = networkManager.getLastPlayListReceived().getMusicById(id);
-                networkManager.server.sendMusicRequest(music3);
+                networkManager.server.sendMusicRequest(music3, networkUsername);
             default:
         }
 
@@ -538,6 +535,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             getGUI().getMainPanel().removeAll();
             getGUI().getMainPanel().addPanels(playList.toArray(new DrawableItem[0]));
             lastPlayListReceived = playList;
+            networkUsername = username;
             getGUI().getMainPanel().setMainPanelState(MainPanelState.NETWORK_PLAYLIST);
         }
 

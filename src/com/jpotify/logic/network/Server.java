@@ -77,7 +77,7 @@ public class Server implements Runnable {
             }
     }
 
-    public void sendMusicRequest(Music music) {
+    public void sendMusicRequest(Music music, String username) {
         for (FriendHandler friendHandler : friendHandlers)
             if (friendHandler.getUsername().equals(username)) {
                 friendHandler.sendMessage(new CommandMessage(this.username, CommandType.MUSIC_REQUEST, music));
