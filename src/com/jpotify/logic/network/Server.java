@@ -183,7 +183,7 @@ public class Server implements Runnable {
                 socket.close();
                 System.out.println("Download Finished");
 
-                listener.musicDownloaded(music);
+                listener.musicDownloaded(receivedMusic);
 
             } catch (IOException e) {
                 e.printStackTrace();
