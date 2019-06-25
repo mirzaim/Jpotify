@@ -8,11 +8,10 @@ import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class FriendManager implements Runnable {
     private static final int PORT = 7878;
@@ -23,41 +22,71 @@ public class FriendManager implements Runnable {
     private FriendManagerListener listener;
 
     private List<Friend> onlineFriends;
+    private HashMap<Friend, String> friendIpMap;
+    private boolean flag = true;
 
     public FriendManager(String username, String[] ips, FriendManagerListener listener) {
         this.username = username;
         this.ips = new LinkedList<>(Arrays.asList(ips));
         this.listener = listener;
         onlineFriends = new LinkedList<>();
+        friendIpMap = new HashMap<>();
     }
 
     @Override
     public void run() {
-        for (String ip : ips) {
+        while (flag) {
+            for (String ip : getNotConnectedFriends()) {
+                try {
+                    System.out.println("Try to connect to " + ip);
+                    Socket socket = new Socket();
+                    socket.connect(new InetSocketAddress(ip, PORT), 2 * 1000);
+                    Friend friend = new Friend(socket);
+                    new Thread(friend).start();
+                    onlineFriends.add(friend);
+                    friendIpMap.put(friend, ip);
+                    System.out.println("Connected to " + ip);
+                } catch (IOException e) {
+                    System.out.println("Failed to connect to " + ip);
+                }
+            }
             try {
-                Socket socket = new Socket(ip, PORT);
-                Friend friend = new Friend(socket);
-                new Thread(friend).start();
-                onlineFriends.add(friend);
-            } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Thread sleeping");
+                Thread.sleep(10 * 1000);
+            } catch (InterruptedException e) {
+                flag = false;
             }
         }
+
     }
 
     public void stop() {
-        for (Friend friend : onlineFriends) {
+        flag = false;
+        Iterator<Friend> iterator = onlineFriends.iterator();
+        while (iterator.hasNext())
             try {
+                Friend friend = iterator.next();
                 friend.reportClosingConnection();
                 friend.closeConnection();
+                iterator.remove();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
 
         if (onlineFriends.size() > 0)
             ;//handle error.
 
+    }
+
+    public String[] getNotConnectedFriends() {
+        List<String> onlineFriendsIP = new LinkedList<>();
+        for (Friend friend : onlineFriends)
+            if (friendIpMap.containsKey(friend))
+                onlineFriendsIP.add(friendIpMap.get(friend));
+
+        List<String> offlineFriend = new LinkedList<>(ips);
+        offlineFriend.removeAll(onlineFriendsIP);
+        return offlineFriend.toArray(new String[0]);
     }
 
     public void broadCastActivity(Music music, boolean started) {
@@ -154,6 +183,10 @@ public class FriendManager implements Runnable {
             }
         }
 
+        public String getIP() {
+            return socket.getInetAddress().toString();
+        }
+
         void sendIntroductionMessage() {
             sendMessage(new CommandMessage(username, CommandType.INTRODUCTION));
         }
@@ -167,6 +200,19 @@ public class FriendManager implements Runnable {
             in.close();
             out.close();
             socket.close();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Friend friend = (Friend) o;
+            return Objects.equals(socket.getInetAddress(), friend.socket.getInetAddress());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(socket.getInetAddress());
         }
     }
 }

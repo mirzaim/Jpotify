@@ -457,7 +457,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         private PlayList lastPlayListReceived;
 
         //for Testing #Test
-        private String[] friendIps = {"172.24.26.139"};
+        private String[] friendIps = {"172.24.26.139", "172.31.64.127"};
 
         public NetworkManager() throws IOException {
             server = new Server(dataBase.getUsername(), this);
