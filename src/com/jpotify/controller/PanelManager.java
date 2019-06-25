@@ -126,6 +126,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         getGUI().getMenuPanel().getPlayList().removeAll();
 
         for (PlayList playList : dataBase.getPlayLists()) {
+
             MButton mButton = new MButton(playList.getTitle());
             Color PerformedColor = Color.white;
             Color defaultColor = Color.LIGHT_GRAY;
@@ -179,7 +180,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
                                 String[] newOrderNames;
 
-                                DefaultListModel<String> myListModel = createStringListModel(playList.getSongsName());
+                                DefaultListModel<String> myListModel = createStringListModel(dataBase.getPlayListByTitle(playList.getTitle()).getSongsName());
                                 JList<String> myList = new JList<String>(myListModel);
 
                                 ListDialog dialog = new ListDialog("Please select an item in the list: ", myList, myListModel);
@@ -191,13 +192,12 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 });
                                 dialog.show();
                                 newOrderNames = dialog.convert2SringArray();
-                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList,newOrderNames);
+                                PlayList newPlayList = dataBase.createNewPlayListByOrder(dataBase.getPlayListByTitle(playList.getTitle()),newOrderNames);
 
-                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
+                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(dataBase.getPlayListByTitle(playList.getTitle())),newPlayList);
 //                                playList = newPlayList;
 
-                                playListClicked(playList.getTitle());
-                                return;
+                                playListClicked(dataBase.getPlayListByTitle(playList.getTitle()).getTitle());
                             }
 
 
