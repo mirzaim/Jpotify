@@ -130,11 +130,11 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
                             albumImage = AssetManager.getBufferedImageByName("abc.jpg");
 
 
-                    } else {
-                        albumImage = AssetManager.getBufferedImageByName("abc.jpg");
                     }
                     Thumbnails.of(albumImage).size(imageWidth, imageHeight).asBufferedImage();
                     this.albumImage = albumImage;
+                } else {
+                    albumImage = AssetManager.getBufferedImageByName("abc.jpg");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
