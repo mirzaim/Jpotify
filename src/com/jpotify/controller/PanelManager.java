@@ -376,7 +376,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 break;
             case NETWORK_PLAYLIST:
                 Music music3 = networkManager.getLastPlayListReceived().getMusicById(id);
-                networkManager.server.sendMusicRequest(music3,networkUsername);
+                networkManager.server.sendMusicRequest(music3, networkUsername);
             default:
         }
 
@@ -532,8 +532,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
         @Override
         public void sharedPlayListData(String username, PlayList playList) {
+            System.out.println(networkUsername + " shared playlist size: " + playList.size());
             getGUI().getMainPanel().removeAll();
-            getGUI().getMainPanel().addPanels(playList.toArray(new DrawableItem[0]));
+            getGUI().getMainPanel().addPanels(playList.getMusics());
             lastPlayListReceived = playList;
             networkUsername = username;
             getGUI().getMainPanel().setMainPanelState(MainPanelState.NETWORK_PLAYLIST);

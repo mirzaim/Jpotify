@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Server implements Runnable {
     private static final int PORT = 7878;
@@ -201,17 +202,17 @@ public class Server implements Runnable {
         }
 
 
-        //        @Override
-//        public boolean equals(Object o) {
-//            if (this == o) return true;
-//            if (o == null || getClass() != o.getClass()) return false;
-//            FriendHandler that = (FriendHandler) o;
-//            return Objects.equals(username, that.username);
-//        }
-//
-//        @Override
-//        public int hashCode() {
-//            return Objects.hash(username);
-//        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            FriendHandler that = (FriendHandler) o;
+            return Objects.equals(username, that.username);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(username);
+        }
     }
 }
