@@ -163,7 +163,6 @@ public class FriendManager implements Runnable {
 
         public void sendMusic(Music music) {
             try {
-                Thread.sleep(10);
                 ServerSocket serverSocket = new ServerSocket(FILE_PORT);
                 Socket socket = serverSocket.accept();
                 FileInputStream fileInputStream = new FileInputStream(music.getFilePath());
@@ -181,7 +180,6 @@ public class FriendManager implements Runnable {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException ignored) {
             }
         }
 

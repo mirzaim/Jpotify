@@ -142,7 +142,7 @@ public class Server implements Runnable {
                     listener.friendMusicEnded(message.getSenderUsername(), message.getMusic());
                     break;
                 case SHARED_PLAYLIST_DATA:
-                    System.out.println("SHARED_PLAYLIST_DATA");
+                    System.out.println("Shared playlist data received");
                     listener.sharedPlayListData(message.getSenderUsername(), message.getSharedPlayList());
                     break;
                 case MUSIC_COME:
