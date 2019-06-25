@@ -116,6 +116,7 @@ public final class GUI extends JFrame {
 
         JScrollPane menuPanelScroll = new JScrollPane(menuPanel = new MenuPanel(listenerManager));
         menuPanelScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
+        menuPanelScroll.setOpaque(false);
 
         add(menuPanelScroll, BorderLayout.LINE_START);
         add(playerPanel = new PlayerPanel(listenerManager), BorderLayout.PAGE_END);

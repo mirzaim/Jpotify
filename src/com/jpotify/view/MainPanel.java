@@ -8,7 +8,9 @@ import com.jpotify.view.helper.MainPanelState;
 import com.jpotify.view.helper.WrapLayout;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,9 +55,7 @@ public class MainPanel extends JPanel {
         panel.setBackground(Color.DARK_GRAY);
 
 
-//        loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-
-
+        this.setBorder(BorderFactory.createMatteBorder(0,2,0,2,Color.BLACK));
 
         add(panel);
 
