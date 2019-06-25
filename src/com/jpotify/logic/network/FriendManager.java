@@ -40,7 +40,7 @@ public class FriendManager implements Runnable {
                 try {
                     System.out.println("Try to connect to " + ip);
                     Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress(ip, PORT), 60 * 1000);
+                    socket.connect(new InetSocketAddress(ip, PORT), 5 * 1000);
                     Friend friend = new Friend(socket);
                     new Thread(friend).start();
                     onlineFriends.add(friend);
@@ -123,7 +123,7 @@ public class FriendManager implements Runnable {
                     if (!socket.isClosed())
                         e.printStackTrace();
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    System.out.println("Invalid input!");
                 }
             }
         }
@@ -163,6 +163,7 @@ public class FriendManager implements Runnable {
 
         public void sendMusic(Music music) {
             try {
+                Thread.sleep(20);
                 ServerSocket serverSocket = new ServerSocket(FILE_PORT);
                 Socket socket = serverSocket.accept();
                 FileInputStream fileInputStream = new FileInputStream(music.getFilePath());
@@ -180,6 +181,7 @@ public class FriendManager implements Runnable {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException ignored) {
             }
         }
 
