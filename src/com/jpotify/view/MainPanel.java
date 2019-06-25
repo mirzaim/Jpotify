@@ -80,21 +80,21 @@ public class MainPanel extends JPanel {
     }
 
     public void addPanels(DrawableItem[] items) {
-        if(items == null) {
+        if (items == null || items.length == 0) {
             MButton empty = new MButton("Empty");
-            empty.setFont((new Font("Arial", Font.BOLD,30)));
-            this.add(empty,BorderLayout.CENTER);
+            empty.setFont((new Font("Arial", Font.BOLD, 30)));
+            addPanel(empty);
             return;
         }
 
         for (DrawableItem item : items)
             addPanel(item);
+
     }
 
     public JPanel getButtonPanel(DrawableItem item) {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-
 
 
         MButton like = new MButton("Like", true, new ActionListener() {

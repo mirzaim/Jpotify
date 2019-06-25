@@ -10,10 +10,12 @@ import com.jpotify.view.Listeners.ListenerManager;
 import com.jpotify.view.helper.DrawableItem;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
+//import com.sun.deploy.jcp.controller.Network;
 import mpatric.mp3agic.InvalidDataException;
 import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalBorders;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -21,6 +23,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
@@ -63,36 +66,19 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         try {
             Music music = new Music(file);
 
-            if (dataBase.addSong(music) == 0)
-                JOptionPane.showMessageDialog(getGUI().getMainPanel(),
-                        "File is already exist in your library");
-            else {
+            if (dataBase.addSong(music)) {
+                if (getMainPanelState() == MainPanelState.SONGS)
+                    songs();
 
-                if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.SONGS)
-                    getGUI().getMainPanel().addPanel(music);
+                if (getMainPanelState() == MainPanelState.ALBUMS)
+                    albums();
 
-                if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.ALBUMS)
-                    this.albums();
-
-                JOptionPane.showMessageDialog(getGUI().getMainPanel(),
-                        music.getTitle() + " added to your Library");
+                getGUI().showMessage(music.getTitle() + " added to your Library");
+            } else {
+                getGUI().showMessage("File is already exist in your library");
             }
-        } //for Testing #Test
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
-            e.printStackTrace();
-        } catch (NoTagFoundException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(getGUI().getMainPanel(),
-                    "Can't Add file",
-                    "Error",
-                    JOptionPane.WARNING_MESSAGE);
-            System.out.println(e.getCause() + e.getMessage());
+            getGUI().showMessage("Can't Add file");
         }
 
     }
@@ -107,31 +93,29 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     @Override
     public void playListClicked(String name) {
         getGUI().getMainPanel().removeAll();
-        getGUI().getMainPanel().addPanels(dataBase.getMusicByPlayListTitle(name));
+        getGUI().getMainPanel().addPanels(dataBase.getMusicsInPlayListTitle(name));
         if (name.equals("Favourites"))
             getGUI().getMainPanel().setMainPanelState(MainPanelState.Favorites);
         else if (name.equals("Shared PlayList"))
             getGUI().getMainPanel().setMainPanelState(MainPanelState.Shared);
         else
             getGUI().getMainPanel().setMainPanelState(MainPanelState.OtherPlayList);
-
-        getGUI().getMainPanel().repaint();
-        getGUI().getMainPanel().revalidate();
     }
 
     @Override
     public void newPlayList(String name) {
-
-        for (PlayList playList : dataBase.getPlayLists()) {
-            if (playList.getTitle().equals(name)) {
-                JOptionPane.showMessageDialog(null,
-                        "This Playlist is already exist");
-                return;
-            }
+        if (name.isEmpty()) {
+            getGUI().showMessage("Invalid name");
+            return;
         }
-        dataBase.createPlayList(name);
-        getGUI().getMenuPanel().getPlayList().addButton(new MButton(name, true));
-        loadPlaylists();
+
+        if (dataBase.getPlayListByTitle(name) != null) {
+            dataBase.createPlayList(name);
+            getGUI().getMenuPanel().getPlayList().addButton(new MButton(name, true));
+            loadPlaylists();
+        } else
+            getGUI().showMessage("This Playlist is already exist");
+
     }
 
     @Override
@@ -147,11 +131,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             ActionListener playListActionListener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    getGUI().getMenuPanel().getListener().playListClicked(playList.getTitle());
+                    playListClicked(playList.getTitle());
                 }
             };
 
-            MouseListener playListMouseListener = new MouseListener() {
+            MouseListener playListMouseListener = new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
@@ -189,7 +173,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedFirstSong);
                                 int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedSecondSong);
 
-                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()),firstSongIndex,secondSongIndex);
+                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()), firstSongIndex, secondSongIndex);
                                 loadPlaylists();
                             }
 
@@ -420,7 +404,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             jFrame.add(jTextPane);
             jFrame.setVisible(true);
 
-        }catch (IOException io){
+        } catch (IOException io) {
             JOptionPane.showMessageDialog(null,
                     "Cant Get Lyric...");
         }
@@ -429,6 +413,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     // GUI
     @Override
     public void closingProgram() {
+        player.stopMusic();
         dataBase.saveDataBase();
         networkManager.stopNetwork();
     }
@@ -459,7 +444,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         private PlayList lastPlayListReceived;
 
         //for Testing #Test
-        private String[] friendIps = {"192.168.1.3"};
+        private String[] friendIps = {"172.24.26.139", "172.31.64.127"};
 
         public NetworkManager() throws IOException {
             server = new Server(dataBase.getUsername(), this);

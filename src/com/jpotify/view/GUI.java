@@ -95,6 +95,10 @@ public final class GUI extends JFrame {
         menuPanel.setArtwork(image);
     }
 
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
     private void setupGUI() {
 
         setTitle(TITLE);
@@ -111,7 +115,7 @@ public final class GUI extends JFrame {
         });
 
         JScrollPane menuPanelScroll = new JScrollPane(menuPanel = new MenuPanel(listenerManager));
-        menuPanelScroll.setBorder(new EmptyBorder(0,0,0,0));
+        menuPanelScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         add(menuPanelScroll, BorderLayout.LINE_START);
         add(playerPanel = new PlayerPanel(listenerManager), BorderLayout.PAGE_END);

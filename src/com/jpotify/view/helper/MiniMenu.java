@@ -34,6 +34,22 @@ public class MiniMenu extends JPanel implements ActionListener {
         add(button);
     }
 
+//    public void addButton(JButton button) {
+//        button.setBorder(new EmptyBorder(5, 5, 0, 5));
+//        button.addActionListener(this);
+//        add(button);
+//    }
+
+    public void removeButton(String id) {
+        Component[] components = getComponents();
+        for (Component component : components)
+            if (component instanceof MButton) {
+                MButton button = (MButton) component;
+                if (button.getId().equals(id))
+                    remove(component);
+            }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (listener != null)

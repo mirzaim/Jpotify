@@ -130,10 +130,10 @@ public class Server implements Runnable {
             }
         }
 
-        private void sendFileRequest(Music music) {
-            sendMessage(new CommandMessage(username, CommandType.MUSIC_REQUEST, music));
-            waitingForMusic = true;
-        }
+//        private void sendFileRequest(Music music) {
+//            sendMessage(new CommandMessage(username, CommandType.MUSIC_REQUEST, music));
+//            waitingForMusic = true;
+//        }
 
         private void closeConnection() throws IOException {
             listen = false;
