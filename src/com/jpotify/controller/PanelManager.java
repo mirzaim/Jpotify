@@ -191,9 +191,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 });
                                 dialog.show();
                                 newOrderNames = dialog.convert2SringArray();
-                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList,newOrderNames);
+                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList, newOrderNames);
 
-                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
+                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList), newPlayList);
 //                                playList = newPlayList;
 
                                 playListClicked(playList.getTitle());
@@ -233,7 +233,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 //                                loadPlaylists();
                             }
 
-                            if(returnValue == 2){
+                            if (returnValue == 2) {
                                 String[] newOrderNames;
 
                                 DefaultListModel<String> myListModel = createStringListModel(playList.getSongsName());
@@ -248,9 +248,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 });
                                 dialog.show();
                                 newOrderNames = dialog.convert2SringArray();
-                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList,newOrderNames);
+                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList, newOrderNames);
 
-                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
+                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList), newPlayList);
 //                                playList = newPlayList;
                                 loadPlaylists();
                             }
@@ -376,7 +376,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 break;
             case NETWORK_PLAYLIST:
                 Music music3 = networkManager.getLastPlayListReceived().getMusicById(id);
-                networkManager.server.sendMusicRequest(music3,networkUsername);
+                networkManager.server.sendMusicRequest(music3, networkUsername);
             default:
         }
 
@@ -532,6 +532,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
         @Override
         public void sharedPlayListData(String username, PlayList playList) {
+            System.out.println(networkUsername + " shared playlist size: " + playList.size());
             getGUI().getMainPanel().removeAll();
             getGUI().getMainPanel().addPanels(playList.toArray(new DrawableItem[0]));
             lastPlayListReceived = playList;
