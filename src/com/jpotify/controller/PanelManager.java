@@ -9,6 +9,7 @@ import com.jpotify.view.Listeners.ListenerManager;
 import com.jpotify.view.helper.ListDialog;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
+import com.jpotify.view.helper.MultiSelectListDialog;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -18,14 +19,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
 
+    public String networkUsername = null;
     private volatile DataBase dataBase;
     private Player player;
     private NetworkManager networkManager;
-
-    public String networkUsername = null;
 
     public PanelManager(DataBase dataBase) {
         this.dataBase = dataBase;
@@ -58,6 +59,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         getGUI().getMainPanel().addPanels(dataBase.getMusicsArray());
         getGUI().getMainPanel().setMainPanelState(MainPanelState.SONGS);
     }
+
 
     @Override
     public void addSongButton(File file) {
@@ -145,29 +147,27 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                     }
                     if (e.getButton() == MouseEvent.BUTTON3) {
                         if (playList.getTitle().equals("Favourites") || playList.getTitle().equals("Shared PlayList")) {
-                            String[] buttons = {"Play", "Change Order"};
+                            String[] buttons = {"Play", "Change Order", "Delete Music"};
                             int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
                             if (returnValue == 1) {
                                 ChangeOrder(playList);
                             }
-                            if(returnValue == 0){
+                            if (returnValue == 0) {
                                 // play here
                             }
+                            if (returnValue == 2) {
+
+                                removeSelectedMusics(playList);
+
+                            }
+
 
                         } else {
-                            String[] buttons = {"Play", "Edit Name", "Change Order", "Delete"};
+                            String[] buttons = {"Play", "Edit Name", "Change Order", "Delete", "Delete Music"};
                             int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
 
-                            if (returnValue == 3) {
-                                int n = JOptionPane.showConfirmDialog(
-                                        getGUI().getMainPanel(),
-                                        "Do you want to delete " + playList.getTitle() + " playlist?",
-                                        "Delete PlayList",
-                                        JOptionPane.YES_NO_OPTION);
-                                if (n == 0) {
-                                    dataBase.getPlayLists().remove(playList);
-                                    loadPlaylists();
-                                }
+                            if (returnValue == 0) {
+                                // play here
                             }
 
                             if (returnValue == 1) {
@@ -182,17 +182,29 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                         return;
                                     }
                                 }
-                                if(name != null)
-                                    if(name.trim() != "")
+                                if (name != null)
+                                    if (name.trim() != "")
                                         mButton.setText(name);
                             }
 
-                            if(returnValue == 2){
+                            if (returnValue == 2) {
                                 ChangeOrder(playList);
                             }
 
-                            if(returnValue == 0){
-                                // play here
+                            if (returnValue == 3) {
+                                int n = JOptionPane.showConfirmDialog(
+                                        getGUI().getMainPanel(),
+                                        "Do you want to delete " + playList.getTitle() + " playlist?",
+                                        "Delete PlayList",
+                                        JOptionPane.YES_NO_OPTION);
+                                if (n == 0) {
+                                    dataBase.getPlayLists().remove(playList);
+                                    loadPlaylists();
+                                }
+                            }
+
+                            if (returnValue == 4) {
+                                removeSelectedMusics(playList);
                             }
                         }
                     }
@@ -234,13 +246,34 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     }
 
+    private void removeSelectedMusics(PlayList playList) {
+        ArrayList<String> names = new ArrayList<>();
+        PlayList currentPlayList = dataBase.getPlayListByTitle(playList.getTitle());
+        for (Music music : currentPlayList.getMusics())
+            names.add(music.getTitle());
+
+        JList list = new JList(names.toArray(new String[0]));
+        MultiSelectListDialog dialog = new MultiSelectListDialog("Please select an item in the list: ", list);
+        dialog.setOnOk(action -> dialog.createSelectedItems());
+        dialog.show();
+
+        for (String s : dialog.getSelectedItems()) {
+            for (Music music : currentPlayList.getMusics())
+                if (music.getTitle().equals(s))
+                    currentPlayList.remove(music);
+        }
+
+        playListClicked(currentPlayList.getTitle());
+        getGUI().showMessage("Musics removed");
+    }
+
     private void ChangeOrder(PlayList playList) {
         String[] newOrderNames;
         PlayList currentPlayList = dataBase.getPlayListByTitle(playList.getTitle());
         DefaultListModel<String> myListModel = createStringListModel(currentPlayList.getSongsName());
         newOrderNames = getNewOrderNames(myListModel);
-        PlayList newPlayList = dataBase.createNewPlayListByOrder(currentPlayList,newOrderNames);
-        dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(currentPlayList),newPlayList);
+        PlayList newPlayList = dataBase.createNewPlayListByOrder(currentPlayList, newOrderNames);
+        dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(currentPlayList), newPlayList);
         playListClicked(currentPlayList.getTitle());
     }
 
@@ -355,7 +388,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 dataBase.getPlaylistsNames()[0]);
 
         if (selectedPlayList != null) {
-            if(!dataBase.getPlayListByTitle(selectedPlayList).contains(dataBase.getMusicById(id)))
+            if (!dataBase.getPlayListByTitle(selectedPlayList).contains(dataBase.getMusicById(id)))
                 dataBase.getPlayListByTitle(selectedPlayList).add(dataBase.getMusicById(id));
             else
                 getGUI().showMessage("This song is already in selected playList");

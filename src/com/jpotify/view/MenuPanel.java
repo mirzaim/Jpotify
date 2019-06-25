@@ -1,23 +1,20 @@
 package com.jpotify.view;
 
-import com.jpotify.logic.PlayList;
 import com.jpotify.view.Listeners.MenuPanelListener;
 import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.ImagePanel;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MiniMenu;
 
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.Arrays;
 
 public class MenuPanel extends JPanel implements ActionListener {
     private final int WIDTH = 200;
@@ -140,7 +137,7 @@ public class MenuPanel extends JPanel implements ActionListener {
                         this,
                         "Name that you want :)"
                 );
-                    listener.newPlayList(name);
+                listener.newPlayList(name);
                 break;
             default:
 
