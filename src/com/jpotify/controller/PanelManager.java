@@ -60,6 +60,46 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         getGUI().getMainPanel().setMainPanelState(MainPanelState.SONGS);
     }
 
+    @Override
+    public void removeSongButton() {
+        ArrayList<String> names = new ArrayList<>();
+//        PlayList currentPlayList = dataBase.getPlayListByTitle(playList.getTitle());
+        for (Music music : dataBase.getMusics())
+            names.add(music.getTitle());
+
+        JList list = new JList(names.toArray(new String[0]));
+        MultiSelectListDialog dialog = new MultiSelectListDialog("Please select an item in the list: ", list);
+        dialog.setOnOk(action -> dialog.createSelectedItems());
+        dialog.show();
+
+        for (String s : dialog.getSelectedItems()) {
+            for (PlayList playList : dataBase.getPlayLists()) {
+                for (Music music : playList.getMusics())
+                    if (music.getTitle().equals(s)) {
+                        playList.remove(music);
+                    }
+            }
+
+            for (Album album : dataBase.getAlbums()) {
+                for (Music music : album.getMusics())
+                    if (music.getTitle().equals(s))
+                        album.remove(music);
+            }
+
+            for(Album album : dataBase.getAlbums())
+                if(album.size() == 0)
+                    dataBase.getAlbums().remove(album);
+
+            for (Music music : dataBase.getMusics()) {
+                if (music.getTitle().equals(s))
+                    dataBase.getMusics().remove(music);
+            }
+        }
+
+//        playListClicked(currentPlayList.getTitle());
+        songs();
+        getGUI().showMessage("Musics removed");
+    }
 
     @Override
     public void addSongButton(File file) {

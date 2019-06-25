@@ -18,5 +18,7 @@ public interface MenuPanelListener {
 
     void loadPlaylists();
 
+    void removeSongButton();
+
 
 }

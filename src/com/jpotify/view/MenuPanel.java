@@ -51,27 +51,15 @@ public class MenuPanel extends JPanel implements ActionListener {
 
         MiniMenu library = new MiniMenu("YOUR LIBRARY");
         library.addButton(new MButton("Songs", true, this));
+
+        library.addButton(new MButton("Remove Song",
+                AssetManager.getImageIconByName("add.png"),true,this));
         library.addButton(new MButton("Add Song",
                 AssetManager.getImageIconByName("add.png"), true, this));
         library.addButton(new MButton("Albums", true, this));
         top.add(library);
 
         playList = new MiniMenu("PLAYLISTS");
-//        playList.addButton(new MButton("Favourites", true, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                listener.playListClicked("Favourites");
-//            }
-//        }));
-//
-//        playList.addButton(new MButton("Shared PlayList", true, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                listener.playListClicked("Shared PlayList");
-//            }
-//        }));
-
-//        listener.loadPlaylists();
         top.add(playList);
 
 
@@ -112,6 +100,9 @@ public class MenuPanel extends JPanel implements ActionListener {
                 break;
             case "Songs":
                 listener.songs();
+                break;
+            case "Remove Song":
+                listener.removeSongButton();
                 break;
             case "Add Song":
                 JFileChooser fileChooser = new JFileChooser();

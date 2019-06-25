@@ -240,4 +240,8 @@ public class Player extends Thread {
     @Override
     public synchronized void start() {
     }
+
+    public Music getMusic() {
+        return music;
+    }
 }
