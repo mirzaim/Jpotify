@@ -162,6 +162,13 @@ public class DataBase implements Serializable {
         return playLists.get(1);
     }
 
+    public PlayList createNewPlayListByOrder(PlayList playList, String[] names){
+        PlayList newPlayList = new PlayList(playList.getTitle());
+        for(String s : names)
+            newPlayList.add(playList.getMusicById(s));
+        return newPlayList;
+    }
+
     private Album makeAlbum(Music firstMusicForAlbum) {
         if (firstMusicForAlbum.getAlbumTitle() == null)
             return null;
@@ -172,4 +179,6 @@ public class DataBase implements Serializable {
         album.updateLastPlayedTime(firstMusicForAlbum.getLastPlayedTime());
         return album;
     }
+
+
 }

@@ -180,7 +180,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 //
 //                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()), firstSongIndex, secondSongIndex);
 
-                                ArrayList<String> newOrderNames = new ArrayList<>();
+                                String[] newOrderNames;
 
                                 DefaultListModel<String> myListModel = createStringListModel(playList.getSongsName());
                                 JList<String> myList = new JList<String>(myListModel);
@@ -189,12 +189,13 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 dialog.setOnOk(new ActionListener() {
                                     @Override
                                     public void actionPerformed(ActionEvent e) {
-                                        dialog.convert2ArrayList().toArray(new String[0]);
+                                        dialog.convert2SringArray();
                                     }
                                 });
                                 dialog.show();
-                                newOrderNames = dialog.convert2ArrayList();
-
+                                newOrderNames = dialog.convert2SringArray();
+                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList,newOrderNames);
+                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
 
                                 loadPlaylists();
                             }
