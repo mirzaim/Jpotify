@@ -20,4 +20,11 @@ public class PlayList extends MusicList implements Serializable {
         return -1;
     }
 
+    public Music getMusicByName(String name) {
+        for (Music music : this)
+            if (music.getTitle().equals(name))
+                return music;
+        return null;
+    }
+
 }

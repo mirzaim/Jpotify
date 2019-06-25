@@ -164,7 +164,7 @@ public class DataBase implements Serializable {
     public PlayList createNewPlayListByOrder(PlayList playList, String[] names){
         PlayList newPlayList = new PlayList(playList.getTitle());
         for(String s : names)
-            newPlayList.add(playList.getMusicById(s));
+            newPlayList.add(playList.getMusicByName(s));
         return newPlayList;
     }
 

@@ -196,11 +196,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 newOrderNames = dialog.convert2SringArray();
                                 PlayList newPlayList = dataBase.createNewPlayListByOrder(playList,newOrderNames);
 
-
-
                                 dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
 //                                playList = newPlayList;
-                                loadPlaylists();
+
+                                playListClicked(playList.getTitle());
+                                return;
                             }
 
 
@@ -234,6 +234,28 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 }
                                 mButton.setText(name);
 //                                loadPlaylists();
+                            }
+
+                            if(returnValue == 2){
+                                String[] newOrderNames;
+
+                                DefaultListModel<String> myListModel = createStringListModel(playList.getSongsName());
+                                JList<String> myList = new JList<String>(myListModel);
+
+                                ListDialog dialog = new ListDialog("Please select an item in the list: ", myList, myListModel);
+                                dialog.setOnOk(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        dialog.convert2SringArray();
+                                    }
+                                });
+                                dialog.show();
+                                newOrderNames = dialog.convert2SringArray();
+                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList,newOrderNames);
+
+                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
+//                                playList = newPlayList;
+                                loadPlaylists();
                             }
 
 
