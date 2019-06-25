@@ -46,30 +46,18 @@ public class DataBase implements Serializable {
         }
     }
 
-    public int addSong(Music music) {
+    public boolean addSong(Music music) {
 
         if (musics.contains(music))
-            return 0;
+            return false;
 
-
-        for (Album album : this.albums) {
-            if (album.getTitle().equals(music.getAlbumTitle())) {
-                album.add(music);
-                this.musics.add(music);
-                return 1;
-            }
-        }
-
-        //some musics don't have album
         this.musics.add(music);
-        if (music.getAlbumTitle() != null) {
-            Album album = new Album(music.getAlbumTitle(), music);
-            music.setAlbum(album);
-            // first music is separate filed (not in list)
+        Album album;
+        if ((album = getAlbumById(music.getAlbumTitle())) != null)
             album.add(music);
-            albums.add(album);
-        }
-        return 1;
+        else
+            makeAlbum(music);
+        return true;
     }
 
     public int addSongToPlayList(Music music, PlayList playList) {
@@ -172,5 +160,15 @@ public class DataBase implements Serializable {
 
     public PlayList getSharedPlayList() {
         return playLists.get(1);
+    }
+
+    private Album makeAlbum(Music firstMusicForAlbum) {
+        if (firstMusicForAlbum.getAlbumTitle() == null)
+            return null;
+        Album album = new Album(firstMusicForAlbum.getAlbumTitle(), firstMusicForAlbum);
+        firstMusicForAlbum.setAlbum(album);
+        album.add(firstMusicForAlbum);
+        albums.add(album);
+        return album;
     }
 }

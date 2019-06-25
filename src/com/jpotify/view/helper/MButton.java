@@ -7,7 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class MButton extends JButton {
+public class MButton extends JButton implements DrawableItem {
     private Color defaultColor;
     private Icon defaultIcon;
     private String id;
@@ -53,7 +53,7 @@ public class MButton extends JButton {
         this(text, null, Color.LIGHT_GRAY, enableDefaultHover, listener);
     }
 
-    public MButton(String text, ActionListener actionListener , MouseListener mouseListener){
+    public MButton(String text, ActionListener actionListener, MouseListener mouseListener) {
         this(text, null, Color.LIGHT_GRAY, false, actionListener);
         addMouseListener(mouseListener);
     }
@@ -63,7 +63,7 @@ public class MButton extends JButton {
         this.id = id;
     }
 
-    public MButton(Icon defaultIcon,ActionListener listener, String id) {
+    public MButton(Icon defaultIcon, ActionListener listener, String id) {
         this(null, defaultIcon, false, listener);
         this.id = id;
     }
@@ -90,6 +90,13 @@ public class MButton extends JButton {
 
     protected Icon getDefaultIcon() {
         return defaultIcon;
+    }
+
+    @Override
+    public JPanel draw(int width, int height) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(this, BorderLayout.PAGE_START);
+        return panel;
     }
 
     public String getId() {

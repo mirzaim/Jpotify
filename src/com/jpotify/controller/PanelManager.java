@@ -30,10 +30,6 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     private Player player;
     private NetworkManager networkManager;
 
-    public PanelManager(DataBase dataBase, Player player) {
-        this.dataBase = dataBase;
-        this.player = player;
-    }
 
     public PanelManager(DataBase dataBase) {
         this.dataBase = dataBase;
@@ -64,11 +60,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         try {
             Music music = new Music(file);
 
-            if (dataBase.addSong(music) == 0)
-                JOptionPane.showMessageDialog(getGUI().getMainPanel(),
-                        "File is already exist in your library");
-            else {
-
+            if (dataBase.addSong(music)) {
                 if (getGUI().getMainPanel().getMainPanelState() == MainPanelState.SONGS)
                     getGUI().getMainPanel().addPanel(music);
 
@@ -77,6 +69,10 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
                 JOptionPane.showMessageDialog(getGUI().getMainPanel(),
                         music.getTitle() + " added to your Library");
+            } else {
+
+                JOptionPane.showMessageDialog(getGUI().getMainPanel(),
+                        "File is already exist in your library");
             }
         } //for Testing #Test
         catch (IOException e) {
@@ -145,11 +141,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             ActionListener playListActionListener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    getGUI().getMenuPanel().getListener().playListClicked(playList.getTitle());
+                    playListClicked(playList.getTitle());
                 }
             };
 
-            MouseListener playListMouseListener = new MouseListener() {
+            MouseListener playListMouseListener = new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
@@ -187,7 +183,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedFirstSong);
                                 int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedSecondSong);
 
-                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()),firstSongIndex,secondSongIndex);
+                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()), firstSongIndex, secondSongIndex);
                                 loadPlaylists();
                             }
 
@@ -418,7 +414,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             jFrame.add(jTextPane);
             jFrame.setVisible(true);
 
-        }catch (IOException io){
+        } catch (IOException io) {
             JOptionPane.showMessageDialog(null,
                     "Cant Get Lyric...");
         }
