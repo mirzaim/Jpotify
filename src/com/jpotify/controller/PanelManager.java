@@ -452,6 +452,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         } catch (IOException io) {
             JOptionPane.showMessageDialog(null,
                     "Cant Get Lyric...");
+            io.printStackTrace();
         }
     }
 

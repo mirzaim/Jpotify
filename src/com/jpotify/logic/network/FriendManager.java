@@ -138,6 +138,9 @@ public class FriendManager implements Runnable {
                     System.out.println("Sending...");
                     sendMessage(new CommandMessage(username,
                             CommandType.MUSIC_COME, message.getMusic()));
+
+
+
                     sendMusic(message.getMusic());
                     break;
                 case CLOSE_CONNECTION:
