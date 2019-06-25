@@ -169,6 +169,7 @@ public class DataBase implements Serializable {
         firstMusicForAlbum.setAlbum(album);
         album.add(firstMusicForAlbum);
         albums.add(album);
+        album.updateLastPlayedTime(firstMusicForAlbum.getLastPlayedTime());
         return album;
     }
 }

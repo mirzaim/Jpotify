@@ -407,6 +407,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     // GUI
     @Override
     public void closingProgram() {
+        player.stopMusic();
         dataBase.saveDataBase();
         networkManager.stopNetwork();
     }
