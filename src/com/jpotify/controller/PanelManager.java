@@ -95,7 +95,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     @Override
     public void playListClicked(String name) {
         getGUI().getMainPanel().removeAll();
-        getGUI().getMainPanel().addPanels(dataBase.getMusicsInPlayListTitle(name));
+        getGUI().getMainPanel().addPanels(dataBase.getPlayListByTitle(name).getMusics());
         if (name.equals("Favourites"))
             getGUI().getMainPanel().setMainPanelState(MainPanelState.Favorites);
         else if (name.equals("Shared PlayList"))
@@ -376,7 +376,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                 break;
             case NETWORK_PLAYLIST:
                 Music music3 = networkManager.getLastPlayListReceived().getMusicById(id);
-                networkManager.server.sendMusicRequest(music3, networkUsername);
+                networkManager.server.sendMusicRequest(music3,networkUsername);
             default:
         }
 
