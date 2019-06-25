@@ -151,10 +151,9 @@ public class DataBase implements Serializable {
     }
 
     public PlayList getPlayListByTitle(String name) {
-        for (PlayList playlist : playLists) {
+        for (PlayList playlist : playLists)
             if (playlist.getTitle().equals(name))
                 return playlist;
-        }
         return null;
     }
 
