@@ -1,6 +1,7 @@
 package com.jpotify.logic;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class PlayList extends MusicList implements Serializable {
 
@@ -18,6 +19,19 @@ public class PlayList extends MusicList implements Serializable {
                 return this.indexOf(music);
             }
         return -1;
+    }
+
+    public Music getMusicByName(String name) {
+        for (Music music : this)
+            if (music.getTitle().equals(name))
+                return music;
+        return null;
+    }
+    public Music[] getMusics(){
+        ArrayList<Music> musics = new ArrayList<>();
+        for(Music music: this)
+            musics.add(music);
+        return musics.toArray(new Music[0]);
     }
 
 }
