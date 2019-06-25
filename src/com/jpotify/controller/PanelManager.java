@@ -32,10 +32,6 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     private Player player;
     private NetworkManager networkManager;
 
-    public PanelManager(DataBase dataBase, Player player) {
-        this.dataBase = dataBase;
-        this.player = player;
-    }
 
     public PanelManager(DataBase dataBase) {
         this.dataBase = dataBase;
@@ -444,7 +440,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         private PlayList lastPlayListReceived;
 
         //for Testing #Test
-        private String[] friendIps = {"172.23.171.22","172.23.181.171"};
+        private String[] friendIps = {"192.168.43.92", "192.168.43.176"};
 
         public NetworkManager() throws IOException {
             server = new Server(dataBase.getUsername(), this);
