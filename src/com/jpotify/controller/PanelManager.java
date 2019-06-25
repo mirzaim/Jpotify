@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
 
-    private DataBase dataBase;
+    private volatile DataBase dataBase;
     private Player player;
     private NetworkManager networkManager;
 
