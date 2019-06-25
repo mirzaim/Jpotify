@@ -19,7 +19,7 @@ public class MiniMenu extends JPanel implements ActionListener {
         setBorder(new EmptyBorder(5, 20, 5, 20));
 
         MButton titleText = new MButton(title);
-        titleText.setFont(new Font("Arial", Font.PLAIN, 12));
+        titleText.setFont(new Font("Ubuntu", Font.PLAIN, 12));
         add(titleText);
     }
 

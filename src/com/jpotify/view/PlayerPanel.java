@@ -77,11 +77,11 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
 
 
         musicName = new MTextArea("Music Name", Color.WHITE, true);
-        musicName.setFont(new Font("Arial", Font.BOLD, 13));
+        musicName.setFont(new Font("Ubuntu", Font.BOLD, 13));
         leftBox.add(musicName);
 
         singerName = new MTextArea("Singer", null, true);
-        singerName.setFont(new Font("Arial", Font.PLAIN, 11));
+        singerName.setFont(new Font("Ubuntu", Font.PLAIN, 11));
         leftBox.add(singerName);
     }
 

@@ -131,6 +131,7 @@ public final class GUI extends JFrame {
         jScrollPaneCenter.setBorder(new EmptyBorder(0, 0, 0, 0));
         temp.add(jScrollPaneCenter, BorderLayout.CENTER);
 
+
         setVisible(true);
     }
 

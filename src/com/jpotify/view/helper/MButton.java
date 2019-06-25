@@ -83,7 +83,7 @@ public class MButton extends JButton implements DrawableItem {
     private void firstSetup() {
         setBorder(BorderFactory.createEmptyBorder());
         setContentAreaFilled(false);
-        setFont(new Font("Arial", Font.BOLD, 15));
+        setFont(new Font("Ubuntu", Font.BOLD, 15));
         setForeground(defaultColor);
         setFocusPainted(false);
     }

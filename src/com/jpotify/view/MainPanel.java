@@ -51,6 +51,12 @@ public class MainPanel extends JPanel {
         JPanel panel = item.draw(ITEM_WIDTH, ITEM_HEIGHT);
         panel.add(getButtonPanel(item), BorderLayout.NORTH);
         panel.setBackground(Color.DARK_GRAY);
+
+
+//        loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+
+
+
         add(panel);
 
         panel.addMouseListener(new MouseAdapter() {
@@ -83,7 +89,7 @@ public class MainPanel extends JPanel {
     public void addPanels(DrawableItem[] items) {
         if (items == null || items.length == 0) {
             MButton empty = new MButton("Empty");
-            empty.setFont((new Font("Arial", Font.BOLD, 30)));
+            empty.setFont((new Font("Ubuntu", Font.BOLD, 30)));
             addPanel(empty);
             return;
         }
@@ -134,6 +140,20 @@ public class MainPanel extends JPanel {
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(lyric);
         buttonPanel.setBackground(Color.DARK_GRAY);
+        changeFont(buttonPanel,new Font("Ubuntu",Font.BOLD,13));
+
         return buttonPanel;
+    }
+
+    public static void changeFont ( Component component, Font font )
+    {
+        component.setFont ( font );
+        if ( component instanceof Container )
+        {
+            for ( Component child : ( ( Container ) component ).getComponents () )
+            {
+                changeFont ( child, font );
+            }
+        }
     }
 }

@@ -223,10 +223,10 @@ public class Music implements Comparable<Music>, DrawableItem, Serializable {
         MTextArea titleLabel = new MTextArea(this.title);
         MTextArea artistLabel = new MTextArea(this.artist);
 
-        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+        titleLabel.setFont(new Font("Ubuntu", Font.BOLD, 12));
         titleLabel.setForeground(Color.WHITE);
 
-        artistLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
+        artistLabel.setFont(new Font("Ubuntu", Font.BOLD, 11));
         artistLabel.setForeground(Color.LIGHT_GRAY);
 
 //        JPanel buttonPanel = new JPanel();
