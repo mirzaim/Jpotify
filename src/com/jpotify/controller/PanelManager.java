@@ -98,17 +98,18 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 
     @Override
     public void newPlayList(String name) {
-
-        for (PlayList playList : dataBase.getPlayLists()) {
-            if (playList.getTitle().equals(name)) {
-                JOptionPane.showMessageDialog(null,
-                        "This Playlist is already exist");
-                return;
-            }
+        if (name.isEmpty()) {
+            getGUI().showMessage("Invalid name");
+            return;
         }
-        dataBase.createPlayList(name);
-        getGUI().getMenuPanel().getPlayList().addButton(new MButton(name, true));
-        loadPlaylists();
+
+        if (dataBase.getPlayListByTitle(name) != null) {
+            dataBase.createPlayList(name);
+            getGUI().getMenuPanel().getPlayList().addButton(new MButton(name, true));
+            loadPlaylists();
+        } else
+            getGUI().showMessage("This Playlist is already exist");
+
     }
 
     @Override
