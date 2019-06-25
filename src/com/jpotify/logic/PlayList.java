@@ -20,4 +20,8 @@ public class PlayList extends MusicList implements Serializable {
         return -1;
     }
 
+    public void newOrder (String[] strings){
+
+    }
+
 }

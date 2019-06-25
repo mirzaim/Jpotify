@@ -1,21 +1,17 @@
 package com.jpotify.controller;
 
 import com.jpotify.logic.*;
-import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.logic.network.FriendManager;
 import com.jpotify.logic.network.FriendManagerListener;
 import com.jpotify.logic.network.Server;
 import com.jpotify.logic.network.ServerListener;
 import com.jpotify.view.Listeners.ListenerManager;
 import com.jpotify.view.helper.DrawableItem;
+import com.jpotify.view.helper.ListDialog;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MainPanelState;
-//import com.sun.deploy.jcp.controller.Network;
-import mpatric.mp3agic.InvalidDataException;
-import mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalBorders;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -24,7 +20,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+
+//import com.sun.deploy.jcp.controller.Network;
 
 public class PanelManager extends ListenerManager implements PlayerListener {
 
@@ -32,6 +29,10 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     private Player player;
     private NetworkManager networkManager;
 
+    public PanelManager(DataBase dataBase, Player player) {
+        this.dataBase = dataBase;
+        this.player = player;
+    }
 
     public PanelManager(DataBase dataBase) {
         this.dataBase = dataBase;
@@ -43,6 +44,14 @@ public class PanelManager extends ListenerManager implements PlayerListener {
         }
     }
 
+    static private DefaultListModel<String> createStringListModel(String[] strings) {
+        final String[] listElements = strings;
+        DefaultListModel<String> listModel = new DefaultListModel<String>();
+        for (String element : listElements) {
+            listModel.addElement(element);
+        }
+        return listModel;
+    }
 
     // MenuPanelListener implementation
     @Override
@@ -145,31 +154,48 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                             String[] buttons = {"Play", "Change Order"};
                             int returnValue = JOptionPane.showOptionDialog(null, "What do you want to do with " + "\"" + playList.getTitle() + "\"", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, null);
                             if (returnValue == 1) {
-                                String selectedFirstSong = (String) JOptionPane.showInputDialog(
-                                        getGUI().getMainPanel(),
-                                        "select song : ",
-                                        "First Song",
-                                        JOptionPane.PLAIN_MESSAGE,
-                                        null,
-                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
-                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
+//                                String selectedFirstSong = (String) JOptionPane.showInputDialog(
+//                                        getGUI().getMainPanel(),
+//                                        "select song : ",
+//                                        "First Song",
+//                                        JOptionPane.PLAIN_MESSAGE,
+//                                        null,
+//                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
+//                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
+//
+//                                String selectedSecondSong = (String) JOptionPane.showInputDialog(
+//                                        getGUI().getMainPanel(),
+//                                        "select song : ",
+//                                        "Second Song",
+//                                        JOptionPane.PLAIN_MESSAGE,
+//                                        null,
+//                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
+//                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
+//
+//                                // i cant swap two music
+////                                int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).indexOf(playList.getMusicById(selectedFirstSong));
+////                                int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).indexOf(playList.getMusicById(selectedSecondSong));
+//                                int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedFirstSong);
+//                                int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedSecondSong);
+//
+//                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()), firstSongIndex, secondSongIndex);
 
-                                String selectedSecondSong = (String) JOptionPane.showInputDialog(
-                                        getGUI().getMainPanel(),
-                                        "select song : ",
-                                        "Second Song",
-                                        JOptionPane.PLAIN_MESSAGE,
-                                        null,
-                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName(),
-                                        dataBase.getPlayListByTitle(playList.getTitle()).getSongsName()[0]);
+                                ArrayList<String> newOrderNames = new ArrayList<>();
 
-                                // i cant swap two music
-//                                int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).indexOf(playList.getMusicById(selectedFirstSong));
-//                                int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).indexOf(playList.getMusicById(selectedSecondSong));
-                                int firstSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedFirstSong);
-                                int secondSongIndex = dataBase.getPlayListByTitle(playList.getTitle()).name2index(selectedSecondSong);
+                                DefaultListModel<String> myListModel = createStringListModel(playList.getSongsName());
+                                JList<String> myList = new JList<String>(myListModel);
 
-                                Collections.swap(dataBase.getPlayListByTitle(playList.getTitle()), firstSongIndex, secondSongIndex);
+                                ListDialog dialog = new ListDialog("Please select an item in the list: ", myList, myListModel);
+                                dialog.setOnOk(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        dialog.convert2ArrayList().toArray(new String[0]);
+                                    }
+                                });
+                                dialog.show();
+                                newOrderNames = dialog.convert2ArrayList();
+
+
                                 loadPlaylists();
                             }
 
