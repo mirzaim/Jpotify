@@ -103,7 +103,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
             return;
         }
 
-        if (dataBase.getPlayListByTitle(name) != null) {
+        if (dataBase.getPlayListByTitle(name) == null) {
             dataBase.createPlayList(name);
             getGUI().getMenuPanel().getPlayList().addButton(new MButton(name, true));
             loadPlaylists();
@@ -407,7 +407,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     // GUI
     @Override
     public void closingProgram() {
-        player.stopMusic();
+//        player.stopMusic();
         dataBase.saveDataBase();
         networkManager.stopNetwork();
     }
