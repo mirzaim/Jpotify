@@ -195,8 +195,11 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 dialog.show();
                                 newOrderNames = dialog.convert2SringArray();
                                 PlayList newPlayList = dataBase.createNewPlayListByOrder(playList,newOrderNames);
-                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
 
+
+
+                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
+//                                playList = newPlayList;
                                 loadPlaylists();
                             }
 
