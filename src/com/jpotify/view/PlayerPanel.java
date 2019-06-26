@@ -68,9 +68,9 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         JPanel sliderBox = new JPanel(new BorderLayout());
         sliderBox.setOpaque(false);
         sliderBox.setBorder(new EmptyBorder(5, 100, 20, 100));
-        currentTime = new MButton("00:00");
+        currentTime = new MButton("0:00");
         sliderBox.add(currentTime, BorderLayout.LINE_START);
-        totalTime = new MButton("00:00");
+        totalTime = new MButton("0:00");
         sliderBox.add(totalTime, BorderLayout.LINE_END);
 
         slider = new MSlider(1000, this);
