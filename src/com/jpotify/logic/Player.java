@@ -6,13 +6,17 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import javax.sound.sampled.*;
 import java.io.*;
 
+/**
+ * This class is for playing music and it uses jLayer library.
+ *
+ * @author Morteza Mirzai
+ * @see PlayerListener
+ */
+
 public class Player extends Thread {
     private AdvancedPlayer player;
     private Music music;
     private PlayerListener listener;
-//    private boolean repeat;
-//    private boolean shuffle;
-
     private static final int POSITION_CONS = 1000;
     private double FRAME_RATE = 0.0260;
 
@@ -23,35 +27,23 @@ public class Player extends Thread {
     private PlayerState currState;
     private PlayerState prevState;
 
-//    public Player(PlayList playList, boolean repeat, boolean shuffle) {
-//        this.playList = playList;
-//        this.repeat = repeat;
-//        this.shuffle = shuffle;
-//    }
-//
-//    public Player(PlayList playList) {
-//        this(playList, false, false);
-//    }
-//
-//    public Player(Media media) {
-//        this(new PlayList(media));
-//    }
-
-//    public void setRepeat(boolean repeat) {
-//        this.repeat = repeat;
-//    }
-//
-//    public void setShuffle(boolean shuffle) {
-//        this.shuffle = shuffle;
-//    }
-
 
     public Player() {
     }
 
+    /**
+     * @param listener PlayListListener
+     */
     public Player(PlayerListener listener) {
         this.listener = listener;
     }
+
+    /**
+     * This method is used when we want to set music for player
+     * after this we can play music
+     *
+     * @param music music instance
+     */
 
     public void updateMusic(Music music) {
         procPause();
@@ -60,6 +52,18 @@ public class Player extends Thread {
         pauseMusic();
     }
 
+    /**
+     * @return returns music that set by updateMusic().
+     */
+    public Music getMusic() {
+        return music;
+    }
+
+    /**
+     * for changing music sound volume
+     *
+     * @param volume an integer between 0 to 100
+     */
     public void updateSoundVolume(int volume) {
         double lineVolume = ((double) volume) / 100;
 
@@ -95,12 +99,6 @@ public class Player extends Thread {
 
     }
 
-//    public void updatePlayList(PlayList playList) {
-//        procPause();
-//        this.playList = playList;
-//        pauseMusic();
-//    }
-
     /**
      * Play music after pause or first run
      * this method also do resume
@@ -126,23 +124,32 @@ public class Player extends Thread {
         setCurrState(PlayerState.STOPPED);
     }
 
+    /**
+     * pause music
+     */
     public void pauseMusic() {
         setCurrState(PlayerState.PAUSED);
     }
 
-//    public void resumeMedia() {
-//        setCurrState(PlayerState.PLAYING);
-//    }
+    /**
+     * go to next music in playList
+     */
+    public void nextMusic() {
 
-    // for player
-    public void changeFramePosition(int frame) {
-        procPause();
-        this.currentFrame = frame;
-        resetPlayer(frame);
-        procBack();
     }
 
-    // for JSlider
+    /**
+     * go to previous music in playList
+     */
+    public void previousMusic() {
+
+    }
+
+    /**
+     * change position relatively with an integer between 1 to 1000
+     *
+     * @param position an integer between 1 to 1000
+     */
     public void changePositionRelative(int position) {
         if (this.isAlive()) {
             int frame = (int) ((double) position / POSITION_CONS * totalFrame);
@@ -150,12 +157,12 @@ public class Player extends Thread {
         }
     }
 
-    public void nextMusic() {
-
-    }
-
-    public void previousMusic() {
-
+    // for player
+    private void changeFramePosition(int frame) {
+        procPause();
+        this.currentFrame = frame;
+        resetPlayer(frame);
+        procBack();
     }
 
     private void updatePosition() {
@@ -189,9 +196,8 @@ public class Player extends Thread {
     private void setTotalFrame() throws IOException, JavaLayerException {
         totalFrame = 0;
         AdvancedPlayer player = new AdvancedPlayer(new FileInputStream(music.getFilePath()));
-        while (player.skipFrame()) {
+        while (player.skipFrame())
             totalFrame++;
-        }
     }
 
     private void resetPlayer(int startFrame) {
@@ -238,13 +244,12 @@ public class Player extends Thread {
         System.out.println(getName() + ": Done!");
     }
 
-    //overriding this method is to that none outSide of this class couldn't start thread.
-    //and if we want start Thread use super.start()
+    /**
+     * it doesn't do any thing!
+     * don't try this method to run thread ;)
+     */
     @Override
     public synchronized void start() {
     }
 
-    public Music getMusic() {
-        return music;
-    }
 }

@@ -1,11 +1,8 @@
 package com.jpotify.logic.network;
 
 import com.jpotify.logic.Music;
-import com.jpotify.logic.exceptions.NoTagFoundException;
 import com.jpotify.logic.network.message.CommandMessage;
 import com.jpotify.logic.network.message.CommandType;
-import mpatric.mp3agic.InvalidDataException;
-import mpatric.mp3agic.UnsupportedTagException;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -13,6 +10,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 
+
+/**
+ * This class is for finding your friend on your network and share your activities with them
+ *
+ * @author Morteza Mirzai
+ * @see FriendManagerListener
+ * @see Server
+ */
 public class FriendManager implements Runnable {
     private static final int PORT = 7878;
     private static final int FILE_PORT = 8787;
@@ -60,6 +65,9 @@ public class FriendManager implements Runnable {
 
     }
 
+    /**
+     * It stops sharing data with your friend and close connection with them
+     */
     public void stop() {
         flag = false;
         Iterator<Friend> iterator = onlineFriends.iterator();
@@ -78,17 +86,12 @@ public class FriendManager implements Runnable {
 
     }
 
-    public String[] getNotConnectedFriends() {
-        List<String> onlineFriendsIP = new LinkedList<>();
-        for (Friend friend : onlineFriends)
-            if (friendIpMap.containsKey(friend))
-                onlineFriendsIP.add(friendIpMap.get(friend));
-
-        List<String> offlineFriend = new LinkedList<>(ips);
-        offlineFriend.removeAll(onlineFriendsIP);
-        return offlineFriend.toArray(new String[0]);
-    }
-
+    /**
+     * This method broadcast your share activity with your friends
+     *
+     * @param music   music that you played
+     * @param started true if you staring that music or false for you stop that
+     */
     public void broadCastActivity(Music music, boolean started) {
         CommandMessage message;
         if (started)
@@ -100,13 +103,26 @@ public class FriendManager implements Runnable {
             friend.sendMessage(message);
     }
 
+
+    private String[] getNotConnectedFriends() {
+        List<String> onlineFriendsIP = new LinkedList<>();
+        for (Friend friend : onlineFriends)
+            if (friendIpMap.containsKey(friend))
+                onlineFriendsIP.add(friendIpMap.get(friend));
+
+        List<String> offlineFriend = new LinkedList<>(ips);
+        offlineFriend.removeAll(onlineFriendsIP);
+        return offlineFriend.toArray(new String[0]);
+    }
+
+
     private class Friend implements Runnable {
         private Socket socket;
         private ObjectInputStream in;
         private ObjectOutputStream out;
         private boolean listen = true;
 
-        public Friend(Socket socket) throws IOException {
+        private Friend(Socket socket) throws IOException {
             this.socket = socket;
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
@@ -140,7 +156,6 @@ public class FriendManager implements Runnable {
                             CommandType.MUSIC_COME, message.getMusic()));
 
 
-
                     sendMusic(message.getMusic());
                     break;
                 case CLOSE_CONNECTION:
@@ -153,7 +168,7 @@ public class FriendManager implements Runnable {
             }
         }
 
-        void sendMessage(CommandMessage message) {
+        private void sendMessage(CommandMessage message) {
             try {
                 out.writeObject(message);
             } catch (IOException e) {
@@ -164,7 +179,7 @@ public class FriendManager implements Runnable {
             }
         }
 
-        public void sendMusic(Music music) {
+        private void sendMusic(Music music) {
             try {
                 ServerSocket serverSocket = new ServerSocket(FILE_PORT);
                 Socket socket = serverSocket.accept();
@@ -186,19 +201,19 @@ public class FriendManager implements Runnable {
             }
         }
 
-        public String getIP() {
+        private String getIP() {
             return socket.getInetAddress().toString();
         }
 
-        void sendIntroductionMessage() {
+        private void sendIntroductionMessage() {
             sendMessage(new CommandMessage(username, CommandType.INTRODUCTION));
         }
 
-        void reportClosingConnection() {
+        private void reportClosingConnection() {
             sendMessage(new CommandMessage(username, CommandType.CLOSE_CONNECTION));
         }
 
-        void closeConnection() throws IOException {
+        private void closeConnection() throws IOException {
             listen = false;
             in.close();
             out.close();

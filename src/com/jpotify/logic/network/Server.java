@@ -15,6 +15,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class handle your friends and get your friends data for you.
+ *
+ * @author Morteza Mirzai
+ * @see ServerListener
+ * @see FriendManager
+ */
 public class Server implements Runnable {
     private static final int PORT = 7878;
     private static final int FILE_PORT = 8787;
@@ -33,6 +40,12 @@ public class Server implements Runnable {
         friendHandlers = new LinkedList<>();
     }
 
+    /**
+     * prepare server for listening
+     * @param username enter your username
+     * @param listener serverListener
+     * @throws IOException when server cant run
+     */
     public Server(String username, ServerListener listener) throws IOException {
         this(username, PORT);
         if (listener == null)
@@ -56,6 +69,10 @@ public class Server implements Runnable {
             }
     }
 
+    /**
+     * it stops listening to friends.
+     * and close connection with them.
+     */
     public void closeServer() {
         flag = false;
         try {
@@ -69,6 +86,10 @@ public class Server implements Runnable {
         }
     }
 
+    /**
+     * send request for shared playlist to specific username
+     * @param username username of receiver this message
+     */
     public void sendSharedPlayListRequest(String username) {
         for (FriendHandler friendHandler : friendHandlers)
             if (friendHandler.getUsername().equals(username)) {
@@ -78,6 +99,11 @@ public class Server implements Runnable {
             }
     }
 
+    /**
+     * send request for a music in shared playlist to specific username
+     * @param music music that have to received
+     * @param username username of receiver this message
+     */
     public void sendMusicRequest(Music music, String username) {
         for (FriendHandler friendHandler : friendHandlers)
             if (friendHandler.getUsername().equals(username)) {
@@ -159,11 +185,11 @@ public class Server implements Runnable {
             }
         }
 
-        public void reportClosingConnection() {
+        private void reportClosingConnection() {
             sendMessage(new CommandMessage(username, CommandType.CLOSE_CONNECTION));
         }
 
-        public void receiveMusic(Music music) {
+        private void receiveMusic(Music music) {
             File file = new File(System.getProperty("user.dir") + "/downloaded_musics/", music.getTitle() + ".mp3");
             byte[] bytes = new byte[16 * 1024];
             int count;
@@ -197,7 +223,7 @@ public class Server implements Runnable {
             }
         }
 
-        public String getUsername() {
+        private String getUsername() {
             return username;
         }
 
