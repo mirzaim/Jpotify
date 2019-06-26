@@ -192,9 +192,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 });
                                 dialog.show();
                                 newOrderNames = dialog.convert2SringArray();
-                                PlayList newPlayList = dataBase.createNewPlayListByOrder(dataBase.getPlayListByTitle(playList.getTitle()),newOrderNames);
+                                PlayList newPlayList = dataBase.createNewPlayListByOrder(dataBase.getPlayListByTitle(playList.getTitle()), newOrderNames);
 
-                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(dataBase.getPlayListByTitle(playList.getTitle())),newPlayList);
+                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(dataBase.getPlayListByTitle(playList.getTitle())), newPlayList);
 //                                playList = newPlayList;
 
                                 playListClicked(dataBase.getPlayListByTitle(playList.getTitle()).getTitle());
@@ -233,7 +233,7 @@ public class PanelManager extends ListenerManager implements PlayerListener {
 //                                loadPlaylists();
                             }
 
-                            if(returnValue == 2){
+                            if (returnValue == 2) {
                                 String[] newOrderNames;
 
                                 DefaultListModel<String> myListModel = createStringListModel(playList.getSongsName());
@@ -248,9 +248,9 @@ public class PanelManager extends ListenerManager implements PlayerListener {
                                 });
                                 dialog.show();
                                 newOrderNames = dialog.convert2SringArray();
-                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList,newOrderNames);
+                                PlayList newPlayList = dataBase.createNewPlayListByOrder(playList, newOrderNames);
 
-                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList),newPlayList);
+                                dataBase.getPlayLists().set(dataBase.getPlayLists().indexOf(playList), newPlayList);
 //                                playList = newPlayList;
                                 loadPlaylists();
                             }
@@ -464,8 +464,8 @@ public class PanelManager extends ListenerManager implements PlayerListener {
     }
 
     @Override
-    public void updatePosition(int position) {
-        getGUI().getPlayerPanel().setSliderCurrentPosition(position);
+    public void updatePosition(int position, int totalTime, int currentTime) {
+        getGUI().getPlayerPanel().setSliderCurrentPosition(position, totalTime, currentTime);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.jpotify.logic;
 
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.PlayerApplet;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 
 import javax.sound.sampled.*;
@@ -15,9 +14,11 @@ public class Player extends Thread {
 //    private boolean shuffle;
 
     private static final int POSITION_CONS = 1000;
+    private double FRAME_RATE = 0.0260;
 
     private int currentFrame = 0;
     private long totalFrame;
+
 
     private PlayerState currState;
     private PlayerState prevState;
@@ -75,7 +76,7 @@ public class Player extends Thread {
                     if (!opened) {
                         line.open();
                     }
-                    if (line.isControlSupported(FloatControl.Type.VOLUME)){
+                    if (line.isControlSupported(FloatControl.Type.VOLUME)) {
                         FloatControl volCtrl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                         volCtrl.setValue((float) lineVolume);
                     }
@@ -160,7 +161,8 @@ public class Player extends Thread {
     private void updatePosition() {
         if (listener != null) {
             int position = (int) ((double) currentFrame / totalFrame * POSITION_CONS);
-            listener.updatePosition(position);
+            listener.updatePosition(position, (int) (totalFrame * FRAME_RATE),
+                    (int) (currentFrame * FRAME_RATE));
         }
     }
 
@@ -187,8 +189,9 @@ public class Player extends Thread {
     private void setTotalFrame() throws IOException, JavaLayerException {
         totalFrame = 0;
         AdvancedPlayer player = new AdvancedPlayer(new FileInputStream(music.getFilePath()));
-        while (player.skipFrame())
+        while (player.skipFrame()) {
             totalFrame++;
+        }
     }
 
     private void resetPlayer(int startFrame) {

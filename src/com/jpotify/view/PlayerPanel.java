@@ -22,6 +22,8 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
     private MTextArea musicName;
     private MTextArea singerName;
     private MToggleButton playPauseButton;
+    private MButton currentTime;
+    private MButton totalTime;
 
     PlayerPanel(PlayerPanelListener listener) {
         this.listener = listener;
@@ -63,9 +65,18 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         controllers.add(new MButton(AssetManager.getImageIconByName("replay.png"), this, "replay"));
 
 
+        JPanel sliderBox = new JPanel(new BorderLayout());
+        sliderBox.setOpaque(false);
+        sliderBox.setBorder(new EmptyBorder(5, 100, 20, 100));
+        currentTime = new MButton("00:00");
+        sliderBox.add(currentTime, BorderLayout.LINE_START);
+        totalTime = new MButton("00:00");
+        sliderBox.add(totalTime, BorderLayout.LINE_END);
+
         slider = new MSlider(1000, this);
         slider.setBorder(new EmptyBorder(0, 100, 0, 100));
-        centerBox.add(slider);
+        sliderBox.add(slider, BorderLayout.CENTER);
+        centerBox.add(sliderBox);
     }
 
     private void setupLeftSection() {
@@ -104,12 +115,14 @@ public class PlayerPanel extends JPanel implements ActionListener, ChangeListene
         rightBox.add(soundVolume);
     }
 
-    public void setSliderCurrentPosition(int frame) {
+    public void setSliderCurrentPosition(int frame, int totalTime, int currentTime) {
         if (!slider.getValueIsAdjusting()) {
             slider.removeChangeListener(this);
             slider.setValue(frame);
             slider.addChangeListener(this);
         }
+        this.currentTime.setText(String.format("%d:%02d", currentTime / 60, currentTime % 60));
+        this.totalTime.setText(String.format("%d:%02d", totalTime / 60, totalTime % 60));
     }
 
     public void setDataMusicData(String title, String singer) {
