@@ -1,23 +1,20 @@
 package com.jpotify.view;
 
-import com.jpotify.logic.PlayList;
 import com.jpotify.view.Listeners.MenuPanelListener;
 import com.jpotify.view.assets.AssetManager;
 import com.jpotify.view.helper.ImagePanel;
 import com.jpotify.view.helper.MButton;
 import com.jpotify.view.helper.MiniMenu;
 
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.Arrays;
 
 public class MenuPanel extends JPanel implements ActionListener {
     private final int WIDTH = 200;
@@ -54,27 +51,15 @@ public class MenuPanel extends JPanel implements ActionListener {
 
         MiniMenu library = new MiniMenu("YOUR LIBRARY");
         library.addButton(new MButton("Songs", true, this));
+
+        library.addButton(new MButton("Remove Song",
+                AssetManager.getImageIconByName("add.png"),true,this));
         library.addButton(new MButton("Add Song",
                 AssetManager.getImageIconByName("add.png"), true, this));
         library.addButton(new MButton("Albums", true, this));
         top.add(library);
 
         playList = new MiniMenu("PLAYLISTS");
-//        playList.addButton(new MButton("Favourites", true, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                listener.playListClicked("Favourites");
-//            }
-//        }));
-//
-//        playList.addButton(new MButton("Shared PlayList", true, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                listener.playListClicked("Shared PlayList");
-//            }
-//        }));
-
-//        listener.loadPlaylists();
         top.add(playList);
 
 
@@ -116,6 +101,9 @@ public class MenuPanel extends JPanel implements ActionListener {
             case "Songs":
                 listener.songs();
                 break;
+            case "Remove Song":
+                listener.removeSongButton();
+                break;
             case "Add Song":
                 JFileChooser fileChooser = new JFileChooser();
                 int result = fileChooser.showOpenDialog(null);
@@ -140,7 +128,7 @@ public class MenuPanel extends JPanel implements ActionListener {
                         this,
                         "Name that you want :)"
                 );
-                    listener.newPlayList(name);
+                listener.newPlayList(name);
                 break;
             default:
 

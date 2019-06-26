@@ -105,6 +105,19 @@ public class MusicList extends ArrayList<Music> implements DrawableItem, Seriali
         return jPanel;
     }
 
+    public Music getMusicByName(String name) {
+        for (Music music : this)
+            if (music.getTitle().equals(name))
+                return music;
+        return null;
+    }
+    public Music[] getMusics(){
+        ArrayList<Music> musics = new ArrayList<>();
+        for(Music music: this)
+            musics.add(music);
+        return musics.toArray(new Music[0]);
+    }
+
     @Override
     public String getId() {
         return title;
